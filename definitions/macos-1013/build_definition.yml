@@ -1,0 +1,22 @@
+name: Python $(VERSION)
+
+trigger: none
+
+variables:
+  VmImage: 'macOS-10.13'
+  ToolVersion: '$(VERSION)'
+  ToolName: python
+  Platform: macos-1013
+  Architecture: x64
+
+jobs:
+- template: /python/templates/macos-1013/build_job.yml
+  parameters:
+    VmImage: $(VmImage)
+    JobName: Build_Python_macOS
+
+- template: /python/tests/test_job.yml
+  parameters:
+    VmImage: $(VmImage)
+    JobName: Test_Python_macOS
+    DependsOn: Build_Python_macOS
