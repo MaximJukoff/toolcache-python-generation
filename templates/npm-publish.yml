@@ -1,0 +1,26 @@
+jobs:
+  - job: ${{ parameters.JobName }}
+    pool:
+      name: Azure Pipelines
+      vmImage: ${{ parameters.VmImage }}
+    dependsOn: ${{ parameters.DependsOn }}
+    condition: and(succeeded(), eq(variables['NPM_PUBLISH'], '1'), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+
+    variables:
+      PersonalAccessToken: $(ACCESS_TOKEN)
+
+    steps:
+      - task: DownloadBuildArtifacts@0
+        displayName: 'Download $(ToolName) $(ToolVersion) $(Architecture) artifact'
+        inputs:
+          artifactName: '$(ToolName)-$(ToolVersion)-$(Architecture)-$(Platform)'
+          buildType: current
+          downloadPath: $(Build.StagingDirectory)
+          downloadType: single
+
+      - task: Powershell@2
+        displayName: 'Publish package'
+        inputs:
+          targetType: filePath
+          filePath: 'common/helpers/npm-publish.ps1'
+          arguments: '-AccessToken $(PersonalAccessToken) -PackageLocation $(Build.StagingDirectory)/$(ToolName)-$(ToolVersion)-$(Architecture)-$(Platform)'
