@@ -1,3 +1,6 @@
+Import-Module "./PythonBuilder.psm1" -Force -DisableNameChecking
+Import-Module "../../helpers/nix-helpers.psm1" -DisableNameChecking
+
 class NixPythonBuilder : PythonBuilder {
     [string] $Platform
 
@@ -8,6 +11,8 @@ class NixPythonBuilder : PythonBuilder {
         $this.Platform = $Platform  
     }
 
+    ### Artifacts
+
     [uri] GetSourceUri() {
         $_base = $this.GetBaseUri()
         $_version = $this.GetVersion()
@@ -15,34 +20,6 @@ class NixPythonBuilder : PythonBuilder {
         $uri = "${_base}/${_version}/Python-${_version}.tgz"
 
         return $uri
-    }
-
-    [void] Build() {
-        Write-Host "Download sources..."
-        $pythonSourcesPath = $this.DownloadSources()
-
-        Push-Location -Path $pythonSourcesPath
-            Write-Host "Configure..."
-            if ($this.Platform -match "macos") {
-                $this.ConfigureMacos()
-            }
-
-            elseif ($this.Platform -match "ubuntu") {
-                $this.ConfigureUbuntu()
-            }
-
-            else {
-                #TODO
-                exit 1
-            }
-
-            Write-Host "Make..."
-            $this.Make()
-        Pop-Location
-    }
-
-    [void] CreateSysconfigFile() {
-        ### TODO
     }
 
     [string] DownloadSources() {
@@ -58,6 +35,8 @@ class NixPythonBuilder : PythonBuilder {
 
         return Join-Path -Path $_tempFolderLocation -ChildPath "Python-${_version}"
     }
+
+    ### Build
 
     [void] ConfigureMacos() {
         $_pythonToolcacheLocation = $this.GetPythonVersionArchitectureLocation()
@@ -92,7 +71,33 @@ class NixPythonBuilder : PythonBuilder {
         }
     }
 
+    [void] Build() {
+        Write-Host "Download sources..."
+        $pythonSourcesPath = $this.DownloadSources()
+
+        Push-Location -Path $pythonSourcesPath
+            Write-Host "Configure..."
+            if ($this.Platform -match "macos") {
+                $this.ConfigureMacos()
+            } elseif ($this.Platform -match "ubuntu") {
+                $this.ConfigureUbuntu()
+            }
+
+            else {
+                exit 1
+            }
+
+            Write-Host "Make..."
+            $this.Make()
+        Pop-Location
+    }
+
+    ### Additional
     [void] SetConfigFlags([string] $flags, [string] $value) {
         $flags = "${value} ${flags}"
+    }
+
+    [void] CreateSysconfigFile() {
+        ### TODO
     }
 }

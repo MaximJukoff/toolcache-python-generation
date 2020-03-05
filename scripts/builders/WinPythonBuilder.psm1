@@ -1,3 +1,6 @@
+Import-Module "./PythonBuilder.psm1" -Force -DisableNameChecking
+Import-Module "../../helpers/win-helpers.psm1" -DisableNameChecking
+
 class WinPythonBuilder : PythonBuilder {
     [string] $Platform
 
@@ -8,6 +11,8 @@ class WinPythonBuilder : PythonBuilder {
     ) : base ($Version, $Architecture) {
         $this.Platform = $Platform  
     }
+
+    ### Artifacts
 
     [string] hidden GetPythonExtension() {
         $_version = $this.GetVersion()

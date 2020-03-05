@@ -51,17 +51,24 @@ class PythonBuilder {
         return $location
     }
 
-    [void] CreateToolStructureDump() {
-        ### TODO
-    }
+    ### Build
 
     [void] Make() {
-        $_artifactLocation = $this.GetArtifactLocation()
-        $buildOutputFile = "${_artifactLocation}/build_output.txt"
-        make | Tee-Object -FilePath $buildOutputFile
+        $outputFile = Join-Path -Path $this.ArtifactLocation -ChildPath "build_output.txt"
+        make | Tee-Object -FilePath $outputFile
         make install
     }
 
+    [void] CreateToolStructureDump() {
+        $outputFile = Join-Path -Path $this.GetPythonVersionArchitectureLocation() "tools_structure.txt"
+
+        $folderContent = Get-ChildItem -Path $this.ArtifactLocation -Recurse | Sort-Object | Select-Object -Property FullName, Length
+        $folderContent | ForEach-Object {
+            $relativePath = $_.FullName.Replace($ToolPath, "");
+            $fileSize = $_.Length
+            return "${relativePath} : ${fileSize} bytes"
+        } | Out-File -FilePath $outputFile
+    }
 }
 
 <#
