@@ -29,8 +29,7 @@ jobs:
       Compress-Archive @compress
     displayName: 'Create Archives'
 
-  - task: PublishBuildArtifacts@1
-    displayName: 'Publish Artifact: Python $(VERSION)'
+  - task: PublishPipelineArtifact@1
     inputs:
-      PathtoPublish: '$(Build.BinariesDirectory)'
-      ArtifactName: '$(ToolName)-$(ToolVersion)-$(Architecture)-$(Platform)'
+      targetPath: '$(Build.BinariesDirectory)/$(ToolName)-$(ToolVersion)-$(Architecture)-$(Platform).Zip' 
+      artifactName: '$(ToolName)-$(ToolVersion)-$(Architecture)-$(Platform)'

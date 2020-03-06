@@ -4,12 +4,10 @@ jobs:
     name: Azure Pipelines
     vmImage: 'vs2017-win2016'
   steps:    
-  - task: DownloadBuildArtifacts@0
-    displayName: 'Download Build Artifacts'
+  - task: DownloadPipelineArtifact@2
     inputs:
-      downloadType: specific
-      itemPattern: '*.Zip'
-      downloadPath: $(Build.BinariesDirectory)
+      source: 'current'
+      path: $(Build.BinariesDirectory)
 
   - task: GitHubRelease@1
     displayName: 'Create $(ToolVersion) GitHub release'
