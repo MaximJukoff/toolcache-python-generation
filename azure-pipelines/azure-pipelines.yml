@@ -145,11 +145,11 @@ stages:
 - stage: Publishing_Approval
   displayName: Publishing Approval
   dependsOn:
-  - Python_MacOS
-  - Python_Ubuntu_1604
-  - Python_Ubuntu_1804
-  - Python_x64_Windows
-  - Python_x86_Windows
+  - Test_Python_MacOS
+  - Test_Python_Ubuntu_1604
+  - Test_Python_Ubuntu_1804
+  - Test_Python_x64_Windows
+  - Test_Python_x86_Windows
   jobs:
   - deployment:
     environment: Toolcache Tools Generation - Publishing Approval

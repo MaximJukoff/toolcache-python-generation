@@ -3,8 +3,6 @@ jobs:
     pool: 
       name: Azure Pipelines
       vmImage: $(VmImage)
-    dependsOn: ${{ parameters.DependsOn }}
-    condition: succeeded()
 
     steps:
       # - task: DownloadBuildArtifacts@0
