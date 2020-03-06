@@ -142,8 +142,8 @@ stages:
     parameters:
       JobName: Test_Python_x86_Windows
 
-- stage: Publishing_Approval
-  displayName: Publishing Approval
+- stage: Publish_GitHub_Release
+  displayName: Publish GitHub release
   dependsOn:
   - Test_Python_MacOS
   - Test_Python_Ubuntu_1604
@@ -151,13 +151,7 @@ stages:
   - Test_Python_x64_Windows
   - Test_Python_x86_Windows
   jobs:
-  - deployment:
+  - deployment: Publishing_Approval
     environment: Toolcache Tools Generation - Publishing Approval
-
-- stage: Publish_GitHub_Release
-  displayName: Publish GitHub release
-  dependsOn: Publishing_Approval
-  variables:
-    ToolVersion: '$(VERSION)'
-  jobs:
+  
   - template: /azure-pipelines/create_release_job.yml
