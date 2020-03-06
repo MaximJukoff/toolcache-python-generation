@@ -1,0 +1,118 @@
+trigger: none
+pr: none
+
+stages:
+- stage: Python_MacOS
+  displayName: Python MacOS
+  dependsOn: []
+  variables:
+    VmImage: 'macOS-10.13'
+    ToolVersion: '$(VERSION)'
+    ToolName: python
+    Platform: macos-1013
+    Architecture: x64
+  jobs:
+  - template: ./azure-pipelines/build_job.yml
+    parameters:
+      JobName: Build_Python_MacOS
+
+  - template: ./azure-pipelines/test_job.yml
+    parameters:
+      JobName: Test_Python_MacOS
+      DependsOn: Build_Python_MacOS
+
+- stage: Python_Ubuntu_1604
+  displayName: Python Ubuntu 1604
+  dependsOn: []
+  variables:
+    VmImage: 'ubuntu-16.04'
+    ToolVersion: '$(VERSION)'
+    ToolName: python
+    Platform: ubuntu-1604
+    Architecture: x64
+  jobs:
+  - template: ./azure-pipelines/build_job.yml
+    parameters:
+      JobName: Build_Python_Ubuntu_1604
+
+  - template: ./azure-pipelines/test_job.yml
+    parameters:
+      JobName: Test_Python_Ubuntu_1604
+      DependsOn: Build_Python_Ubuntu_1604
+
+- stage: Python_Ubuntu_1804
+  displayName: Python Ubuntu 1804
+  dependsOn: []
+  variables:
+    VmImage: 'ubuntu-18.04'
+    ToolVersion: '$(VERSION)'
+    ToolName: python
+    Platform: ubuntu-1804
+    Architecture: x64
+  jobs:
+  - template: ./azure-pipelines/build_job.yml
+    parameters:
+      JobName: Build_Python_Ubuntu_1804
+
+  - template: ./azure-pipelines/test_job.yml
+    parameters:
+      JobName: Test_Python_Ubuntu_1804
+      DependsOn: Build_Python_Ubuntu_1804
+
+- stage: Python_x64_Windows
+  displayName: Python x64 Windows
+  dependsOn: []
+  variables:
+    VmImage: 'vs2017-win2016'
+    ToolVersion: '$(VERSION)'
+    ToolName: python
+    Platform: windows
+    Architecture: x64
+  jobs:
+  - template: ./azure-pipelines/build_job_windows.yml
+    parameters:
+      JobName: Build_Python_X64_Windows
+
+  - template: ./azure-pipelines/test_job.yml
+    parameters:
+      JobName: Test_Python_x64_Windows
+      DependsOn: Build_Python_X64_Windows
+
+- stage: Python_x86_Windows
+  displayName: Python x64 Windows
+  dependsOn: []
+  variables:
+    VmImage: 'vs2017-win2016'
+    ToolVersion: '$(VERSION)'
+    ToolName: python
+    Platform: windows
+    Architecture: x86
+  jobs:
+  - template: ./azure-pipelines/build_job_windows.yml
+    parameters:
+      JobName: Build_Python_x86_Windows
+
+  - template: ./azure-pipelines/test_job.yml
+    parameters:
+      JobName: Test_Python_x86_Windows
+      DependsOn: Build_Python_x86_Windows
+
+- stage: Publishing_Approval
+  displayName: Publishing Approval
+  dependsOn:
+  - Python_MacOS
+  - Python_Ubuntu_1604
+  - Python_Ubuntu_1804
+  - Python_x64_Windows
+  - Python_x86_Windows
+  jobs:
+  - deployment:
+    environment:  Toolcache Tools Generation - Publishing Approval
+
+- stage: Publish_GitHub_Release
+  displayName: Publish GitHub release
+  dependsOn: Publishing_Approval
+  variables:
+    ToolVersion: '$(VERSION)'
+  jobs:
+  - template: ./azure-pipelines/create_release_job.yml

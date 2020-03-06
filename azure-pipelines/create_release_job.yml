@@ -1,0 +1,17 @@
+jobs:
+- job: Create GitHub release and publish assets
+  pool:
+    name: Azure Pipelines
+    vmImage: 'vs2017-win2016'
+  steps:
+  - task: GitHubRelease@1
+    displayName: 'Create $(ToolVersion) GitHub release'
+    inputs:
+      gitHubConnection: 'github connection 2'
+      repositoryName: 'MaksimZhukov/toolcache-python-generation'
+      target: $(Build.SourceVersion)
+      tagSource: userSpecifiedTag
+      tag: '$(ToolVersion)-$(Build.BuildNumber)'
+      title: '$(ToolVersion)'
+      assets: |
+       $(Build.BinariesDirectory)/*
