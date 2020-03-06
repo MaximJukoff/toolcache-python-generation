@@ -33,4 +33,4 @@ jobs:
     displayName: 'Publish Artifact: Python $(VERSION)'
     inputs:
       PathtoPublish: '$(Build.BinariesDirectory)'
-      ArtifactName: '$(ToolName)-$(ToolVersion)-$(Architecture)-$(Platform).Zip'
+      ArtifactName: '$(ToolName)-$(ToolVersion)-$(Architecture)-$(Platform)'

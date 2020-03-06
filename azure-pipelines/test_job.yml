@@ -52,6 +52,7 @@ jobs:
     - task: DownloadBuildArtifacts@0
       displayName: 'Download Build Artifacts'
       inputs:
+        buildType: current
         downloadType: specific
         itemPattern: '*.Zip'
         downloadPath: $(Build.BinariesDirectory)
