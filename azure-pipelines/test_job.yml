@@ -48,6 +48,13 @@ jobs:
       #     TargetType: filePath
       #     filePath: 'python/tests/sources/psutil_install_test.sh'
       #   condition: ne(variables['Platform'], 'windows')
+    
+    - task: DownloadBuildArtifacts@0
+      displayName: 'Download Build Artifacts'
+      inputs:
+        downloadType: specific
+        itemPattern: '*.Zip'
+        downloadPath: $(Build.BinariesDirectory)
 
     - powershell: |
         ls $(Build.BinariesDirectory)
