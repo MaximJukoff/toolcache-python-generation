@@ -19,10 +19,10 @@ jobs:
     #     ArtifactName: '$(ToolName)-$(ToolVersion)-$(Architecture)-$(Platform)'
   
   - powershell: |
-      New-Item -Path '/$(ToolName)-$(ToolVersion)-$(Architecture)-$(Platform).txt' -ItemType File
-      Add-Content /$(ToolName)-$(ToolVersion)-$(Architecture)-$(Platform).txt "Hello world"
+      New-Item -Path '$(Build.BinariesDirectory)/$(ToolName)-$(ToolVersion)-$(Architecture)-$(Platform).txt' -ItemType File
+      Add-Content $(Build.BinariesDirectory)/$(ToolName)-$(ToolVersion)-$(Architecture)-$(Platform).txt "Hello world"
       $compress = @{
-        Path = "/$(ToolName)-$(ToolVersion)-$(Architecture)-$(Platform).txt"
+        Path = "$(Build.BinariesDirectory)/$(ToolName)-$(ToolVersion)-$(Architecture)-$(Platform).txt"
         CompressionLevel = "Fastest"
         DestinationPath = "$(Build.BinariesDirectory)/$(ToolName)-$(ToolVersion)-$(Architecture)-$(Platform).Zip"
       }

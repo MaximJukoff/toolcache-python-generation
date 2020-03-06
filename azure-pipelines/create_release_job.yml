@@ -14,4 +14,4 @@ jobs:
       tag: '$(ToolVersion)-$(Build.BuildNumber)'
       title: '$(ToolVersion)'
       assets: |
-       $(Build.BinariesDirectory)/*
+       $(Build.BinariesDirectory)/*.Zip
