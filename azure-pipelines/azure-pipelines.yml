@@ -79,7 +79,7 @@ stages:
       DependsOn: Build_Python_X64_Windows
 
 - stage: Python_x86_Windows
-  displayName: Python x64 Windows
+  displayName: Python x86 Windows
   dependsOn: []
   variables:
     VmImage: 'vs2017-win2016'

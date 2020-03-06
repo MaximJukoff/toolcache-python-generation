@@ -51,5 +51,5 @@ jobs:
 
     - powershell: |
         ls $(Build.BinariesDirectory)
-      displayName: 'Create files'
+      displayName: 'ls in BinariesDirectory'
         
