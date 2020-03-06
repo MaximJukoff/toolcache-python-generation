@@ -4,70 +4,39 @@ class PythonBuilder {
     [string] $HostedToolcacheLocation
     [string] $TempFolderLocation
     [string] $ArtifactLocation
+    [string] $ArtifactName 
 
-    PythonBuilder(
-        [version] $Version,
-        [string] $Architecture
-    ) {
-        $this.Version = $Version
-        $this.Architecture = $Architecture
+    PythonBuilder ([version] $version, [string] $architecture) {
+        $this.Version = $version
+        $this.Architecture = $architecture
 
         $this.HostedToolcacheLocation = $env:AGENT_TOOLSDIRECTORY
         $this.TempFolderLocation = $env:BUILD_STAGINGDIRECTORY
         $this.ArtifactLocation = $env:BUILD_BINARIESDIRECTORY
+
+        $this.ArtifactName = "tool.zip"
     }
 
     [uri] GetBaseUri() {
         return "https://www.python.org/ftp/python"
     }
 
-    [string] GetVersion() {
-        return $this.Version
+    [string] GetPythonToolcacheLocation() {
+        return "$($this.HostedToolcacheLocation)/Python/$($this.Version)/$($this.Architecture)"
     }
 
-    [string] GetArchitecture() {
-        return $this.Architecture
-    }
+    [void] PreparePythonToolcacheLocation() {
+        $_pythonBinariesLocation = $this.GetPythonToolcacheLocation()
 
-    [string] GetHostedToolcacheLocation() {
-        return $this.HostedToolcacheLocation
-    }
+        if (Test-Path $_pythonBinariesLocation) {
+            Write-Host "Purge $_pythonBinariesLocation folder..."
 
-    [string] GetTempFolderLocation() {
-        return $this.TempFolderLocation
-    }
+            Remove-Item $_pythonBinariesLocation -Recurse -Force
+        } else {
+            Write-Host "Create $_pythonBinariesLocation folder..."
 
-    [string] GetArtifactLocation() {
-        return $this.ArtifactLocation
-    }
-
-    [string] GetPythonVersionArchitectureLocation() {
-        $_version = $this.Version
-        $_architecture = $this.Architecture
-        $_hostedToolcacheLocation = $this.HostedToolcacheLocation
-
-        $location = "${_hostedToolcacheLocation}/Python/${_version}/${_architecture}"
-
-        return $location
-    }
-
-    ### Build
-
-    [void] Make() {
-        $outputFile = Join-Path -Path $this.ArtifactLocation -ChildPath "build_output.txt"
-        make | Tee-Object -FilePath $outputFile
-        make install
-    }
-
-    [void] CreateToolStructureDump() {
-        $outputFile = Join-Path -Path $this.GetPythonVersionArchitectureLocation() "tools_structure.txt"
-
-        $folderContent = Get-ChildItem -Path $this.ArtifactLocation -Recurse | Sort-Object | Select-Object -Property FullName, Length
-        $folderContent | ForEach-Object {
-            $relativePath = $_.FullName.Replace($ToolPath, "");
-            $fileSize = $_.Length
-            return "${relativePath} : ${fileSize} bytes"
-        } | Out-File -FilePath $outputFile
+            New-Item -ItemType Directory -Path $_pythonBinariesLocation 
+        }
     }
 }
 
@@ -78,14 +47,19 @@ Wrapper for class constructor to simplify importing PythonBuilder
 function Get-PythonBuilder {
     param (
         [version] $Version,
-        [string] $Platform,
-        [string] $Architecture
+        [string] $Architecture,
+        [string] $Platform
     )
-    
+
+    $Platform = $Platform.ToLower()  
     if ($Platform -match 'windows') {
-        $builder = [WinPythonBuilder]::New($Version, $Platform, $Architecture)
+        $builder = [WinPythonBuilder]::New($Platform, $Version, $Architecture)
+    } elseif ($Platform -match 'ubuntu') {
+        $builder = [UbuntuPythonBuilder]::New($Platform, $Version)
+    } elseif ($Platform -match 'macos') {
+        $builder = [macOSPythonBuilder]::New($Platform, $Version)
     } else {
-        $builder = [NixPythonBuilder]::New($Version, $Platform)
+        exit 1
     }
 
     return $builder
