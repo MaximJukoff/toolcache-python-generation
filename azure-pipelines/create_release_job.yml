@@ -9,6 +9,10 @@ jobs:
       source: 'current'
       path: $(Build.BinariesDirectory)
 
+  - powershell: |
+      ls $(Build.BinariesDirectory)
+    displayName: 'ls $(Build.BinariesDirectory)'
+
   - task: GitHubRelease@1
     displayName: 'Create $(ToolVersion) GitHub release'
     inputs:
@@ -19,4 +23,4 @@ jobs:
       tag: '$(ToolVersion)-$(Build.BuildNumber)'
       title: '$(ToolVersion)'
       assets: |
-       $(Build.BinariesDirectory)/*.Zip
+       $(Build.BinariesDirectory)/*/*.Zip
