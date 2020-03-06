@@ -1,5 +1,5 @@
 jobs:
-- job: 'Create GitHub release and publish assets'
+- job: 'Create_GitHub_release_and_publish_assets'
   pool:
     name: Azure Pipelines
     vmImage: 'vs2017-win2016'
