@@ -107,7 +107,7 @@ stages:
   - Python_x86_Windows
   jobs:
   - deployment:
-    environment:  Toolcache Tools Generation - Publishing Approval
+    environment: Toolcache Tools Generation - Publishing Approval
 
 - stage: Publish_GitHub_Release
   displayName: Publish GitHub release
