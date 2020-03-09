@@ -1,11 +1,14 @@
+using module "./builders/PythonBuilder.psm1"
+
 class WinPythonBuilder : PythonBuilder {
+    # Properties
     [string] $Platform
 
     WinPythonBuilder(
         [string] $platfrom,
         [version] $version,
         [string] $architecture
-    ) : Base($Version, $Architecture) {
+    ) : Base($version, $architecture) {
         $this.Platform = $platfrom
     }
 
@@ -18,29 +21,42 @@ class WinPythonBuilder : PythonBuilder {
 
     [string] hidden GetArchitectureExtension() {
         $_architecture = $this.Architecture
-        $archExtension = if ($_architecture -eq "x64") { "-amd64" } else { "" }
+        $architectureExtension = if ($_architecture -eq "x64") { "-amd64" } else { "" }
 
-        return $archExtension
+        return $architectureExtension
     }
 
     [uri] GetSourceUri() {
-        $_base = $this.GetBaseUri()
-        $_arch = $this.GetArchitectureExtension()
         $_version = $this.Version
-        $_extension = $this.GetPythonExtension()
+        $base = $this.GetBaseUri()
+        $architecture = $this.GetArchitectureExtension()
+        $extension = $this.GetPythonExtension()
 
-        $uri = "${_base}/${_version}/python-${_version}${_arch}${_extension}"
+        $uri = "${base}/${_version}/python-${_version}${architecture}${extension}"
 
         return $uri
     }
 
     [string] Download() {
-        $_sourceUri = $this.GetSourceUri()
         $_artifactLocation = $this.ArtifactLocation
+        $sourceUri = $this.GetSourceUri()
 
-        Write-Host "Sources URI: $_sourceUri"
-        $sourcesLocation = Download-File -Uri $_sourceUri -BinPathFolder $_artifactLocation
+        Write-Host "Sources URI: $sourceUri"
+        $sourcesLocation = Download-File -Uri $sourceUri -BinPathFolder $_artifactLocation
 
         return $sourcesLocation
+    }
+
+    [void] CreateInstallationScript() {
+        $installationScriptPath = "../installers/win_setup_template.ps1"
+        Copy-Item -Path $installationScriptPath -Destination "$($this.ArtifactLocation)/setup.ps1"
+    }
+
+    [void] Build() {
+        Write-Host "Download Python $($this.Version)[$($this.Architecture)] executable..."
+        $this.Download()
+
+        Write-Host "Create installation script..."
+        $this.CreateInstallationScript()
     }
 }
