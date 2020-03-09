@@ -1,30 +1,32 @@
+using module "./builders/NixPythonBuilder.psm1"
+
 class UbuntuPythonBuilder : NixPythonBuilder {
     UbuntuPythonBuilder(
         [string] $platform, 
         [version] $version
-    ) : Base($Platform, $Version) {
+    ) : Base($platform, $version) {
 
     }
 
     [void] Configure() {
         Write-Debug "./Configure Python $($this.Version)-$($this.Architecture) Ubuntu-$($this.PlatformVersion)"
-        $_pythonBinariesLocation = $this.GetPythonToolcacheLocation()
+        $pythonBinariesLocation = $this.GetPythonToolcacheLocation()
         
+        ### Prepare Ubuntu system environment by installing required packages
         $this.PrepareEnvironment()
 
         ### To build Python with SO we must pass full path to lib folder to the linker
-        $this.SetConfigFlags($env:LDFLAGS,"-Wl,--rpath=$_pythonBinariesLocation/lib")
+        $this.SetConfigFlags($env:LDFLAGS,"-Wl,--rpath=$pythonBinariesLocation/lib")
 
         ### CPython optimizations also not supported in Python versions lower than 3.5.3
         if (($this.Version -gt "3.0.0") -and ($this.Version -lt "3.5.3")) { 
-            ./configure --prefix=$_pythonBinariesLocation --enable-shared
+            ./configure --prefix=$pythonBinariesLocation --enable-shared
         } else {
-            ./configure --prefix=$_pythonBinariesLocation --enable-optimizations --enable-shared
+            ./configure --prefix=$pythonBinariesLocation --enable-optimizations --enable-shared
         }
     }
 
     [void] PrepareEnvironment() {
-        Write-Debug "PrepareEnvironment()"
         ### Compile with tkinter support
         if ($this.Version -gt "3.0.0") {
             sudo apt-get install -y --allow-downgrades `
