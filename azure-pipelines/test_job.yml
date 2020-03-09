@@ -5,55 +5,42 @@ jobs:
       vmImage: $(VmImage)
 
     steps:
-      # - task: DownloadBuildArtifacts@0
-      #   displayName: 'Download Python $(VERSION) artifact'
-      #   inputs:
-      #     buildType: current
-      #     downloadType: single
-      #     artifactName: $(ToolName)-$(ToolVersion)-$(Architecture)-$(Platform)
-      #     downloadPath: $(Build.BinariesDirectory)
-
-      # - task: PowerShell@2
-      #   displayName: Apply build artifact to the local machines
-      #   inputs:
-      #     TargetType: inline
-      #     script: 'npm install'
-      #     workingDirectory: '$(Build.BinariesDirectory)/$(ToolName)-$(ToolVersion)-$(Architecture)-$(Platform)'
-
-      # - task: UsePythonVersion@0
-      #   displayName: 'Use Python $(VERSION)'
-      #   inputs:
-      #     versionSpec: '$(ToolVersion)'
-      #     architecture: '$(Architecture)'
-
-      # - task: PowerShell@2
-      #   displayName: Python version
-      #   inputs:
-      #     TargetType: filePath
-      #     filePath: 'python/tests/sources/python_version.ps1'
-      #     arguments: '-Platform $(Platform) -ToolsDirectory $(Agent.ToolsDirectory)'
-
-      # - task: PowerShell@2
-      #   displayName: Run test script
-      #   inputs:
-      #     TargetType: filePath
-      #     filePath: 'python/tests/sources/run_test_script.ps1'
-      #     arguments: '-Version $(ToolVersion) -Architecture $(Architecture) -Platform $(Platform) -SourcesDirectory $(Build.SourcesDirectory)'
-
-      # - task: Bash@3
-      #   displayName: 'Test pip psutil installation'
-      #   inputs:
-      #     TargetType: filePath
-      #     filePath: 'python/tests/sources/psutil_install_test.sh'
-      #   condition: ne(variables['Platform'], 'windows')
-    
     - task: DownloadPipelineArtifact@2
       inputs:
         source: 'current'
         artifact: '$(ToolName)-$(ToolVersion)-$(Architecture)-$(Platform)'
         path: $(Build.BinariesDirectory)
 
-    - powershell: |
-        ls $(Build.BinariesDirectory)
-      displayName: 'ls in BinariesDirectory'
-        
+    - task: PowerShell@2
+      displayName: Apply build artifact to the local machines
+      inputs:
+        TargetType: inline
+        script: 'npm install'
+        workingDirectory: '$(Build.BinariesDirectory)/$(ToolName)-$(ToolVersion)-$(Architecture)-$(Platform)'
+
+    - task: UsePythonVersion@0
+      displayName: 'Use Python $(VERSION)'
+      inputs:
+        versionSpec: '$(ToolVersion)'
+        architecture: '$(Architecture)'
+
+    - task: PowerShell@2
+      displayName: Python version
+      inputs:
+        TargetType: filePath
+        filePath: 'python/tests/sources/python_version.ps1'
+        arguments: '-Platform $(Platform) -ToolsDirectory $(Agent.ToolsDirectory)'
+
+    - task: PowerShell@2
+      displayName: Run test script
+      inputs:
+        TargetType: filePath
+        filePath: 'python/tests/sources/run_test_script.ps1'
+        arguments: '-Version $(ToolVersion) -Architecture $(Architecture) -Platform $(Platform) -SourcesDirectory $(Build.SourcesDirectory)'
+    
+    - task: Bash@3
+      displayName: 'Test pip psutil installation'
+      inputs:
+        TargetType: filePath
+        filePath: 'python/tests/sources/psutil_install_test.sh'
+      condition: ne(variables['Platform'], 'windows')

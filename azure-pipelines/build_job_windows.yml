@@ -5,31 +5,15 @@ jobs:
     vmImage: $(VmImage)
 
   steps:
-    # - task: PowerShell@2
-    #   displayName: 'Build Python $(VERSION)'
-    #   inputs:
-    #     targetType: filePath
-    #     filePath: '/scripts/builders/win-prebuild.ps1'
-    #     arguments: '-Version $(ToolVersion) -Architecture $(Architecture) -DestinationPath $(Build.BinariesDirectory)'
-
-    # - task: PublishBuildArtifacts@1
-    #   displayName: 'Publish Artifact: Python $(VERSION)'
-    #   inputs:
-    #     PathtoPublish: '$(Build.BinariesDirectory)'
-    #     ArtifactName: '$(ToolName)-$(ToolVersion)-$(Architecture)-$(Platform)'
-  
-  - powershell: |
-      New-Item -Path '$(Build.BinariesDirectory)/$(ToolName)-$(ToolVersion)-$(Architecture)-$(Platform).txt' -ItemType File
-      Add-Content $(Build.BinariesDirectory)/$(ToolName)-$(ToolVersion)-$(Architecture)-$(Platform).txt "Hello world"
-      $compress = @{
-        Path = "$(Build.BinariesDirectory)/$(ToolName)-$(ToolVersion)-$(Architecture)-$(Platform).txt"
-        CompressionLevel = "Fastest"
-        DestinationPath = "$(Build.BinariesDirectory)/$(ToolName)-$(ToolVersion)-$(Architecture)-$(Platform).Zip"
-      }
-      Compress-Archive @compress
-    displayName: 'Create Archives'
+  - task: PowerShell@2
+    displayName: 'Build Python $(VERSION)'
+    inputs:
+      targetType: filePath
+      filePath: '/scripts/builders/win-prebuild.ps1'
+      arguments: '-Version $(ToolVersion) -Architecture $(Architecture) -DestinationPath $(Build.BinariesDirectory)'
 
   - task: PublishPipelineArtifact@1
+    displayName: 'Publish Artifact: Python $(VERSION)'
     inputs:
-      targetPath: '$(Build.BinariesDirectory)/$(ToolName)-$(ToolVersion)-$(Architecture)-$(Platform).Zip' 
+      targetPath: '$(Build.BinariesDirectory)' 
       artifactName: '$(ToolName)-$(ToolVersion)-$(Architecture)-$(Platform)'

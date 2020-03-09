@@ -1,13 +1,4 @@
-steps:    
-# - task: DownloadPipelineArtifact@2
-#   inputs:
-#     source: 'current'
-#     path: $(Build.BinariesDirectory)
-
-- powershell: |
-    ls $(Pipeline.Workspace)
-  displayName: 'ls $(Pipeline.Workspace)'
-
+steps:
 - task: GitHubRelease@1
   displayName: 'Create $(VERSION) GitHub release'
   inputs:
