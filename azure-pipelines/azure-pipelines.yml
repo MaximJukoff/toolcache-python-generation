@@ -151,7 +151,14 @@ stages:
   - Test_Python_x64_Windows
   - Test_Python_x86_Windows
   jobs:
-  - deployment: Publishing_Approval
+  - deployment: Create_GitHub_release_and_publish_assets
+    displayName: Create GitHub release and publish assets
+    pool:
+      name: Azure Pipelines
+      vmImage: 'vs2017-win2016'
     environment: Toolcache Tools Generation - Publishing Approval
-  
-  - template: /azure-pipelines/create_release_job.yml
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - template: /azure-pipelines/create_release_steps.yml

@@ -1,0 +1,17 @@
+steps:    
+- task: DownloadPipelineArtifact@2
+  inputs:
+    source: 'current'
+    path: $(Build.BinariesDirectory)
+
+- task: GitHubRelease@1
+  displayName: 'Create $(VERSION) GitHub release'
+  inputs:
+    gitHubConnection: 'github connection 2'
+    repositoryName: 'MaksimZhukov/toolcache-python-generation'
+    target: $(Build.SourceVersion)
+    tagSource: userSpecifiedTag
+    tag: '$(VERSION)-$(Build.BuildNumber)'
+    title: '$(VERSION)'
+    assets: |
+     $(Build.BinariesDirectory)/*/*.Zip
