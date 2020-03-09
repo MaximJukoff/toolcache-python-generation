@@ -1,8 +1,12 @@
 steps:    
-- task: DownloadPipelineArtifact@2
-  inputs:
-    source: 'current'
-    path: $(Build.BinariesDirectory)
+# - task: DownloadPipelineArtifact@2
+#   inputs:
+#     source: 'current'
+#     path: $(Build.BinariesDirectory)
+
+- powershell: |
+    ls $(Build.ArtifactStagingDirectory)
+  displayName: 'ls $(Build.ArtifactStagingDirectory)'
 
 - task: GitHubRelease@1
   displayName: 'Create $(VERSION) GitHub release'
@@ -14,4 +18,4 @@ steps:
     tag: '$(VERSION)-$(Build.BuildNumber)'
     title: '$(VERSION)'
     assets: |
-     $(Build.BinariesDirectory)/*/*.Zip
+     $(Build.ArtifactStagingDirectory)/*/*.Zip
