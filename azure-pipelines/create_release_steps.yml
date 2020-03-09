@@ -5,8 +5,8 @@ steps:
 #     path: $(Build.BinariesDirectory)
 
 - powershell: |
-    ls $(Build.ArtifactStagingDirectory)
-  displayName: 'ls $(Build.ArtifactStagingDirectory)'
+    ls $(Pipeline.Workspace)
+  displayName: 'ls $(Pipeline.Workspace)'
 
 - task: GitHubRelease@1
   displayName: 'Create $(VERSION) GitHub release'
@@ -18,4 +18,4 @@ steps:
     tag: '$(VERSION)-$(Build.BuildNumber)'
     title: '$(VERSION)'
     assets: |
-     $(Build.ArtifactStagingDirectory)/*/*.Zip
+     $(Pipeline.Workspace)/*/*.Zip
