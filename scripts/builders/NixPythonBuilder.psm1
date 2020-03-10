@@ -18,10 +18,9 @@ class NixPythonBuilder : PythonBuilder {
     }
 
     [uri] GetSourceUri() {
-        $_version = $this.Version
         $base = $this.GetBaseUri()
 
-        return "${base}/${_version}/Python-${_version}.tgz"
+        return "${base}/$($this.Version)/Python-$($this.Version).tgz"
     }
 
     [string] GetPythonBinary() {
@@ -31,11 +30,11 @@ class NixPythonBuilder : PythonBuilder {
     }
 
     [string] Download() {
-        $_sourceUri = $this.GetSourceUri()
+        $sourceUri = $this.GetSourceUri()
         $pythonSourceLocation = Join-Path -Path $this.ArtifactLocation -ChildPath "Python-$($this.Version).tgz"
 
-        Write-Host "Sources URI: $_sourceUri"
-        Download-Source -Uri $_sourceUri -OutFile $pythonSourceLocation -ExpandArchivePath $this.TempFolderLocation
+        Write-Host "Sources URI: $sourceUri"
+        Download-Source -Uri $sourceUri -OutFile $pythonSourceLocation -ExpandArchivePath $this.TempFolderLocation
         $expandedSourceLocation = Join-Path -Path $this.TempFolderLocation -ChildPath "Python-$($this.Version)"
 
         return $expandedSourceLocation

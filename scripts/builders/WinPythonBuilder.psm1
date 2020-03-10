@@ -13,36 +13,32 @@ class WinPythonBuilder : PythonBuilder {
     }
 
     [string] hidden GetPythonExtension() {
-        $_version = $this.Version
-        $extension = if ($_version -lt "3.5" -and $_version -ge "2.5") { ".msi" } else { ".exe" }
+        $extension = if ($this.Version -lt "3.5" -and $this.Version -ge "2.5") { ".msi" } else { ".exe" }
 
         return $extension
     }
 
     [string] hidden GetArchitectureExtension() {
-        $_architecture = $this.Architecture
-        $architectureExtension = if ($_architecture -eq "x64") { "-amd64" } else { "" }
+        $architectureExtension = if ($this.Architecture -eq "x64") { "-amd64" } else { "" }
 
         return $architectureExtension
     }
 
     [uri] GetSourceUri() {
-        $_version = $this.Version
         $base = $this.GetBaseUri()
         $architecture = $this.GetArchitectureExtension()
         $extension = $this.GetPythonExtension()
 
-        $uri = "${base}/${_version}/python-${_version}${architecture}${extension}"
+        $uri = "${base}/$($this.Version)/python-$($this.Version)${architecture}${extension}"
 
         return $uri
     }
 
     [string] Download() {
-        $_artifactLocation = $this.ArtifactLocation
         $sourceUri = $this.GetSourceUri()
 
         Write-Host "Sources URI: $sourceUri"
-        $sourcesLocation = Download-File -Uri $sourceUri -BinPathFolder $_artifactLocation
+        $sourcesLocation = Download-File -Uri $sourceUri -BinPathFolder $this.ArtifactLocation
 
         return $sourcesLocation
     }
