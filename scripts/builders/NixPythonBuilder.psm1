@@ -43,9 +43,9 @@ class NixPythonBuilder : PythonBuilder {
         return $expandedSourceLocation
     }
 
-    [void] ArchiveArtifact() {
+    [void] ArchiveArtifact([string] $pythonToolLocation) {
         $artifact = Join-Path -Path $this.ArtifactLocation -ChildPath $this.ArtifactName
-        Archive-ToolZip -PathToArchive $this.GetPythonToolcacheLocation() -ToolZipFile $artifact 
+        Archive-ToolZip -PathToArchive $pythonToolLocation -ToolZipFile $artifact 
     }
 
     [void] GetMissingModules([string] $buildOutputLocation) {
@@ -77,7 +77,7 @@ class NixPythonBuilder : PythonBuilder {
     }
 
     [void] CreateInstallationScript() {
-        $installationScriptPath = "../installers/nix_setup_template.sh"
+        $installationScriptPath = "./installers/nix_setup_template.sh"
         Copy-Item -Path $installationScriptPath -Destination "$($this.ArtifactLocation)/setup.sh"
     }
 
@@ -114,7 +114,7 @@ class NixPythonBuilder : PythonBuilder {
         $this.GetMissingModules($buildOutput)
 
         Write-Host "Archive generated aritfact..."
-        $this.ArchiveArtifact()
+        $this.ArchiveArtifact($this.GetPythonToolcacheLocation())
 
         Write-Host "Create installation script..."
         $this.CreateInstallationScript()
