@@ -32,13 +32,11 @@ class NixPythonBuilder : PythonBuilder {
 
     [string] Download() {
         $_sourceUri = $this.GetSourceUri()
-        $_tempFolderLocation = $this.TempFolderLocation
-        $_artifactLocation = $this.ArtifactLocation
-        $pythonSourceLocation = Join-Path -Path $_artifactLocation -ChildPath "Python-$($this.Version).tgz"
+        $pythonSourceLocation = Join-Path -Path $this.ArtifactLocation -ChildPath "Python-$($this.Version).tgz"
 
         Write-Host "Sources URI: $_sourceUri"
-        Download-Source -Uri $_sourceUri -OutFile $pythonSourceLocation -ExpandArchivePath $_tempFolderLocation
-        $expandedSourceLocation = Join-Path -Path $_tempFolderLocation -ChildPath "Python-$($this.Version)"
+        Download-Source -Uri $_sourceUri -OutFile $pythonSourceLocation -ExpandArchivePath $this.TempFolderLocation
+        $expandedSourceLocation = Join-Path -Path $this.TempFolderLocation -ChildPath "Python-$($this.Version)"
 
         return $expandedSourceLocation
     }
