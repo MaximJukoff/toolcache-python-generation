@@ -2,9 +2,10 @@ using module "./builders/NixPythonBuilder.psm1"
 
 class UbuntuPythonBuilder : NixPythonBuilder {
     UbuntuPythonBuilder(
+        [string] $configLocation,
         [string] $platform, 
         [version] $version
-    ) : Base($platform, $version) {
+    ) : Base($configLocation, $platform, $version) {
 
     }
 

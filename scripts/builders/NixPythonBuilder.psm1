@@ -6,9 +6,10 @@ class NixPythonBuilder : PythonBuilder {
     [string] $PlatformVersion
 
     NixPythonBuilder(
+        [string] $configLocation,
         [string] $platform,
         [version] $version
-    ) : Base($version, "x64") {
+    ) : Base($configLocation, $version, "x64") {
         $this.Platform = $platform.Split("-")[0]
         $this.PlatformVersion = $platform.Split("-")[1]
     }
@@ -41,7 +42,7 @@ class NixPythonBuilder : PythonBuilder {
     }
 
     [void] ArchiveArtifact([string] $pythonToolLocation) {
-        $artifact = Join-Path -Path $this.ArtifactLocation -ChildPath $this.ArtifactName
+        $artifact = Join-Path -Path $this.ArtifactLocation -ChildPath $this.Config.OutputArtifactName
         Archive-ToolZip -PathToArchive $pythonToolLocation -ToolZipFile $artifact 
     }
 
@@ -66,7 +67,7 @@ class NixPythonBuilder : PythonBuilder {
     [void] GetSysconfigDump() {
         $pythonBinary = $this.GetPythonBinary()
         $pythonBinaryPath = Join-Path -Path $this.GetPythonToolcacheLocation() -ChildPath "bin/$pythonBinary"
-        $testSourcePath = "../tests/sources/python_config.py"
+        $testSourcePath = $this.Config.PythonConfigPath
         $sysconfigDump = New-Item -Path $this.ArtifactLocation -Name "sysconfig.txt" -ItemType File
 
         Write-Debug "Invoke $pythonBinaryPath"
@@ -74,7 +75,7 @@ class NixPythonBuilder : PythonBuilder {
     }
 
     [void] CreateInstallationScript() {
-        $installationScriptPath = "./installers/nix_setup_template.sh"
+        $installationScriptPath = $this.Config.NixInstallationScriptTemplatePath
         Copy-Item -Path $installationScriptPath -Destination "$($this.ArtifactLocation)/setup.sh"
     }
 
