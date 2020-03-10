@@ -2,6 +2,7 @@ using module "./builders/WinPythonBuilder.psm1"
 using module "./builders/NixPythonBuilder.psm1"
 using module "./builders/UbuntuPythonBuilder.psm1"
 using module "./builders/macOSPythonBuilder.psm1"
+using module "./builders/PythonBuilder.psm1"
 
 param(
     [Parameter (Mandatory=$true)]
@@ -28,13 +29,15 @@ function Get-PythonBuilder {
         [string] $Platform
     )
 
+    $ConfigLocation = "./config.json"
+
     $Platform = $Platform.ToLower()  
     if ($Platform -match 'windows') {
-        $builder = [WinPythonBuilder]::New($Platform, $Version, $Architecture)
+        $builder = [WinPythonBuilder]::New($ConfigLocation, $Platform, $Version, $Architecture)
     } elseif ($Platform -match 'ubuntu') {
-        $builder = [UbuntuPythonBuilder]::New($Platform, $Version)
+        $builder = [UbuntuPythonBuilder]::New($ConfigLocation, $Platform, $Version)
     } elseif ($Platform -match 'macos') {
-        $builder = [macOSPythonBuilder]::New($Platform, $Version)
+        $builder = [macOSPythonBuilder]::New($ConfigLocation, $Platform, $Version)
     } else {
         Write-Host "##vso[task.logissue type=error;] Invalid platform: $Platform"
         exit 1

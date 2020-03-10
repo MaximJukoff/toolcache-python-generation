@@ -5,10 +5,11 @@ class WinPythonBuilder : PythonBuilder {
     [string] $Platform
 
     WinPythonBuilder(
+        [string] $configLocation,
         [string] $platfrom,
         [version] $version,
         [string] $architecture
-    ) : Base($version, $architecture) {
+    ) : Base($configLocation, $version, $architecture) {
         $this.Platform = $platfrom
     }
 
@@ -44,7 +45,7 @@ class WinPythonBuilder : PythonBuilder {
     }
 
     [void] CreateInstallationScript() {
-        $installationScriptPath = "./installers/win_setup_template.ps1"
+        $installationScriptPath = $this.Config.WinInstallationScriptTemplatePath
         Copy-Item -Path $installationScriptPath -Destination "$($this.ArtifactLocation)/setup.ps1"
     }
 
