@@ -3,147 +3,96 @@ pr: none
 
 stages:
 - stage: Build_Python_MacOS
-  displayName: Build Python MacOS
   dependsOn: []
   variables:
     VmImage: 'macOS-10.13'
-    ToolVersion: '$(VERSION)'
-    ToolName: python
     Platform: macos-1013
     Architecture: x64
   jobs:
   - template: /azure-pipelines/build_job.yml
-    parameters:
-      JobName: Build_Python_MacOS
 
 - stage: Test_Python_MacOS
-  displayName: Test Python MacOS
   dependsOn: Build_Python_MacOS
   variables:
     VmImage: 'macOS-10.13'
-    ToolVersion: '$(VERSION)'
-    ToolName: python
     Platform: macos-1013
     Architecture: x64
   jobs:
   - template: /azure-pipelines/test_job.yml
-    parameters:
-      JobName: Test_Python_MacOS
 
 - stage: Build_Python_Ubuntu_1604
-  displayName: Build Python Ubuntu 1604
   dependsOn: []
   variables:
     VmImage: 'ubuntu-16.04'
-    ToolVersion: '$(VERSION)'
-    ToolName: python
     Platform: ubuntu-1604
     Architecture: x64
   jobs:
   - template: /azure-pipelines/build_job.yml
-    parameters:
-      JobName: Build_Python_Ubuntu_1604
 
 - stage: Test_Python_Ubuntu_1604
-  displayName: Test Python Ubuntu 1604
   dependsOn: Build_Python_Ubuntu_1604
   variables:
     VmImage: 'ubuntu-16.04'
-    ToolVersion: '$(VERSION)'
-    ToolName: python
     Platform: ubuntu-1604
     Architecture: x64
   jobs:
   - template: /azure-pipelines/test_job.yml
-    parameters:
-      JobName: Test_Python_Ubuntu_1604
 
 - stage: Build_Python_Ubuntu_1804
-  displayName: Build Python Ubuntu 1804
   dependsOn: []
   variables:
     VmImage: 'ubuntu-18.04'
-    ToolVersion: '$(VERSION)'
-    ToolName: python
     Platform: ubuntu-1804
     Architecture: x64
   jobs:
   - template: /azure-pipelines/build_job.yml
-    parameters:
-      JobName: Build_Python_Ubuntu_1804
 
 - stage: Test_Python_Ubuntu_1804
-  displayName: Test Python Ubuntu 1804
   dependsOn: Build_Python_Ubuntu_1804
   variables:
     VmImage: 'ubuntu-18.04'
-    ToolVersion: '$(VERSION)'
-    ToolName: python
     Platform: ubuntu-1804
     Architecture: x64
   jobs:
   - template: /azure-pipelines/test_job.yml
-    parameters:
-      JobName: Test_Python_Ubuntu_1804
 
 - stage: Build_Python_X64_Windows
-  displayName: Build Python x64 Windows
   dependsOn: []
   variables:
     VmImage: 'vs2017-win2016'
-    ToolVersion: '$(VERSION)'
-    ToolName: python
     Platform: windows
     Architecture: x64
   jobs:
   - template: /azure-pipelines/build_job_windows.yml
-    parameters:
-      JobName: Build_Python_X64_Windows
 
 - stage: Test_Python_x64_Windows
-  displayName: Test Python x64 Windows
   dependsOn: Build_Python_X64_Windows
   variables:
     VmImage: 'vs2017-win2016'
-    ToolVersion: '$(VERSION)'
-    ToolName: python
     Platform: windows
     Architecture: x64
   jobs:
   - template: /azure-pipelines/test_job.yml
-    parameters:
-      JobName: Test_Python_x64_Windows
 
 - stage: Build_Python_x86_Windows
-  displayName: Build Python x86 Windows
   dependsOn: []
   variables:
     VmImage: 'vs2017-win2016'
-    ToolVersion: '$(VERSION)'
-    ToolName: python
     Platform: windows
     Architecture: x86
   jobs:
   - template: /azure-pipelines/build_job_windows.yml
-    parameters:
-      JobName: Build_Python_x86_Windows
 
 - stage: Test_Python_x86_Windows
-  displayName: Test Python x86 Windows
   dependsOn: Build_Python_x86_Windows
   variables:
     VmImage: 'vs2017-win2016'
-    ToolVersion: '$(VERSION)'
-    ToolName: python
     Platform: windows
     Architecture: x86
   jobs:
   - template: /azure-pipelines/test_job.yml
-    parameters:
-      JobName: Test_Python_x86_Windows
 
 - stage: Publish_GitHub_Release
-  displayName: Publish GitHub release
   dependsOn:
   - Test_Python_MacOS
   - Test_Python_Ubuntu_1604
@@ -152,7 +101,6 @@ stages:
   - Test_Python_x86_Windows
   jobs:
   - deployment: Create_GitHub_release_and_publish_assets
-    displayName: Create GitHub release and publish assets
     pool:
       name: Azure Pipelines
       vmImage: 'vs2017-win2016'
