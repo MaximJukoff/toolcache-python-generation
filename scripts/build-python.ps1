@@ -3,12 +3,11 @@ using module "./builders/NixPythonBuilder.psm1"
 using module "./builders/macOSPythonBuilder.psm1"
 
 param(
-    [Parameter (Mandatory=$true)] [ValidateNotNullOrEmpty]
+    [Parameter (Mandatory=$true)]
     [version] $Version,
-    [Parameter (Mandatory=$true)] [ValidateNotNullOrEmpty]
-    [string] $Platform,
-    [Parameter (Mandatory=$true)] [ValidateNotNullOrEmpty]
-    [string] $Architecture
+    [string] $Architecture = "x64",
+    [Parameter (Mandatory=$true)]
+    [string] $Platform
 )
 
 $ErrorActionPreference = "Stop"

@@ -48,7 +48,7 @@ class WinPythonBuilder : PythonBuilder {
     }
 
     [void] CreateInstallationScript() {
-        $installationScriptPath = "../installers/win_setup_template.ps1"
+        $installationScriptPath = "./installers/win_setup_template.ps1"
         Copy-Item -Path $installationScriptPath -Destination "$($this.ArtifactLocation)/setup.ps1"
     }
 
