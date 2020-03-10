@@ -63,7 +63,7 @@ stages:
     Platform: windows
     Architecture: x64
   jobs:
-  - template: /azure-pipelines/build_job_windows.yml
+  - template: /azure-pipelines/build_job.yml
 
 - stage: Test_Python_x64_Windows
   dependsOn: Build_Python_X64_Windows
@@ -81,7 +81,7 @@ stages:
     Platform: windows
     Architecture: x86
   jobs:
-  - template: /azure-pipelines/build_job_windows.yml
+  - template: /azure-pipelines/build_job.yml
 
 - stage: Test_Python_x86_Windows
   dependsOn: Build_Python_x86_Windows
