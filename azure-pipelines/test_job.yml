@@ -28,19 +28,19 @@ jobs:
       displayName: Python version
       inputs:
         TargetType: filePath
-        filePath: 'python/tests/sources/python_version.ps1'
+        filePath: './tests/sources/python_version.ps1'
         arguments: '-Platform $(Platform) -ToolsDirectory $(Agent.ToolsDirectory)'
 
     - task: PowerShell@2
       displayName: Run test script
       inputs:
         TargetType: filePath
-        filePath: 'python/tests/sources/run_test_script.ps1'
+        filePath: './tests/sources/run_test_script.ps1'
         arguments: '-Version $(VERSION) -Architecture $(Architecture) -Platform $(Platform) -SourcesDirectory $(Build.SourcesDirectory)'
     
     - task: Bash@3
       displayName: 'Test pip psutil installation'
       inputs:
         TargetType: filePath
-        filePath: 'python/tests/sources/psutil_install_test.sh'
+        filePath: './tests/sources/psutil_install_test.sh'
       condition: ne(variables['Platform'], 'windows')

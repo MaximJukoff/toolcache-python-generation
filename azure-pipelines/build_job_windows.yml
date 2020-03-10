@@ -8,7 +8,7 @@ jobs:
     displayName: 'Build Python $(VERSION)'
     inputs:
       targetType: filePath
-      filePath: '/scripts/builders/win-prebuild.ps1'
+      filePath: './scripts/builders/win-prebuild.ps1'
       arguments: '-Version $(VERSION) -Architecture $(Architecture) -DestinationPath $(Build.BinariesDirectory)'
 
   - task: PublishPipelineArtifact@1
