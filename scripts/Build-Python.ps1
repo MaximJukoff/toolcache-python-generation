@@ -1,5 +1,6 @@
 using module "./builders/WinPythonBuilder.psm1"
 using module "./builders/NixPythonBuilder.psm1"
+using module "./builders/UbuntuPythonBuilder.psm1"
 using module "./builders/macOSPythonBuilder.psm1"
 
 param(
@@ -35,6 +36,7 @@ function Get-PythonBuilder {
     } elseif ($Platform -match 'macos') {
         $builder = [macOSPythonBuilder]::New($Platform, $Version)
     } else {
+        Write-Host "##vso[task.logissue type=error;] Invalid platform: $Platform"
         exit 1
     }
 
