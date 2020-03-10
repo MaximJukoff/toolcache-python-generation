@@ -69,7 +69,8 @@ class UbuntuPythonBuilder : NixPythonBuilder {
             libreadline-dev `
             libgdbm-dev
 
-            if ($this.PlatformVersion -eq "1804") {
+            if ($this.PlatformVersion -ne "1604") {
+                ### On Ubuntu-1804, libgdbm-compat-dev has older modules that are no longer in libgdbm-dev
                 sudo apt install -y libgdbm-compat-dev
             }
         }
