@@ -4,7 +4,6 @@ class NixPythonBuilder : PythonBuilder {
     # Properties
     [string] $Platform
     [string] $PlatformVersion
-    [string] $BuildOutputLocation
 
     NixPythonBuilder(
         [string] $platform,
@@ -12,7 +11,6 @@ class NixPythonBuilder : PythonBuilder {
     ) : Base($version, "x64") {
         $this.Platform = $platform.Split("-")[0]
         $this.PlatformVersion = $platform.Split("-")[1]
-        $this.BuildOutputLocation = Join-Path -Path $this.ArtifactLocation -ChildPath "build_output.txt"
     }
 
     [void] SetConfigFlags([string] $flags, [string] $value) {
@@ -50,12 +48,12 @@ class NixPythonBuilder : PythonBuilder {
         Archive-ToolZip -PathToArchive $this.GetPythonToolcacheLocation() -ToolZipFile $artifact 
     }
 
-    [void] GetMissingModules() {
+    [void] GetMissingModules([string] $buildOutputLocation) {
         $searchStringStart = "The necessary bits to build these optional modules were not found:"
         $searchStringEnd = "To find the necessary bits, look in setup.py"
         $pattern = "$searchStringStart(.*?)$searchStringEnd"
     
-        $buildContent = Get-Content -Path $this.BuildOutputLocation
+        $buildContent = Get-Content -Path $buildOutputLocation
         $splitBuiltOutput = $buildContent -split "\n";
 
         $missingModulesRecordsLocation = New-Item -Path $this.ArtifactLocation -Name "missing_modules.txt" -ItemType File
@@ -83,10 +81,15 @@ class NixPythonBuilder : PythonBuilder {
         Copy-Item -Path $installationScriptPath -Destination "$($this.ArtifactLocation)/setup.sh"
     }
 
-    [void] Make() {
+    [string] Make() {
         Write-Debug "make Python $($this.Version)-$($this.Architecture) $($this.Platform)-$($this.PlatformVersion)"
-        make | Tee-Object -FilePath $this.BuildOutputLocation
+
+        $buildOutputLocation = Join-Path -Path $this.ArtifactLocation -ChildPath "build_output.txt"
+
+        make | Tee-Object -FilePath $buildOutputLocation
         make install
+
+        return $buildOutputLocation
     }
 
     [void] Build() {
@@ -101,14 +104,14 @@ class NixPythonBuilder : PythonBuilder {
             $this.Configure()
 
             Write-Host "Make for $($this.Platform)-$($this.PlatformVersion)..."
-            $this.Make()
+            $buildOutput = $this.Make()
         Pop-Location
 
         Write-Host "Create sysconfig file..."
         $this.GetSysconfigDump()
 
         Write-Host "Search for missing modules..."
-        $this.GetMissingModules()
+        $this.GetMissingModules($buildOutput)
 
         Write-Host "Archive generated aritfact..."
         $this.ArchiveArtifact()
