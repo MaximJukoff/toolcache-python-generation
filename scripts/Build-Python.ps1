@@ -2,7 +2,6 @@ using module "./builders/WinPythonBuilder.psm1"
 using module "./builders/NixPythonBuilder.psm1"
 using module "./builders/UbuntuPythonBuilder.psm1"
 using module "./builders/macOSPythonBuilder.psm1"
-using module "./builders/PythonBuilder.psm1"
 
 param(
     [Parameter (Mandatory=$true)]
