@@ -1,0 +1,19 @@
+jobs:
+- job: ${{ parameters.JobName }}
+  pool:
+    name: Azure Pipelines
+    vmImage: $(VmImage)
+
+  steps:
+  - task: PowerShell@2
+    displayName: 'Build Python $(VERSION)'
+    inputs:
+      targetType: filePath
+      filePath: '/scripts/builders/win-prebuild.ps1'
+      arguments: '-Version $(ToolVersion) -Architecture $(Architecture) -DestinationPath $(Build.BinariesDirectory)'
+
+  - task: PublishPipelineArtifact@1
+    displayName: 'Publish Artifact: Python $(VERSION)'
+    inputs:
+      targetPath: '$(Build.BinariesDirectory)' 
+      artifactName: '$(ToolName)-$(ToolVersion)-$(Architecture)-$(Platform)'
