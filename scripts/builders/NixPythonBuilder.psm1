@@ -98,11 +98,11 @@ class NixPythonBuilder : PythonBuilder {
         $sourcesLocation = $this.Download()
 
         Push-Location -Path $sourcesLocation
-            Write-Host "Configure for $($this.Platform)-$($this.PlatformVersion)..."
-            $this.Configure()
+        Write-Host "Configure for $($this.Platform)-$($this.PlatformVersion)..."
+        $this.Configure()
 
-            Write-Host "Make for $($this.Platform)-$($this.PlatformVersion)..."
-            $buildOutput = $this.Make()
+        Write-Host "Make for $($this.Platform)-$($this.PlatformVersion)..."
+        $buildOutput = $this.Make()
         Pop-Location
 
         Write-Host "Create sysconfig file..."
