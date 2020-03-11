@@ -13,13 +13,13 @@ class WinPythonBuilder : PythonBuilder {
         $this.InstallationScriptName = "setup.ps1"
     }
 
-    [string] hidden GetPythonExtension() {
+    [string] GetPythonExtension() {
         $extension = if ($this.Version -lt "3.5" -and $this.Version -ge "2.5") { ".msi" } else { ".exe" }
 
         return $extension
     }
 
-    [string] hidden GetArchitectureExtension() {
+    [string] GetArchitectureExtension() {
         $architectureExtension = if ($this.Architecture -eq "x64") { "-amd64" } else { "" }
 
         return $architectureExtension
