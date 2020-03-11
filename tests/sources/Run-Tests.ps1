@@ -45,5 +45,14 @@ Describe "Python toolcache tests" {
             InvokePythonCode -Command "python ./check_tkinter.py" | Should Be 0
         }
     }
+
+    It "Validate Pyinstaller" {
+        # Pyinstaller 3.5 does not support Python 3.8.0. Check issue https://github.com/pyinstaller/pyinstaller/issues/4311
+        if ($Version -lt "3.8.0") {
+            Invoke-Expression "pip install pyinstaller"
+            InvokePythonCode -Command "pyinstaller --onefile ./main.py" | Should Be 0
+            Invoke-Expression "./dist/main" | Should Be 0
+        }
+    }
     
 }
