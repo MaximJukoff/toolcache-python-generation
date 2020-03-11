@@ -16,7 +16,7 @@ class UbuntuPythonBuilder : NixPythonBuilder {
         $this.PrepareEnvironment()
 
         ### To build Python with SO we must pass full path to lib folder to the linker
-        $this.SetConfigFlags($env:LDFLAGS,"-Wl,--rpath=$pythonBinariesLocation/lib")
+        Append-EnvironmentVariable -variableName "LDFLAGS", -value "-Wl,--rpath=$pythonBinariesLocation/lib"
 
         ### CPython optimizations also not supported in Python versions lower than 3.5.3
         if (($this.Version -gt "3.0.0") -and ($this.Version -lt "3.5.3")) { 
