@@ -3,12 +3,14 @@ using module "./builders/PythonBuilder.psm1"
 class WinPythonBuilder : PythonBuilder {
     # Properties
     [string] $InstallationTemplateName
+    [string] $InstallationScriptName
 
     WinPythonBuilder(
         [version] $version,
         [string] $architecture
     ) : Base($version, $architecture) {
         $this.InstallationTemplateName = "win_setup_template.ps1"
+        $this.InstallationScriptName = "setup.ps1"
     }
 
     [string] hidden GetPythonExtension() {
@@ -44,7 +46,7 @@ class WinPythonBuilder : PythonBuilder {
 
     [void] CreateInstallationScript() {
         $installationTemplateLocation = Join-Path -Path $this.InstallationTemplatesLocation -ChildPath $this.InstallationTemplateName
-        Copy-Item -Path $installationTemplateLocation -Destination "$($this.ArtifactLocation)/setup.ps1"
+        Copy-Item -Path $installationTemplateLocation -Destination "$($this.ArtifactLocation)/$($this.InstallationScriptName)"
     }
 
     [void] Build() {

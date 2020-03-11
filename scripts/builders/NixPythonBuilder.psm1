@@ -5,6 +5,7 @@ class NixPythonBuilder : PythonBuilder {
     [string] $Platform
     [string] $PlatformVersion
     [string] $InstallationTemplateName
+    [string] $InstallationScriptName
     [string] $PythonConfigScriptLocation
     [string] $OutputArtifactName
 
@@ -16,6 +17,7 @@ class NixPythonBuilder : PythonBuilder {
         $this.PlatformVersion = $platform.Split("-")[1]
 
         $this.InstallationTemplateName = "nix_setup_template.sh"
+        $this.InstallationScriptName = "setup.sh"
         $this.PythonConfigScriptLocation = "../tests/sources/python_config.py"
 
         $this.OutputArtifactName = "tool.zip"
@@ -73,7 +75,7 @@ class NixPythonBuilder : PythonBuilder {
 
     [void] GetSysconfigDump() {
         $pythonBinary = $this.GetPythonBinary()
-        $pythonBinaryPath = Join-Path -Path $this.GetPythonToolcacheLocation() -ChildPath "bin/$pythonBinary"
+        $pythonBinaryPath = Join-Path -Path $this.GetFullPythonToolcacheLocation() -ChildPath "bin/$pythonBinary"
         $testSourcePath = $this.PythonConfigScriptLocation
         $sysconfigDump = New-Item -Path $this.ArtifactLocation -Name "sysconfig.txt" -ItemType File
 
@@ -82,8 +84,10 @@ class NixPythonBuilder : PythonBuilder {
     }
 
     [void] CreateInstallationScript() {
-        $installationTemplateLocation = Join-Path -Path $this.InstallationTemplatesLocation -ChildPath $this.InstallationTemplateName
-        Copy-Item -Path $installationTemplateLocation -Destination "$($this.ArtifactLocation)/setup.sh"
+        $installationScriptPath = Join-Path -Path $this.ArtifactLocation -ChildPath $this.InstallationScriptName
+        $templateLocation = Join-Path -Path $this.InstallationTemplatesLocation -ChildPath $this.InstallationTemplateName
+        $fullPythonToolcacheLocation = $this.GetPythonToolcacheLocation()
+        New-SetupFile -ShPath $installationScriptPath -TemplatePath $templateLocation -Version $this.Version -ToolCachePath $fullPythonToolcacheLocation
     }
 
     [string] Make() {
@@ -119,7 +123,7 @@ class NixPythonBuilder : PythonBuilder {
         $this.GetMissingModules($buildOutput)
 
         Write-Host "Archive generated artifact..."
-        $this.ArchiveArtifact($this.GetPythonToolcacheLocation())
+        $this.ArchiveArtifact($this.GetFullPythonToolcacheLocation())
 
         Write-Host "Create installation script..."
         $this.CreateInstallationScript()

@@ -22,11 +22,15 @@ class PythonBuilder {
     }
 
     [string] GetPythonToolcacheLocation() {
+        return "$($this.HostedToolcacheLocation)/Python"
+    }
+
+    [string] GetFullPythonToolcacheLocation() {
         return "$($this.HostedToolcacheLocation)/Python/$($this.Version)/$($this.Architecture)"
     }
 
     [void] PreparePythonToolcacheLocation() {
-        $_pythonBinariesLocation = $this.GetPythonToolcacheLocation()
+        $_pythonBinariesLocation = $this.GetFullPythonToolcacheLocation()
 
         if (Test-Path $_pythonBinariesLocation) {
             Write-Host "Purge $_pythonBinariesLocation folder..."
