@@ -24,23 +24,39 @@ jobs:
         versionSpec: '$(VERSION)'
         architecture: '$(Architecture)'
 
-    - task: PowerShell@2
-      displayName: Python version
-      inputs:
-        TargetType: filePath
-        filePath: './tests/sources/python_version.ps1'
-        arguments: '-Platform $(Platform) -ToolsDirectory $(Agent.ToolsDirectory)'
+    # - task: PowerShell@2
+    #   displayName: Python version
+    #   inputs:
+    #     TargetType: filePath
+    #     filePath: './tests/sources/python_version.ps1'
+    #     arguments: '-Platform $(Platform) -ToolsDirectory $(Agent.ToolsDirectory)'
 
-    - task: PowerShell@2
-      displayName: Run test script
-      inputs:
-        TargetType: filePath
-        filePath: './tests/sources/run_test_script.ps1'
-        arguments: '-Version $(VERSION) -Architecture $(Architecture) -Platform $(Platform) -SourcesDirectory $(Build.SourcesDirectory)'
+    # - task: PowerShell@2
+    #   displayName: Run test script
+    #   inputs:
+    #     TargetType: filePath
+    #     filePath: './tests/sources/run_test_script.ps1'
+    #     arguments: '-Version $(VERSION) -Architecture $(Architecture) -Platform $(Platform) -SourcesDirectory $(Build.SourcesDirectory)'
     
-    - task: Bash@3
-      displayName: 'Test pip psutil installation'
+    # - task: Bash@3
+    #   displayName: 'Test pip psutil installation'
+    #   inputs:
+    #     TargetType: filePath
+    #     filePath: './tests/sources/psutil_install_test.sh'
+    #   condition: ne(variables['Platform'], 'windows')
+
+    - pwsh: |
+        Install-Module Pester -Force -Scope CurrentUser
+        Set-Location "tests/sources"
+        Import-Module Pester
+        Invoke-Pester -Script @{Path="./Run-Tests.ps1"; Parameters=@{Platform="$(Platform)"; ToolsDirectory="$(Agent.ToolsDirectory)"}} -OutputFile "test_results.xml" -OutputFormat NUnitXml
+      displayName: Run tests
+
+    - task: PublishTestResults@2
       inputs:
-        TargetType: filePath
-        filePath: './tests/sources/psutil_install_test.sh'
-      condition: ne(variables['Platform'], 'windows')
+        testResultsFiles: '*.xml'
+        testResultsFormat: NUnit
+        searchFolder: "tests/sources"
+        failTaskOnFailedTests: true
+      displayName: Publish test results
+      condition: always()
