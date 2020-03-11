@@ -26,7 +26,8 @@ class PythonBuilder {
     }
 
     [string] GetFullPythonToolcacheLocation() {
-        return "$($this.HostedToolcacheLocation)/Python/$($this.Version)/$($this.Architecture)"
+        $pythonToolcacheLocation = $this.GetPythonToolcacheLocation()
+        return "$pythonToolcacheLocation/$($this.Version)/$($this.Architecture)"
     }
 
     [void] PreparePythonToolcacheLocation() {
