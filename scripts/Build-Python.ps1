@@ -31,11 +31,11 @@ function Get-PythonBuilder {
 
     $Platform = $Platform.ToLower()  
     if ($Platform -match 'windows') {
-        $builder = [WinPythonBuilder]::New($ConfigLocation, $Platform, $Version, $Architecture)
+        $builder = [WinPythonBuilder]::New($Version, $Architecture)
     } elseif ($Platform -match 'ubuntu') {
-        $builder = [UbuntuPythonBuilder]::New($ConfigLocation, $Platform, $Version)
+        $builder = [UbuntuPythonBuilder]::New($Platform, $Version)
     } elseif ($Platform -match 'macos') {
-        $builder = [macOSPythonBuilder]::New($ConfigLocation, $Platform, $Version)
+        $builder = [macOSPythonBuilder]::New($Platform, $Version)
     } else {
         Write-Host "##vso[task.logissue type=error;] Invalid platform: $Platform"
         exit 1

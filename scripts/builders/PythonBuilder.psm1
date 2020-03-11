@@ -5,24 +5,20 @@ class PythonBuilder {
     [string] $HostedToolcacheLocation
     [string] $TempFolderLocation
     [string] $ArtifactLocation
-    [object] $Config
+    [string] $InstallationTemplatesLocation
 
-    PythonBuilder ([string] $configLocation, [version] $version, [string] $architecture) {
-        $this.Config = Get-Content $configLocation -Raw | ConvertFrom-Json
+    PythonBuilder ([version] $version, [string] $architecture) {
         $this.Version = $version
         $this.Architecture = $architecture
 
         $this.HostedToolcacheLocation = $env:AGENT_TOOLSDIRECTORY
         $this.TempFolderLocation = $env:BUILD_STAGINGDIRECTORY
         $this.ArtifactLocation = $env:BUILD_BINARIESDIRECTORY
+        $this.InstallationTemplatesLocation = "./installers/"
     }
 
     [uri] GetBaseUri() {
         return "https://www.python.org/ftp/python"
-    }
-
-    [string] GetArtifactName() {
-        return $this.Config.OutputArtifactName
     }
 
     [string] GetPythonToolcacheLocation() {

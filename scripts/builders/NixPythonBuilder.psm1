@@ -4,14 +4,21 @@ class NixPythonBuilder : PythonBuilder {
     # Properties
     [string] $Platform
     [string] $PlatformVersion
+    [string] $InstallationTemplateName
+    [string] $PythonConfigScriptLocation
+    [string] $OutputArtifactName
 
     NixPythonBuilder(
-        [string] $configLocation,
         [string] $platform,
         [version] $version
-    ) : Base($configLocation, $version, "x64") {
+    ) : Base($version, "x64") {
         $this.Platform = $platform.Split("-")[0]
         $this.PlatformVersion = $platform.Split("-")[1]
+
+        $this.InstallationTemplateName = "nix_setup_template.sh"
+        $this.PythonConfigScriptLocation = "../tests/sources/python_config.py"
+
+        $this.OutputArtifactName = "tool.zip"
     }
 
     [void] SetConfigFlags([string] $flags, [string] $value) {
@@ -42,7 +49,7 @@ class NixPythonBuilder : PythonBuilder {
     }
 
     [void] ArchiveArtifact([string] $pythonToolLocation) {
-        $artifact = Join-Path -Path $this.ArtifactLocation -ChildPath $this.Config.OutputArtifactName
+        $artifact = Join-Path -Path $this.ArtifactLocation -ChildPath $this.OutputArtifactName
         Archive-ToolZip -PathToArchive $pythonToolLocation -ToolZipFile $artifact 
     }
 
@@ -67,7 +74,7 @@ class NixPythonBuilder : PythonBuilder {
     [void] GetSysconfigDump() {
         $pythonBinary = $this.GetPythonBinary()
         $pythonBinaryPath = Join-Path -Path $this.GetPythonToolcacheLocation() -ChildPath "bin/$pythonBinary"
-        $testSourcePath = $this.Config.PythonConfigPath
+        $testSourcePath = $this.PythonConfigScriptLocation
         $sysconfigDump = New-Item -Path $this.ArtifactLocation -Name "sysconfig.txt" -ItemType File
 
         Write-Debug "Invoke $pythonBinaryPath"
@@ -75,8 +82,8 @@ class NixPythonBuilder : PythonBuilder {
     }
 
     [void] CreateInstallationScript() {
-        $installationScriptPath = $this.Config.NixInstallationScriptTemplatePath
-        Copy-Item -Path $installationScriptPath -Destination "$($this.ArtifactLocation)/setup.sh"
+        $installationTemplateLocation = Join-Path -Path $this.InstallationTemplatesLocation -ChildPath $this.InstallationTemplateName
+        Copy-Item -Path $installationTemplateLocation -Destination "$($this.ArtifactLocation)/setup.sh"
     }
 
     [string] Make() {

@@ -2,10 +2,9 @@ using module "./builders/NixPythonBuilder.psm1"
 
 class UbuntuPythonBuilder : NixPythonBuilder {
     UbuntuPythonBuilder(
-        [string] $configLocation,
         [string] $platform, 
         [version] $version
-    ) : Base($configLocation, $platform, $version) {
+    ) : Base($platform, $version) {
 
     }
 
@@ -56,6 +55,7 @@ class UbuntuPythonBuilder : NixPythonBuilder {
                 libssl-dev=1.0.2g-1ubuntu4.15 `
                 zlib1g-dev
             } else {
+                Write-Host "Python 3.4 is not supported on Ubuntu older that 16.04"
                 exit 1
             }
         } else {

@@ -1,6 +1,0 @@
-{
-    "OutputArtifactName": "tool.zip",
-    "NixInstallationScriptTemplatePath": "./installers/nix_setup_template.sh",
-    "WinInstallationScriptTemplatePath": "./installers/win_setup_template.ps1",
-    "PythonConfigPath": "../tests/sources/python_config.py"
-}
