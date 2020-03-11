@@ -10,7 +10,7 @@ class UbuntuPythonBuilder : NixPythonBuilder {
 
     [void] Configure() {
         Write-Debug "Configure Python $($this.Version)-$($this.Architecture) Ubuntu-$($this.PlatformVersion)"
-        $pythonBinariesLocation = $this.GetPythonToolcacheLocation()
+        $pythonBinariesLocation = $this.GetFullPythonToolcacheLocation()
         
         ### Prepare Ubuntu system environment by installing required packages
         $this.PrepareEnvironment()
