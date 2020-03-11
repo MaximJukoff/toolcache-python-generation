@@ -58,7 +58,8 @@ Describe "Python toolcache tests" {
 
     It "Validate psutil" {
         if ($Platform -notmatch "windows") {
-            Invoke-Expression "bash ./tests/sources/psutil_install_test.sh" | Should -Be 0
+            Invoke-Expression "bash ./tests/sources/psutil_install_test.sh" 
+            $LASTEXITCODE | Should -Be 0
         }
     }
 }
