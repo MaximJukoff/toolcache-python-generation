@@ -11,7 +11,7 @@ function InvokePythonCode {
       $Command
     )
   
-    Invoke-Expression -Command $Command
+    $null = Invoke-Expression -Command $Command
     return $LASTEXITCODE
 }
 
