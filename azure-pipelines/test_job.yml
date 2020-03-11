@@ -47,16 +47,16 @@ jobs:
 
     - pwsh: |
         Install-Module Pester -Force -Scope CurrentUser
-        Set-Location "tests/sources"
+        Set-Location 'tests/sources'
         Import-Module Pester
-        Invoke-Pester -Script @{Path="./Run-Tests.ps1"; Parameters=@{Platform="$(Platform)"; ToolsDirectory="$(Agent.ToolsDirectory)"}} -OutputFile "test_results.xml" -OutputFormat NUnitXml
+        Invoke-Pester -Script @{Path='./Run-Tests.ps1'; Parameters=@{Version='$(VERSION)'; Platform='$(Platform)'; ToolsDirectory='$(Agent.ToolsDirectory)'}} -OutputFile 'test_results.xml' -OutputFormat NUnitXml
       displayName: Run tests
 
     - task: PublishTestResults@2
       inputs:
         testResultsFiles: '*.xml'
         testResultsFormat: NUnit
-        searchFolder: "tests/sources"
+        searchFolder: 'tests/sources'
         failTaskOnFailedTests: true
       displayName: Publish test results
       condition: always()

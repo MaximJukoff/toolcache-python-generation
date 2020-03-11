@@ -1,4 +1,6 @@
 Param (
+    [Version] [Parameter (Mandatory = $true)] [ValidateNotNullOrEmpty()]
+    $Version,
     [String] [Parameter (Mandatory = $true)] [ValidateNotNullOrEmpty()]
     $Platform,
     [String] [Parameter (Mandatory = $true)] [ValidateNotNullOrEmpty()]
@@ -32,10 +34,16 @@ Describe "Python toolcache tests" {
         InvokePythonCode -Command "python ./main.py" | Should Be 0
     }
 
-    Context "Ubuntu" {
-
-        It "Validate modules" {
+    It "Validate modules"  {
+        if (($Platform -eq 'ubuntu-1604') -or ($Platform -eq 'ubuntu-1804')) {
             InvokePythonCode -Command "python ./python_modules.py" | Should Be 0
         }
     }
+
+    It "Check Tkinter" {
+        if ($Platform -notmatch "windows") {
+            InvokePythonCode -Command "python ./check_tkinter.py" | Should Be 0
+        }
+    }
+    
 }
