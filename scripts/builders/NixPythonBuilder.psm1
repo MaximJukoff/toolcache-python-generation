@@ -111,7 +111,7 @@ class NixPythonBuilder : PythonBuilder {
         Write-Host "Search for missing modules..."
         $this.GetMissingModules($buildOutput)
 
-        Write-Host "Archive generated aritfact..."
+        Write-Host "Archive generated artifact..."
         $this.ArchiveArtifact($this.GetPythonToolcacheLocation())
 
         Write-Host "Create installation script..."
