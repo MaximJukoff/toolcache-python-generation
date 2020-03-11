@@ -30,6 +30,12 @@ Describe "Python toolcache tests" {
 
     It "Run sample code" {
         InvokePythonCode -Command "python ./main.py" | Should Be 0
+    }
 
+    Context "Ubuntu" {
+
+        It "Validate modules" {
+            InvokePythonCode -Command "python ./python_modules.py" | Should Be 0
+        }
     }
 }
