@@ -46,3 +46,13 @@ Function Download-Source {
     # Unpack archive.tgz
     tar -C $expandArchivePath -$TarCommands $outFile | Out-Null
 }
+
+Function Append-EnvironmentVariable {
+    param(
+        [string] $variableName, 
+        [string] $value
+    )
+
+    $previousValue = (Get-Item env:$variableName).Value
+    Set-Item env:$variableName "${value} ${previousValue}"
+  }

@@ -23,10 +23,6 @@ class NixPythonBuilder : PythonBuilder {
         $this.OutputArtifactName = "tool.zip"
     }
 
-    [void] SetConfigFlags([string] $flags, [string] $value) {
-        $flags = "${value} ${flags}"
-    }
-
     [uri] GetSourceUri() {
         $base = $this.GetBaseUri()
 

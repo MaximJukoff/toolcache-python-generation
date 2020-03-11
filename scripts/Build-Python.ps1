@@ -27,8 +27,6 @@ function Get-PythonBuilder {
         [string] $Platform
     )
 
-    $ConfigLocation = "./config.json"
-
     $Platform = $Platform.ToLower()  
     if ($Platform -match 'windows') {
         $builder = [WinPythonBuilder]::New($Version, $Architecture)
