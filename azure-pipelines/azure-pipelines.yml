@@ -92,21 +92,21 @@ stages:
   jobs:
   - template: /azure-pipelines/test_job.yml
 
-- stage: Publish_GitHub_Release
-  dependsOn:
-  - Test_Python_MacOS
-  - Test_Python_Ubuntu_1604
-  - Test_Python_Ubuntu_1804
-  - Test_Python_x64_Windows
-  - Test_Python_x86_Windows
-  jobs:
-  - deployment: Create_GitHub_release_and_publish_assets
-    pool:
-      name: Azure Pipelines
-      vmImage: 'vs2017-win2016'
-    environment: Toolcache Tools Generation - Publishing Approval
-    strategy:
-      runOnce:
-        deploy:
-          steps:
-          - template: /azure-pipelines/create_release_steps.yml
+# - stage: Publish_GitHub_Release
+#   dependsOn:
+#   - Test_Python_MacOS
+#   - Test_Python_Ubuntu_1604
+#   - Test_Python_Ubuntu_1804
+#   - Test_Python_x64_Windows
+#   - Test_Python_x86_Windows
+#   jobs:
+#   - deployment: Create_GitHub_release_and_publish_assets
+#     pool:
+#       name: Azure Pipelines
+#       vmImage: 'vs2017-win2016'
+#     environment: Toolcache Tools Generation - Publishing Approval
+#     strategy:
+#       runOnce:
+#         deploy:
+#           steps:
+#           - template: /azure-pipelines/create_release_steps.yml
