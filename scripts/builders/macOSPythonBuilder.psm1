@@ -2,11 +2,9 @@ using module "./builders/NixPythonBuilder.psm1"
 
 class macOSPythonBuilder : NixPythonBuilder {
     macOSPythonBuilder(
-        [string] $configLocation,
         [string] $platform,
         [version] $version
-    ) : Base($configLocation, $platform, $version) {
-
+    ) : Base($platform, $version) {
     }
 
     [void] Configure() {
