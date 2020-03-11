@@ -5,7 +5,17 @@ Param (
     $ToolsDirectory
 )
 
-Describe "Toolcache tests" {
+function InvokePythonCode {
+    Param (
+      [String] [Parameter (Mandatory = $true)] [ValidateNotNullOrEmpty()]
+      $Command
+    )
+  
+    Invoke-Expression -Command $Command
+    return $LASTEXITCODE
+}
+
+Describe "Python toolcache tests" {
 
     It "Python version" {
         & python --version
@@ -16,5 +26,10 @@ Describe "Toolcache tests" {
             $expectedPath = $expectedPath.Replace("C:/", "/c/")
         }
         $whichPython.startsWith($expectedPath) | Should -BeTrue
-    }   
+    }
+
+    It "Run sample code" {
+        InvokePythonCode -Command "python ./main.py" | Should Be 0
+
+    }
 }
