@@ -20,14 +20,14 @@ stages:
   jobs:
   - template: /azure-pipelines/test_job.yml
 
-- stage: Build_Python_Ubuntu_1604
-  dependsOn: []
-  variables:
-    VmImage: 'ubuntu-16.04'
-    Platform: ubuntu-1604
-    Architecture: x64
-  jobs:
-  - template: /azure-pipelines/build_job.yml
+# - stage: Build_Python_Ubuntu_1604
+#   dependsOn: []
+#   variables:
+#     VmImage: 'ubuntu-16.04'
+#     Platform: ubuntu-1604
+#     Architecture: x64
+#   jobs:
+#   - template: /azure-pipelines/build_job.yml
 
 - stage: Test_Python_Ubuntu_1604
   dependsOn: Build_Python_Ubuntu_1604
@@ -38,14 +38,14 @@ stages:
   jobs:
   - template: /azure-pipelines/test_job.yml
 
-- stage: Build_Python_Ubuntu_1804
-  dependsOn: []
-  variables:
-    VmImage: 'ubuntu-18.04'
-    Platform: ubuntu-1804
-    Architecture: x64
-  jobs:
-  - template: /azure-pipelines/build_job.yml
+# - stage: Build_Python_Ubuntu_1804
+#   dependsOn: []
+#   variables:
+#     VmImage: 'ubuntu-18.04'
+#     Platform: ubuntu-1804
+#     Architecture: x64
+#   jobs:
+#   - template: /azure-pipelines/build_job.yml
 
 - stage: Test_Python_Ubuntu_1804
   dependsOn: Build_Python_Ubuntu_1804
@@ -56,14 +56,14 @@ stages:
   jobs:
   - template: /azure-pipelines/test_job.yml
 
-- stage: Build_Python_X64_Windows
-  dependsOn: []
-  variables:
-    VmImage: 'vs2017-win2016'
-    Platform: windows
-    Architecture: x64
-  jobs:
-  - template: /azure-pipelines/build_job_windows.yml
+# - stage: Build_Python_X64_Windows
+#   dependsOn: []
+#   variables:
+#     VmImage: 'vs2017-win2016'
+#     Platform: windows
+#     Architecture: x64
+#   jobs:
+#   - template: /azure-pipelines/build_job_windows.yml
 
 - stage: Test_Python_x64_Windows
   dependsOn: Build_Python_X64_Windows
@@ -74,14 +74,14 @@ stages:
   jobs:
   - template: /azure-pipelines/test_job.yml
 
-- stage: Build_Python_x86_Windows
-  dependsOn: []
-  variables:
-    VmImage: 'vs2017-win2016'
-    Platform: windows
-    Architecture: x86
-  jobs:
-  - template: /azure-pipelines/build_job_windows.yml
+# - stage: Build_Python_x86_Windows
+#   dependsOn: []
+#   variables:
+#     VmImage: 'vs2017-win2016'
+#     Platform: windows
+#     Architecture: x86
+#   jobs:
+#   - template: /azure-pipelines/build_job_windows.yml
 
 - stage: Test_Python_x86_Windows
   dependsOn: Build_Python_x86_Windows
