@@ -13,14 +13,14 @@ Describe "Python toolcache tests" {
 
     It "Python version" {
         Get-CommandExitCode "python --version" | Should -Be 0
-        $pythonLocation = (Get-Command "which python").Path
+        $pythonLocation = (Get-Command "python").Path
         $pythonLocation | Should -Not -BeNullOrEmpty
         Write-Host "--------- $pythonLocation -----------"
         $expectedPath = "$ToolsDirectory/Python"
         Write-Host "********* $expectedPath *************"
-        # if ($Platform -eq 'windows') {
-        #     $expectedPath = $expectedPath.Replace("C:/", "/c/")
-        # }
+        if ($Platform -eq 'windows') {
+            $expectedPath = $expectedPath.Replace("/", "\")
+        }
         $pythonLocation.startsWith($expectedPath) | Should -BeTrue
     }
 
