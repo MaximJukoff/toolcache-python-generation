@@ -25,22 +25,28 @@ jobs:
         architecture: '$(Architecture)'
 
     - task: PowerShell@2
-      displayName: Python version
+      displayName: Run tests
       inputs:
-        TargetType: filePath
-        filePath: './tests/sources/python_version.ps1'
-        arguments: '-Platform $(Platform) -ToolsDirectory $(Agent.ToolsDirectory)'
+        TargetType: inline
+        script: |
+          Install-Module Pester -Force -Scope CurrentUser
+          Import-Module Pester
+          $pesterParams = @{
+            Path="./Python.Tests.ps1";
+            Parameters=@{
+              Version="$(VERSION)";
+              Platform="$(Platform)";
+              ToolsDirectory="$(Agent.ToolsDirectory)";
+            }
+          }
+          Invoke-Pester -Script $pesterParams -OutputFile "test_results.xml" -OutputFormat NUnitXml
+        workingDirectory: '$(Build.SourcesDirectory)/tests/sources'
 
-    - task: PowerShell@2
-      displayName: Run test script
+    - task: PublishTestResults@2
+      displayName: Publish test results
       inputs:
-        TargetType: filePath
-        filePath: './tests/sources/run_test_script.ps1'
-        arguments: '-Version $(VERSION) -Architecture $(Architecture) -Platform $(Platform) -SourcesDirectory $(Build.SourcesDirectory)'
-    
-    - task: Bash@3
-      displayName: 'Test pip psutil installation'
-      inputs:
-        TargetType: filePath
-        filePath: './tests/sources/psutil_install_test.sh'
-      condition: ne(variables['Platform'], 'windows')
+        testResultsFiles: '*.xml'
+        testResultsFormat: NUnit
+        searchFolder: 'tests/sources'
+        failTaskOnFailedTests: true
+      condition: always()

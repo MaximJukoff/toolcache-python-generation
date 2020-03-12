@@ -21,3 +21,22 @@ function New-ToolStructureDump {
         return "${relativePath} : ${fileSize} bytes"
     } | Out-File -FilePath $outputFile
 }
+
+function Get-CommandExitCode {
+    Param (
+      [String] [Parameter (Mandatory = $true)] [ValidateNotNullOrEmpty()]
+      $Command
+    )
+  
+    $null = Invoke-Expression -Command $Command
+    return $LASTEXITCODE
+}
+
+function IsNixPlatform {
+    param(
+        [String] [Parameter (Mandatory = $true)] [ValidateNotNullOrEmpty()]
+        $Platform
+    )
+
+    return ($Platform -match "macos") -or ($Platform -match "ubuntu")
+}
