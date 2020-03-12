@@ -43,10 +43,10 @@ jobs:
         workingDirectory: '$(Build.SourcesDirectory)/tests/sources'
 
     - task: PublishTestResults@2
+      displayName: Publish test results
       inputs:
         testResultsFiles: '*.xml'
         testResultsFormat: NUnit
         searchFolder: 'tests/sources'
         failTaskOnFailedTests: true
-      displayName: Publish test results
       condition: always()
