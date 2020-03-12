@@ -13,7 +13,7 @@ Describe "Python toolcache tests" {
 
     It "Python version" {
         Get-CommandExitCode "python --version" | Should -Be 0
-        $pythonLocation = (Get-Command "python").Path
+        $pythonLocation = (Get-Command "which python").Path
         $pythonLocation | Should -Not -BeNullOrEmpty
         Write-Host "--------- $pythonLocation -----------"
         $expectedPath = "$ToolsDirectory/Python"
