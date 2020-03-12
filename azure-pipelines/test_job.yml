@@ -5,18 +5,18 @@ jobs:
       vmImage: $(VmImage)
 
     steps:
-    - task: DownloadPipelineArtifact@2
-      inputs:
-        source: 'current'
-        artifact: 'python-$(VERSION)-$(Architecture)-$(Platform)'
-        path: $(Build.BinariesDirectory)
+    # - task: DownloadPipelineArtifact@2
+    #   inputs:
+    #     source: 'current'
+    #     artifact: 'python-$(VERSION)-$(Architecture)-$(Platform)'
+    #     path: $(Build.BinariesDirectory)
 
-    - task: PowerShell@2
-      displayName: Apply build artifact to the local machines
-      inputs:
-        TargetType: inline
-        script: 'npm install'
-        workingDirectory: '$(Build.BinariesDirectory)/python-$(VERSION)-$(Architecture)-$(Platform)'
+    # - task: PowerShell@2
+    #   displayName: Apply build artifact to the local machines
+    #   inputs:
+    #     TargetType: inline
+    #     script: 'npm install'
+    #     workingDirectory: '$(Build.BinariesDirectory)/python-$(VERSION)-$(Architecture)-$(Platform)'
 
     - task: UsePythonVersion@0
       displayName: 'Use Python $(VERSION)'
