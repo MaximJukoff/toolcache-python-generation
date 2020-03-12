@@ -31,16 +31,16 @@ class PythonBuilder {
     }
 
     [void] PreparePythonToolcacheLocation() {
-        $_pythonBinariesLocation = $this.GetFullPythonToolcacheLocation()
+        $pythonBinariesLocation = $this.GetFullPythonToolcacheLocation()
 
-        if (Test-Path $_pythonBinariesLocation) {
-            Write-Host "Purge $_pythonBinariesLocation folder..."
+        if (Test-Path $pythonBinariesLocation) {
+            Write-Host "Purge $pythonBinariesLocation folder..."
 
-            Remove-Item $_pythonBinariesLocation -Recurse -Force
+            Remove-Item $pythonBinariesLocation -Recurse -Force
         } else {
-            Write-Host "Create $_pythonBinariesLocation folder..."
+            Write-Host "Create $pythonBinariesLocation folder..."
 
-            New-Item -ItemType Directory -Path $_pythonBinariesLocation 
+            New-Item -ItemType Directory -Path $pythonBinariesLocation 
         }
     }
 }

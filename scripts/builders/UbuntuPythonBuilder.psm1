@@ -5,7 +5,7 @@ class UbuntuPythonBuilder : NixPythonBuilder {
         [string] $platform, 
         [version] $version
     ) : Base($platform, $version) {
-
+        
     }
 
     [void] Configure() {
