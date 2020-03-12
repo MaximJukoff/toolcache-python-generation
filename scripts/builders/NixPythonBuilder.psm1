@@ -83,6 +83,7 @@ class NixPythonBuilder : PythonBuilder {
         $installationScriptPath = Join-Path -Path $this.ArtifactLocation -ChildPath $this.InstallationScriptName
         $templateLocation = Join-Path -Path $this.InstallationTemplatesLocation -ChildPath $this.InstallationTemplateName
         $fullPythonToolcacheLocation = $this.GetPythonToolcacheLocation()
+        
         New-SetupFile -ShPath $installationScriptPath -TemplatePath $templateLocation -Version $this.Version -ToolCachePath $fullPythonToolcacheLocation
     }
 
