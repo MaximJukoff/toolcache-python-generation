@@ -38,5 +38,5 @@ function IsNixPlatform {
         $Platform
     )
 
-    return ($Platform -match "macos") || ($Platform -match "ubuntu")
+    return ($Platform -match "macos") -or ($Platform -match "ubuntu")
 }
