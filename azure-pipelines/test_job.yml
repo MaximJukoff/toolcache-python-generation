@@ -27,9 +27,12 @@ jobs:
     - task: PowerShell@2
       displayName: Run tests
       inputs:
-        TargetType: filePath
-        filePath: './tests/Run-Tests.ps1'
-        arguments: '-Version $(VERSION) -Platform $(Platform) -ToolsDirectory $(Agent.ToolsDirectory)'
+        TargetType: inline
+        script: |
+          Install-Module Pester -Force -Scope CurrentUser
+          Import-Module Pester
+          Invoke-Pester -Script @{Path="./Python.Tests.ps1"; Parameters=@{Version="$(VERSION)"; Platform="$(Platform)"; ToolsDirectory="$(Agent.ToolsDirectory)"}} -OutputFile "test_results.xml" -OutputFormat NUnitXml
+        workingDirectory: '$(Build.SourcesDirectory)/tests/sources'
 
     - task: PublishTestResults@2
       inputs:
