@@ -35,7 +35,7 @@ Describe "Python toolcache tests" {
     }
 
     It "Validate modules"  {
-        if (($Platform -eq 'ubuntu-1604') -or ($Platform -eq 'ubuntu-1804')) {
+        if ($Platform -notmatch "windows") {
             InvokePythonCode -Command "python ./python_modules.py" | Should -Be 0
         }
     }
