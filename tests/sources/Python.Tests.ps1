@@ -7,15 +7,7 @@ param (
     $ToolsDirectory
 )
 
-function Get-CommandExitCode {
-    Param (
-      [String] [Parameter (Mandatory = $true)] [ValidateNotNullOrEmpty()]
-      $Command
-    )
-  
-    $null = Invoke-Expression -Command $Command
-    return $LASTEXITCODE
-}
+Import-Module "../../helpers/common-helpers.psm1"
 
 Describe "Python toolcache tests" {
 
@@ -25,7 +17,7 @@ Describe "Python toolcache tests" {
         $pythonLocation | Should -Not -BeNullOrEmpty
         $expectedPath = "$ToolsDirectory/Python"
         if ($Platform -eq 'windows') {
-            $expectedPath = $expectedPath.Replace("C:/", "/c/")
+            $expectedPath = $expectedPath.Replace("/", "\")
         }
         $pythonLocation.startsWith($expectedPath) | Should -BeTrue
     }
