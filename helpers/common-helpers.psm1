@@ -21,3 +21,13 @@ function New-ToolStructureDump {
         return "${relativePath} : ${fileSize} bytes"
     } | Out-File -FilePath $outputFile
 }
+
+function Get-CommandExitCode {
+    Param (
+      [String] [Parameter (Mandatory = $true)] [ValidateNotNullOrEmpty()]
+      $Command
+    )
+  
+    $null = Invoke-Expression -Command $Command
+    return $LASTEXITCODE
+}

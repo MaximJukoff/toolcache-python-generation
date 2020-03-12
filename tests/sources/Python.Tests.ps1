@@ -7,7 +7,7 @@ param (
     $ToolsDirectory
 )
 
-Import-Module "./Test.Helpers.psm1" -DisableNameChecking
+Import-Module "../../helpers/common-helpers.psm1" -DisableNameChecking
 
 Describe "Python toolcache tests" {
 
@@ -15,9 +15,7 @@ Describe "Python toolcache tests" {
         Get-CommandExitCode "python --version" | Should -Be 0
         $pythonLocation = (Get-Command "python").Path
         $pythonLocation | Should -Not -BeNullOrEmpty
-        Write-Host "--------- $pythonLocation -----------"
         $expectedPath = "$ToolsDirectory/Python"
-        Write-Host "********* $expectedPath *************"
         if ($Platform -eq 'windows') {
             $expectedPath = $expectedPath.Replace("/", "\")
         }
