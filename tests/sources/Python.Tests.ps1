@@ -8,7 +8,7 @@ param (
 )
 
 Import-Module "../../helpers/common-helpers.psm1" -DisableNameChecking
-
+Write-Host "---------- $Platform ------------"
 Describe "Python toolcache tests" {
 
     It "Python version" {

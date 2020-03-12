@@ -23,11 +23,20 @@ function New-ToolStructureDump {
 }
 
 function Get-CommandExitCode {
-    Param (
+    param(
       [String] [Parameter (Mandatory = $true)] [ValidateNotNullOrEmpty()]
       $Command
     )
   
     $null = Invoke-Expression -Command $Command
     return $LASTEXITCODE
+}
+
+function IsNixPlatform {
+    param(
+        [String] [Parameter (Mandatory = $true)] [ValidateNotNullOrEmpty()]
+        $Platform
+    )
+
+    return $true
 }
