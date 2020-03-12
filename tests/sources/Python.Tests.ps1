@@ -15,10 +15,7 @@ Describe "Python toolcache tests" {
         Get-CommandExitCode "python --version" | Should -Be 0
         $pythonLocation = (Get-Command "python").Path
         $pythonLocation | Should -Not -BeNullOrEmpty
-        $expectedPath = "$ToolsDirectory/Python"
-        if ($Platform -eq 'windows') {
-            $expectedPath = $expectedPath.Replace("/", "\")
-        }
+        $expectedPath = Join-Path -Path $ToolsDirectory -ChildPath "Python"
         $pythonLocation.startsWith($expectedPath) | Should -BeTrue
     }
 
