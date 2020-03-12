@@ -14,8 +14,8 @@ stages:
 - stage: Test_Python_MacOS
   dependsOn: Build_Python_MacOS
   variables:
-    VmImage: 'macOS-10.14'
-    Platform: macos-1014
+    VmImage: 'macOS-10.13'
+    Platform: macos-1013
     Architecture: x64
   jobs:
   - template: /azure-pipelines/test_job.yml
