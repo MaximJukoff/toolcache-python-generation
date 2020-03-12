@@ -31,3 +31,12 @@ function Get-CommandExitCode {
     $null = Invoke-Expression -Command $Command
     return $LASTEXITCODE
 }
+
+function IsNixPlatform {
+    param(
+        [String] [Parameter (Mandatory = $true)] [ValidateNotNullOrEmpty()]
+        $Platform
+    )
+
+    return ($Platform -match "macos") || ($Platform -match "ubuntu")
+}
