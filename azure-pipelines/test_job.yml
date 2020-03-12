@@ -31,8 +31,7 @@ jobs:
         script: |
           Install-Module Pester -Force -Scope CurrentUser
           Import-Module Pester
-          Invoke-Pester -Script @{Path="./Python.Tests.ps1"; Parameters=@{Version=$Version; Platform=$Platform; ToolsDirectory=$ToolsDirectory}} -OutputFile "test_results.xml" -OutputFormat NUnitXml
-        arguments: '-Version $(VERSION) -Platform $(Platform) -ToolsDirectory $(Agent.ToolsDirectory)'
+          Invoke-Pester -Script @{Path="./Python.Tests.ps1"; Parameters=@{Version=$(VERSION); Platform=$(Platform); ToolsDirectory=$(ToolsDirectory)}} -OutputFile "test_results.xml" -OutputFormat NUnitXml
         workingDirectory: '$(Build.SourcesDirectory)/tests/sources'
 
 
