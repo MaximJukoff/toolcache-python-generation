@@ -1,4 +1,4 @@
-Param (
+param (
     [Version] [Parameter (Mandatory = $true)] [ValidateNotNullOrEmpty()]
     $Version,
     [String] [Parameter (Mandatory = $true)] [ValidateNotNullOrEmpty()]
