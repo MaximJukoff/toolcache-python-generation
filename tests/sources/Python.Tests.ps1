@@ -17,6 +17,7 @@ Describe "Python toolcache tests" {
         $pythonLocation | Should -Not -BeNullOrEmpty
         Write-Host "--------- $pythonLocation -----------"
         $expectedPath = "$ToolsDirectory/Python"
+        Write-Host "********* $expectedPath *************"
         # if ($Platform -eq 'windows') {
         #     $expectedPath = $expectedPath.Replace("C:/", "/c/")
         # }
