@@ -27,13 +27,13 @@ Describe "Python toolcache tests" {
     }
 
     It "Validate modules"  {
-        if (IsNixPlatform -Platform $Platform) {
+        if (IsNixPlatform $Platform) {
             Get-CommandExitCode -Command "python ./python_modules.py" | Should -Be 0
         }
     }
 
     It "Check Tkinter" {
-        if (IsNixPlatform -Platform $Platform) {
+        if (IsNixPlatform $Platform) {
             Get-CommandExitCode -Command "python ./check_tkinter.py" | Should -Be 0
         }
     }
@@ -48,7 +48,7 @@ Describe "Python toolcache tests" {
     }
 
     It "Pip psutil installation" {
-        if (IsNixPlatform -Platform $Platform) {
+        if (IsNixPlatform $Platform) {
             Get-CommandExitCode "bash ./psutil_install_test.sh" | Should -Be 0
         }
     }
