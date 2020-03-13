@@ -1,10 +1,10 @@
 param(
     [Parameter (Mandatory = $true)] [ValidateNotNullOrEmpty()]
-    [String]$Architecture,
+    [String]$Architecture = "__ARCHITECTURE__",
     [Parameter (Mandatory = $true)] [ValidateNotNullOrEmpty()]
-    [Version]$Version,
+    [Version]$Version = "__VERSION__",
     [Parameter (Mandatory = $true)] [ValidateNotNullOrEmpty()]
-    [String]$PythonExecName
+    [String]$PythonExecName = "__PYTHON_EXEC_NAME__"
 )
 
 $PythonToolcachePath = Join-Path -Path $env:AGENT_TOOLSDIRECTORY -ChildPath "Python"

@@ -1,4 +1,4 @@
-Function New-SetupPackageFile {
+Function New-SetupFile {
     param(
         [String]$ShPath,
         [String]$TemplatePath,
@@ -13,7 +13,7 @@ Function New-SetupPackageFile {
     $templateSetupSh = Get-Content -Path $templatePath -Raw
     $setupSh = $templateSetupSh -f $majorVersion, $minorVersion, $buildVersion, $ToolCachePath
     
-    $setupSh | Out-File -FilePath "${shPath}/setup.sh" -Encoding utf8
+    $setupSh | Out-File -FilePath $shPath -Encoding utf8
 }
 
 Function Archive-ToolZip {
@@ -46,3 +46,13 @@ Function Download-Source {
     # Unpack archive.tgz
     tar -C $expandArchivePath -$TarCommands $outFile | Out-Null
 }
+
+Function Append-EnvironmentVariable {
+    param(
+        [string] $variableName, 
+        [string] $value
+    )
+
+    $previousValue = (Get-Item env:$variableName).Value
+    Set-Item env:$variableName "${value} ${previousValue}"
+  }
