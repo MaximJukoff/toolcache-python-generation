@@ -42,7 +42,7 @@ Function Download-Source {
     }    
 }
 
-Function UnPack-TarArchive {
+Function Unpack-TarArchive {
     param(
         [String]$OutFile,
         [String]$ExpandArchivePath = $env:BUILD_STAGINGDIRECTORY,

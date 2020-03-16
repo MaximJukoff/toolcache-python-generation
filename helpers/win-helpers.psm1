@@ -25,7 +25,7 @@ function Install-App {
     }
 }
 
-function Zip-Tool {
+function Archive-SevenZip {
     Param (
         [String]$Source,
         [String]$Destination,
