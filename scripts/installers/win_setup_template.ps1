@@ -1,11 +1,6 @@
-param(
-    [Parameter (Mandatory = $true)] [ValidateNotNullOrEmpty()]
-    [String]$Architecture = "__ARCHITECTURE__",
-    [Parameter (Mandatory = $true)] [ValidateNotNullOrEmpty()]
-    [Version]$Version = "__VERSION__",
-    [Parameter (Mandatory = $true)] [ValidateNotNullOrEmpty()]
-    [String]$PythonExecName = "__PYTHON_EXEC_NAME__"
-)
+$Architecture = "__ARCHITECTURE__"
+$Version = "__VERSION__"
+$PythonExecName = "__PYTHON_EXEC_NAME__"
 
 function Get-ArchitectureFilter {
     if ($Architecture -eq 'x86') {
@@ -21,8 +16,8 @@ function Get-PythonFilter {
         [String]$ArchFilter
     )
 
-    ### Python 2.7 and 3.4 have no architecture postfix
-    if ((($Version -like '3.4.*') -or $IsMSI) -and $Architecture -eq "x86") {
+    ### Python 2.7 have no architecture postfix
+    if ($IsMSI -and $Architecture -eq "x86") {
       "(Name like '%Python%%$Version%') and (not (Name like '%64-bit%'))"
     } else {
       "Name like '%Python%%$Version%%$ArchFilter%'"
@@ -63,7 +58,7 @@ $IsMSI = $PythonExecName -match "msi"
 
 if (-Not (Test-Path $PythonToolcachePath)) {
     Write-Host "Create Python toolcache folder"
-    New-Item -ItemType Directory -Path $env:AGENT_TOOLSDIRECTORY -Name "Python" | Out-Null
+    New-Item -ItemType Directory -Path $PythonToolcachePath | Out-Null
 }
 
 Write-Host "Check if current Python version is installed..."
