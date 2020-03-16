@@ -25,10 +25,10 @@ function Get-PythonFilter {
 }
 
 function Uninstall-Python {
-    $ArchFilter = Get-ArchitectureFilter    
+    $ArchFilter = Get-ArchitectureFilter
     Write-Host "Check for installed Python$Version $ArchFilter WMI..."
     $PythonFilter = Get-PythonFilter -ArchFilter $ArchFilter
-    Get-WmiObject Win32_Product -Filter $PythonFilter | Foreach-Object {$_.Uninstall() | Out-Null }
+    Get-WmiObject Win32_Product -Filter $PythonFilter | Foreach-Object { $_.Uninstall() | Out-Null }
 }
 
 function Delete-PythonVersion {

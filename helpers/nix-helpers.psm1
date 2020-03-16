@@ -1,21 +1,3 @@
-Function New-SetupFile {
-    param(
-        [String]$ShPath,
-        [String]$TemplatePath,
-        [Version]$Version,
-        [String]$ToolCachePath
-    )
-
-    $majorVersion = $Version.Major
-    $minorVersion = $Version.Minor
-    $buildVersion = $Version.Build
-    
-    $templateSetupSh = Get-Content -Path $templatePath -Raw
-    $setupSh = $templateSetupSh -f $majorVersion, $minorVersion, $buildVersion, $ToolCachePath
-    
-    $setupSh | Out-File -FilePath $shPath -Encoding utf8
-}
-
 Function Archive-ToolZip {
     param(
         [String]$PathToArchive,
