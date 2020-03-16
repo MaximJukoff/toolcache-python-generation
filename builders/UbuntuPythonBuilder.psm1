@@ -1,4 +1,4 @@
-using module "./scripts/builders/NixPythonBuilder.psm1"
+using module "./NixPythonBuilder.psm1"
 
 class UbuntuPythonBuilder : NixPythonBuilder {
     UbuntuPythonBuilder(

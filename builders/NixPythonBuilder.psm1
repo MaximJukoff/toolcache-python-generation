@@ -1,4 +1,4 @@
-using module "./scripts/builders/PythonBuilder.psm1"
+using module "./PythonBuilder.psm1"
 
 class NixPythonBuilder : PythonBuilder {
     # Properties
