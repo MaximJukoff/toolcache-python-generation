@@ -16,23 +16,33 @@ function Get-ArchitectureFilter {
 }
 
 function Get-PythonFilter {
+    param(
+        [Parameter (Mandatory = $true)]
+        [String]$ArchFilter
+    )
+
     ### Python 2.7 and 3.4 have no architecture postfix
     if ((($Version -like '3.4.*') -or $IsMSI) -and $Architecture -eq "x86") {
-      "(Name like '%Python%%$MajorVersion.$MinorVersion.$BuildVersion%') and (not (Name like '%64-bit%'))"
+      "(Name like '%Python%%$Version%') and (not (Name like '%64-bit%'))"
     } else {
-      "Name like '%Python%%$MajorVersion.$MinorVersion.$BuildVersion%%$ArchFilter%'"
+      "Name like '%Python%%$Version%%$ArchFilter%'"
     }
 }
 
 function Uninstall-Python {
-    Write-Host "Check for installed Python$MajorVersion.$MinorVersion.$BuildVersion $ArchFilter WMI..."
     $ArchFilter = Get-ArchitectureFilter    
-    $PythonFilter = Get-PythonFilter
+    Write-Host "Check for installed Python$Version $ArchFilter WMI..."
+    $PythonFilter = Get-PythonFilter -ArchFilter $ArchFilter
     Get-WmiObject Win32_Product -Filter $PythonFilter | Foreach-Object {$_.Uninstall() | Out-Null }
 }
 
 function Delete-PythonVersion {
-    Write-Host "Delete Python$MajorVersion.$MinorVersion.$BuildVersion $Architecture"
+    param(
+        [Parameter (Mandatory = $true)]
+        [String]$InstalledVersion
+    )
+
+    Write-Host "Delete Python$Version $Architecture"
     Remove-Item -Path "$($InstalledVersion.FullName)/$Architecture" -Recurse -Force
     Remove-Item -Path "$($InstalledVersion.FullName)/$Architecture.complete" -Force  
 }
@@ -49,10 +59,6 @@ $PythonToolcachePath = Join-Path -Path $env:AGENT_TOOLSDIRECTORY -ChildPath "Pyt
 $PythonVersionPath = Join-Path -Path $PythonToolcachePath -ChildPath $Version.ToString()
 $PythonArchPath = Join-Path -Path $PythonVersionPath -ChildPath $Architecture
 
-$MajorVersion = $Version.Major
-$MinorVersion = $Version.Minor
-$BuildVersion = $Version.Build
-
 $IsMSI = $PythonExecName -match "msi"
 
 if (-Not (Test-Path $PythonToolcachePath)) {
@@ -61,17 +67,17 @@ if (-Not (Test-Path $PythonToolcachePath)) {
 }
 
 Write-Host "Check if current Python version is installed..."
-$InstalledVersion = Get-ChildItem -Path $PythonToolcachePath -Filter "$MajorVersion.$MinorVersion.$BuildVersion"
+$InstalledVersion = Get-ChildItem -Path $PythonToolcachePath -Filter "$Version"
 
 if ($InstalledVersion -ne $null) {
     Uninstall-Python
 
     if (Test-Path -Path "$($InstalledVersion.FullName)/$Architecture") {
-      Write-Host "Python$MajorVersion.$MinorVersion.$BuildVersion/$Architecture was found in $PythonToolcachePath"
-      Delete-PythonVersion
+      Write-Host "Python$Version/$Architecture was found in $PythonToolcachePath"
+      Delete-PythonVersion -InstalledVersion $InstalledVersion
     }
 } else {
-    Write-Host "No Python$MajorVersion.$MinorVersion.$BuildVersion found"
+    Write-Host "No Python$Version found"
 }
 
 Write-Host "Create Python $Version folder in $PythonToolcachePath"
