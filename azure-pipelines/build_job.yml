@@ -10,7 +10,7 @@ jobs:
     inputs:
       targetType: filePath
       filePath: './scripts/Build-Python.ps1'
-      arguments: '-Version $(VERSION) -Architecture $(Architecture) -DestinationPath $(Build.BinariesDirectory) -Platform $(Platform)'
+      arguments: '-Version $(VERSION) -Architecture $(Architecture) -Platform $(Platform)'
 
   - task: PublishPipelineArtifact@1
     displayName: 'Publish Artifact: Python $(VERSION)'
