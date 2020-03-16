@@ -23,7 +23,8 @@ class UbuntuPythonBuilder : NixPythonBuilder {
             ./configure --prefix=$pythonBinariesLocation --enable-shared
         } else {
             ./configure --prefix=$pythonBinariesLocation --enable-optimizations --enable-shared
-        }
+        }      
+        Write-Host "Done"
     }
 
     [void] PrepareEnvironment() {
@@ -75,5 +76,6 @@ class UbuntuPythonBuilder : NixPythonBuilder {
                 sudo apt install -y libgdbm-compat-dev
             }
         }
+        Write-Host "Done"
     }
 }

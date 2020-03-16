@@ -41,6 +41,7 @@ class PythonBuilder {
             Write-Host "Create $pythonBinariesLocation folder..."
 
             New-Item -ItemType Directory -Path $pythonBinariesLocation 
-        }
+        }        
+        Write-Host "Done"
     }
 }

@@ -40,6 +40,7 @@ class WinPythonBuilder : PythonBuilder {
 
         Write-Host "Sources URI: $sourceUri"
         $sourcesLocation = Download-File -Uri $sourceUri -BinPathFolder $this.ArtifactLocation
+        Write-Host "Done"
 
         return $sourcesLocation
     }
@@ -55,6 +56,7 @@ class WinPythonBuilder : PythonBuilder {
         $installationScript = $installationScript.Replace("__PYTHON_EXEC_NAME__", $pythonExecName)
 
         $installationScript | Out-File -Path "$($this.ArtifactLocation)/$($this.InstallationScriptName)"
+        Write-Host "Done"
     }
 
     [void] Build() {

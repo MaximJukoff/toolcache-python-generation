@@ -42,13 +42,15 @@ class NixPythonBuilder : PythonBuilder {
         Write-Host "Sources URI: $sourceUri"
         Download-Source -Uri $sourceUri -OutFile $pythonSourceLocation -ExpandArchivePath $this.TempFolderLocation
         $expandedSourceLocation = Join-Path -Path $this.TempFolderLocation -ChildPath "Python-$($this.Version)"
+        Write-Host "Done"
 
         return $expandedSourceLocation
     }
 
     [void] ArchiveArtifact([string] $pythonToolLocation) {
         $artifact = Join-Path -Path $this.ArtifactLocation -ChildPath $this.OutputArtifactName
-        Archive-ToolZip -PathToArchive $pythonToolLocation -ToolZipFile $artifact 
+        Archive-ToolZip -PathToArchive $pythonToolLocation -ToolZipFile $artifact
+        Write-Host "Done"
     }
 
     [void] GetMissingModules([string] $buildOutputLocation) {
@@ -67,6 +69,7 @@ class NixPythonBuilder : PythonBuilder {
         {
             Add-Content $missingModulesRecordsLocation -Value $regexMatch.Groups[1].Value
         }
+        Write-Host "Done"
     }
 
     [void] GetSysconfigDump() {
@@ -77,6 +80,7 @@ class NixPythonBuilder : PythonBuilder {
 
         Write-Debug "Invoke $pythonBinaryPath"
         & $pythonBinaryPath $testSourcePath | Out-File -FilePath $sysconfigDump
+        Write-Host "Done"
     }
 
     [void] CreateInstallationScript() {
@@ -85,6 +89,7 @@ class NixPythonBuilder : PythonBuilder {
         $fullPythonToolcacheLocation = $this.GetPythonToolcacheLocation()
         
         New-SetupFile -ShPath $installationScriptPath -TemplatePath $templateLocation -Version $this.Version -ToolCachePath $fullPythonToolcacheLocation
+        Write-Host "Done"
     }
 
     [string] Make() {
@@ -94,6 +99,7 @@ class NixPythonBuilder : PythonBuilder {
 
         make | Tee-Object -FilePath $buildOutputLocation
         make install
+        Write-Host "Done"
 
         return $buildOutputLocation
     }
