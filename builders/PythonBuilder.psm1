@@ -14,7 +14,7 @@ class PythonBuilder {
         $this.HostedToolcacheLocation = $env:AGENT_TOOLSDIRECTORY
         $this.TempFolderLocation = $env:BUILD_STAGINGDIRECTORY
         $this.ArtifactLocation = $env:BUILD_BINARIESDIRECTORY
-        $this.InstallationTemplatesLocation = "../installers/"
+        $this.InstallationTemplatesLocation = Join-Path -Path $PSScriptRoot -ChildPath "../installers"
     }
 
     [uri] GetBaseUri() {
@@ -41,7 +41,6 @@ class PythonBuilder {
             Write-Host "Create $pythonBinariesLocation folder..."
 
             New-Item -ItemType Directory -Path $pythonBinariesLocation 
-        }        
-        Write-Host "Done"
+        }
     }
 }

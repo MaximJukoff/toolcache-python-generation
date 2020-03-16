@@ -42,7 +42,7 @@ class NixPythonBuilder : PythonBuilder {
         Write-Host "Sources URI: $sourceUri"
         Download-Source -Uri $sourceUri -OutFile $pythonSourceLocation -ExpandArchivePath $this.TempFolderLocation
         $expandedSourceLocation = Join-Path -Path $this.TempFolderLocation -ChildPath "Python-$($this.Version)"
-        Write-Host "Done"
+        Write-Debug "Done; Sources location: $expandedSourceLocation"
 
         return $expandedSourceLocation
     }
@@ -50,7 +50,7 @@ class NixPythonBuilder : PythonBuilder {
     [void] ArchiveArtifact([string] $pythonToolLocation) {
         $artifact = Join-Path -Path $this.ArtifactLocation -ChildPath $this.OutputArtifactName
         Archive-ToolZip -PathToArchive $pythonToolLocation -ToolZipFile $artifact
-        Write-Host "Done"
+        Write-Debug "Done; Artifact location: $artifact"
     }
 
     [void] GetMissingModules([string] $buildOutputLocation) {
@@ -69,7 +69,7 @@ class NixPythonBuilder : PythonBuilder {
         {
             Add-Content $missingModulesRecordsLocation -Value $regexMatch.Groups[1].Value
         }
-        Write-Host "Done"
+        Write-Debug "Done; Modules record location: $missingModulesRecordsLocation"
     }
 
     [void] GetSysconfigDump() {
@@ -80,7 +80,7 @@ class NixPythonBuilder : PythonBuilder {
 
         Write-Debug "Invoke $pythonBinaryPath"
         & $pythonBinaryPath $testSourcePath | Out-File -FilePath $sysconfigDump
-        Write-Host "Done"
+        Write-Debug "Done; Sysconfig dump location: $sysconfigDump"
     }
 
     [void] CreateInstallationScript() {
@@ -89,7 +89,7 @@ class NixPythonBuilder : PythonBuilder {
         $fullPythonToolcacheLocation = $this.GetPythonToolcacheLocation()
         
         New-SetupFile -ShPath $installationScriptPath -TemplatePath $templateLocation -Version $this.Version -ToolCachePath $fullPythonToolcacheLocation
-        Write-Host "Done"
+        Write-Debug "Done; Installation script location: $installationScriptPath"
     }
 
     [string] Make() {
@@ -99,7 +99,7 @@ class NixPythonBuilder : PythonBuilder {
 
         make | Tee-Object -FilePath $buildOutputLocation
         make install
-        Write-Host "Done"
+        Write-Debug "Done; Make log location: $buildOutputLocation"
 
         return $buildOutputLocation
     }

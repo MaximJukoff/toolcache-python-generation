@@ -13,6 +13,7 @@ class UbuntuPythonBuilder : NixPythonBuilder {
         $pythonBinariesLocation = $this.GetFullPythonToolcacheLocation()
         
         ### Prepare Ubuntu system environment by installing required packages
+        Write-Host "Prepare environment..."
         $this.PrepareEnvironment()
 
         ### To build Python with SO we must pass full path to lib folder to the linker
@@ -24,7 +25,6 @@ class UbuntuPythonBuilder : NixPythonBuilder {
         } else {
             ./configure --prefix=$pythonBinariesLocation --enable-optimizations --enable-shared
         }      
-        Write-Host "Done"
     }
 
     [void] PrepareEnvironment() {
@@ -76,6 +76,5 @@ class UbuntuPythonBuilder : NixPythonBuilder {
                 sudo apt install -y libgdbm-compat-dev
             }
         }
-        Write-Host "Done"
     }
 }
