@@ -89,7 +89,7 @@ class NixPythonBuilder : PythonBuilder {
         $buildVersion = $this.Version.Build
 
         $templateSetupSh = Get-Content -Path $templateLocation -Raw
-        $setupSh = $templateSetupSh -f $majorVersion, $minorVersion, $buildVersion, $fullPythonToolcacheLocation
+        $setupSh = $templateSetupSh -f $majorVersion, $minorVersion, $buildVersion
         $setupSh | Out-File -FilePath $installationScriptPath -Encoding utf8
     }
 

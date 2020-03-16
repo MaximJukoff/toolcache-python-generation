@@ -1,6 +1,6 @@
-$Architecture = "__ARCHITECTURE__"
-$Version = "__VERSION__"
-$PythonExecName = "__PYTHON_EXEC_NAME__"
+$Architecture = "{{__ARCHITECTURE__}}"
+$Version = "{{__VERSION__}}"
+$PythonExecName = "{{__PYTHON_EXEC_NAME__}}"
 
 function Get-ArchitectureFilter {
     if ($Architecture -eq 'x86') {
