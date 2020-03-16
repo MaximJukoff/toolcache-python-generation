@@ -1,4 +1,4 @@
-using module "./NixPythonBuilder.psm1"
+using module "./builders/NixPythonBuilder.psm1"
 
 class macOSPythonBuilder : NixPythonBuilder {
     macOSPythonBuilder(
