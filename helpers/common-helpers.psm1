@@ -1,11 +1,3 @@
-function New-CompleteFile {
-    param(
-        [String]$DestinationPath,
-        [String]$Architecture
-    )
-    New-Item -Path $DestinationPath -Name "${Architecture}.complete" -ItemType File | Out-Null
-}
-
 function New-ToolStructureDump {
     param(
         [String]$ToolPath,

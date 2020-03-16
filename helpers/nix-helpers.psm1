@@ -16,7 +16,7 @@ Function New-SetupFile {
     $setupSh | Out-File -FilePath $shPath -Encoding utf8
 }
 
-Function Archive-ToolZip {
+Function Archive-Zip {
     param(
         [String]$PathToArchive,
         [String]$ToolZipFile
@@ -30,9 +30,7 @@ Function Archive-ToolZip {
 Function Download-Source {
     param(
         [Uri]$Uri,
-        [String]$OutFile,
-        [String]$ExpandArchivePath = $env:BUILD_STAGINGDIRECTORY,
-        [String]$TarCommands = "xvzf"
+        [String]$OutFile
     )
 
     # Download source
@@ -41,8 +39,16 @@ Function Download-Source {
     } catch {
         "$_"
         break
-    }
-    
+    }    
+}
+
+Function UnPack-TarArchive {
+    param(
+        [String]$OutFile,
+        [String]$ExpandArchivePath = $env:BUILD_STAGINGDIRECTORY,
+        [String]$TarCommands = "xvzf"
+    )
+
     # Unpack archive.tgz
     tar -C $expandArchivePath -$TarCommands $outFile | Out-Null
 }

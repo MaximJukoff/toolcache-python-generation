@@ -28,11 +28,13 @@ function Install-App {
 function Zip-Tool {
     Param (
         [String]$Source,
-        [String]$Destination
+        [String]$Destination,
+        [int] $CompressionLevel = 9
     )
 
+    $params = "a -t7z -mx${$CompressionLevel} ${Destination} ${Source}"
     try {
-        Start-Process 7z -ArgumentList "a $Destination $Source" -Wait
+        Start-Process 7z -ArgumentList $params -Wait
     }
     catch {
         "$_"
@@ -40,19 +42,7 @@ function Zip-Tool {
     }
 }
 
-Function Archive-ToolZip {
-    param(
-        [String]$PathToArchive,
-        [String]$ToolZipFile,
-        [int] $CompressionLevel = 9
-    )
-
-    $zipPath = (Get-Command 7z).Source
-    $params = "a", "-t7z", "-mx${$CompressionLevel}", "${ToolZipFile}", "${PathToArchive}"
-    & $zipPath @params 2>&1
-}
-
-Function Archive-ToolWim {
+Function Archive-Wim {
     param(
         [String]$PathToArchive,
         [String]$ToolWimFile
