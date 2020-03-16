@@ -19,8 +19,8 @@ if [ ! -d $PYTHON_TOOLCACHE_PATH ]; then
     mkdir -p $PYTHON_TOOLCACHE_PATH
 fi
 
-echo "Delete Python $MAJOR_VERSION.$MINOR_VERSION.* if installed"
-rm -rf $PYTHON_TOOLCACHE_PATH/$MAJOR_VERSION.$MINOR_VERSION.*
+echo "Delete Python $PYTHON_FULL_VERSION if installed"
+rm -rf $PYTHON_TOOLCACHE_PATH/$PYTHON_FULL_VERSION
 
 echo "Create Python $PYTHON_FULL_VERSION folder"
 mkdir $PYTHON_TOOLCACHE_VERSION_PATH
