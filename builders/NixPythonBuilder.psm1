@@ -94,7 +94,7 @@ class NixPythonBuilder : PythonBuilder {
 
     [string] Make() {
         Write-Debug "make Python $($this.Version)-$($this.Architecture) $($this.Platform)-$($this.PlatformVersion)"
-
+        Get-ChildItem
         $buildOutputLocation = New-Item -Path $this.ArtifactLocation -Name "build_output.txt" -ItemType File
 
         make | Tee-Object -FilePath $buildOutputLocation
@@ -116,6 +116,7 @@ class NixPythonBuilder : PythonBuilder {
         $this.Configure()
 
         Write-Host "Make for $($this.Platform)-$($this.PlatformVersion)..."
+        Get-ChildItem
         $buildOutput = $this.Make()
         Pop-Location
 
