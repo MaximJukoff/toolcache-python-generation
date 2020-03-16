@@ -53,6 +53,13 @@ Function Append-EnvironmentVariable {
         [string] $value
     )
 
-    $previousValue = (Get-Item env:$variableName).Value
-    Set-Item env:$variableName "${value} ${previousValue}"
+    Write-Debug "Set ${variableName} to ${value}"
+
+    try {
+        $previousValue = (Get-Item env:$variableName).Value
+        Set-Item env:$variableName "${value} ${previousValue}"      
+    }
+    catch {
+        Write-Debug "${variableName} not found"
+    }
   }
