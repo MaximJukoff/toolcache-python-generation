@@ -1,6 +1,6 @@
-using module "./builders/WinPythonBuilder.psm1"
-using module "./builders/UbuntuPythonBuilder.psm1"
-using module "./builders/macOSPythonBuilder.psm1"
+using module "./scripts/builders/WinPythonBuilder.psm1"
+using module "./scripts/builders/UbuntuPythonBuilder.psm1"
+using module "./scripts/builders/macOSPythonBuilder.psm1"
 
 param(
     [Parameter (Mandatory=$true)]
