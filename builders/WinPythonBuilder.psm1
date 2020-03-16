@@ -49,7 +49,9 @@ class WinPythonBuilder : PythonBuilder {
         $sourceUri = $this.GetSourceUri()
         $pythonExecName = $sourceUri.AbsoluteUri.Split("/")[-1]
         $installationTemplateLocation = Join-Path -Path $this.InstallationTemplatesLocation -ChildPath $this.InstallationTemplateName
+        Write-Host $installationTemplateLocation
         $installationScript = Get-Content -Path $installationTemplateLocation -Raw
+        Write-Host $installationScript
 
         $installationScript = $installationScript.Replace("__ARCHITECTURE__", $this.Architecture)
         $installationScript = $installationScript.Replace("__VERSION__", $this.Version)
