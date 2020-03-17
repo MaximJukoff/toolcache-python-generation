@@ -10,11 +10,12 @@ param(
     [string] $Platform
 )
 
-$ErrorActionPreference = "Stop"
+$DebugPreference = 'Continue'
+$VerbosePreference = 'Continue'
 
-Import-Module "../helpers/common-helpers.psm1" -DisableNameChecking -Force
-Import-Module "../helpers/nix-helpers.psm1" -DisableNameChecking -Force
-Import-Module "../helpers/win-helpers.psm1" -DisableNameChecking -Force
+Import-Module (Join-Path $PSScriptRoot "../helpers" | Join-Path -ChildPath "common-helpers.psm1") -DisableNameChecking
+Import-Module (Join-Path $PSScriptRoot "../helpers" | Join-Path -ChildPath "nix-helpers.psm1") -DisableNameChecking
+Import-Module (Join-Path $PSScriptRoot "../helpers" | Join-Path -ChildPath "win-helpers.psm1") -DisableNameChecking
 
 <#
 Wrapper for class constructor to simplify importing PythonBuilder
