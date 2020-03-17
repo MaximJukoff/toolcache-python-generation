@@ -1,0 +1,19 @@
+jobs:
+- job: Build_Python
+  timeoutInMinutes: 90
+  pool:
+    name: Azure Pipelines
+    vmImage: $(VmImage)
+  steps:
+  - task: PowerShell@2
+    displayName: 'Build Python $(VERSION)'
+    inputs:
+      targetType: filePath
+      filePath: './builders/Build-Python.ps1'
+      arguments: '-Version $(VERSION) -Architecture $(Architecture) -Platform $(Platform)'
+
+  - task: PublishPipelineArtifact@1
+    displayName: 'Publish Artifact: Python $(VERSION)'
+    inputs:
+      targetPath: '$(Build.BinariesDirectory)' 
+      artifactName: 'python-$(VERSION)-$(Architecture)-$(Platform)'
