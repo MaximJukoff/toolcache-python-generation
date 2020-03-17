@@ -41,6 +41,7 @@ class NixPythonBuilder : PythonBuilder {
 
         Write-Host "Sources URI: $sourceUri"
         Download-Source -Uri $sourceUri -OutFile $pythonSourceLocation -ExpandArchivePath $this.TempFolderLocation
+        Unpack-TarArchive -OutFile $pythonSourceLocation -ExpandArchivePath $this.TempFolderLocation
         $expandedSourceLocation = Join-Path -Path $this.TempFolderLocation -ChildPath "Python-$($this.Version)"
         Write-Debug "Done; Sources location: $expandedSourceLocation"
 
@@ -49,7 +50,7 @@ class NixPythonBuilder : PythonBuilder {
 
     [void] ArchiveArtifact([string] $pythonToolLocation) {
         $artifact = Join-Path -Path $this.ArtifactLocation -ChildPath $this.OutputArtifactName
-        Archive-ToolZip -PathToArchive $pythonToolLocation -ToolZipFile $artifact
+        Archive-Zip -PathToArchive $pythonToolLocation -ToolZipFile $artifact 
         Write-Debug "Done; Artifact location: $artifact"
     }
 
