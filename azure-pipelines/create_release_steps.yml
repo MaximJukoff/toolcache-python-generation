@@ -3,7 +3,7 @@ steps:
   displayName: 'Create $(VERSION) GitHub release'
   inputs:
     gitHubConnection: 'GitHub connection'
-    repositoryName: 'MaksimZhukov/toolcache-python-generation'
+    repositoryName: 'akv-platform/toolcache-python-generation'
     target: $(Build.SourceVersion)
     tagSource: userSpecifiedTag
     tag: '$(VERSION)-$(Build.BuildNumber)'

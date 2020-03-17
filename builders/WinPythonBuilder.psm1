@@ -49,14 +49,17 @@ class WinPythonBuilder : PythonBuilder {
         $sourceUri = $this.GetSourceUri()
         $pythonExecName = $sourceUri.AbsoluteUri.Split("/")[-1]
         $installationTemplateLocation = Join-Path -Path $this.InstallationTemplatesLocation -ChildPath $this.InstallationTemplateName
-        $installationTemplate = Get-Content -Path $installationTemplateLocation -Raw
+        $installationTemplateContent = Get-Content -Path $installationTemplateLocation -Raw
         $installationScriptLocation = New-Item -Path $this.ArtifactLocation -Name $this.InstallationScriptName -ItemType File
 
-        $installationTemplate = $installationTemplate.Replace("__ARCHITECTURE__", $this.Architecture)
-        $installationTemplate = $installationTemplate.Replace("__VERSION__", $this.Version)
-        $installationTemplate = $installationTemplate.Replace("__PYTHON_EXEC_NAME__", $pythonExecName)
+        $variablesToReplace = @{
+            "{{__ARCHITECTURE__}}" = $this.Architecture;
+            "{{__VERSION__}}" = $this.Version;
+            "{{__PYTHON_EXEC_NAME__}}" = $pythonExecName
+        }
 
-        $installationTemplate | Out-File -FilePath $installationScriptLocation
+        $variablesToReplace.keys | foreach { $installationTemplateContent = $installationTemplateContent.Replace($_, $variablesToReplace[$_]) }
+        $installationTemplateContent | Out-File -FilePath $installationScriptLocation
         Write-Debug "Done; Installation script location: $installationScriptLocation)"
     }
 
