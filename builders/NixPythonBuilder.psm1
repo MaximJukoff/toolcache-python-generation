@@ -43,6 +43,7 @@ class NixPythonBuilder : PythonBuilder {
         Download-Source -Uri $sourceUri -OutFile $pythonSourceLocation -ExpandArchivePath $this.TempFolderLocation
         Unpack-TarArchive -OutFile $pythonSourceLocation -ExpandArchivePath $this.TempFolderLocation
         $expandedSourceLocation = Join-Path -Path $this.TempFolderLocation -ChildPath "Python-$($this.Version)"
+        Write-Debug "Done; Sources location: $expandedSourceLocation"
 
         return $expandedSourceLocation
     }
@@ -50,6 +51,7 @@ class NixPythonBuilder : PythonBuilder {
     [void] ArchiveArtifact([string] $pythonToolLocation) {
         $artifact = Join-Path -Path $this.ArtifactLocation -ChildPath $this.OutputArtifactName
         Archive-Zip -PathToArchive $pythonToolLocation -ToolZipFile $artifact 
+        Write-Debug "Done; Artifact location: $artifact"
     }
 
     [void] GetMissingModules([string] $buildOutputLocation) {
@@ -68,6 +70,7 @@ class NixPythonBuilder : PythonBuilder {
         {
             Add-Content $missingModulesRecordsLocation -Value $regexMatch.Groups[1].Value
         }
+        Write-Debug "Done; Modules record location: $missingModulesRecordsLocation"
     }
 
     [void] GetSysconfigDump() {
@@ -78,23 +81,32 @@ class NixPythonBuilder : PythonBuilder {
 
         Write-Debug "Invoke $pythonBinaryPath"
         & $pythonBinaryPath $testSourcePath | Out-File -FilePath $sysconfigDump
+        Write-Debug "Done; Sysconfig dump location: $sysconfigDump"
     }
 
     [void] CreateInstallationScript() {
         $installationScriptPath = Join-Path -Path $this.ArtifactLocation -ChildPath $this.InstallationScriptName
         $templateLocation = Join-Path -Path $this.InstallationTemplatesLocation -ChildPath $this.InstallationTemplateName
         $fullPythonToolcacheLocation = $this.GetPythonToolcacheLocation()
-        
-        New-SetupFile -ShPath $installationScriptPath -TemplatePath $templateLocation -Version $this.Version -ToolCachePath $fullPythonToolcacheLocation
+
+        $majorVersion = $this.Version.Major
+        $minorVersion = $this.Version.Minor
+        $buildVersion = $this.Version.Build
+
+        $templateSetupSh = Get-Content -Path $templateLocation -Raw
+        $setupSh = $templateSetupSh -f $majorVersion, $minorVersion, $buildVersion
+        $setupSh | Out-File -FilePath $installationScriptPath -Encoding utf8
+        Write-Debug "Done; Installation script location: $installationScriptPath"
     }
 
     [string] Make() {
         Write-Debug "make Python $($this.Version)-$($this.Architecture) $($this.Platform)-$($this.PlatformVersion)"
-
-        $buildOutputLocation = Join-Path -Path $this.ArtifactLocation -ChildPath "build_output.txt"
+        $buildOutputLocation = New-Item -Path $this.ArtifactLocation -Name "build_output.txt" -ItemType File
 
         make | Tee-Object -FilePath $buildOutputLocation
         make install
+        
+        Write-Debug "Done; Make log location: $buildOutputLocation"
 
         return $buildOutputLocation
     }
@@ -111,14 +123,14 @@ class NixPythonBuilder : PythonBuilder {
         $this.Configure()
 
         Write-Host "Make for $($this.Platform)-$($this.PlatformVersion)..."
-        $buildOutput = $this.Make()
+        $buildOutputLocation = $this.Make()
         Pop-Location
 
         Write-Host "Create sysconfig file..."
         $this.GetSysconfigDump()
 
         Write-Host "Search for missing modules..."
-        $this.GetMissingModules($buildOutput)
+        $this.GetMissingModules($buildOutputLocation)
 
         Write-Host "Archive generated artifact..."
         $this.ArchiveArtifact($this.GetFullPythonToolcacheLocation())

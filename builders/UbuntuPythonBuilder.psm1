@@ -13,6 +13,7 @@ class UbuntuPythonBuilder : NixPythonBuilder {
         $pythonBinariesLocation = $this.GetFullPythonToolcacheLocation()
         
         ### Prepare Ubuntu system environment by installing required packages
+        Write-Host "Prepare environment..."
         $this.PrepareEnvironment()
 
         ### To build Python with SO we must pass full path to lib folder to the linker
@@ -23,7 +24,7 @@ class UbuntuPythonBuilder : NixPythonBuilder {
             ./configure --prefix=$pythonBinariesLocation --enable-shared
         } else {
             ./configure --prefix=$pythonBinariesLocation --enable-optimizations --enable-shared
-        }
+        }      
     }
 
     [void] PrepareEnvironment() {
