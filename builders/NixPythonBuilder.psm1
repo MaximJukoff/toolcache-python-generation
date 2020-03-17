@@ -96,11 +96,9 @@ class NixPythonBuilder : PythonBuilder {
         Write-Debug "make Python $($this.Version)-$($this.Architecture) $($this.Platform)-$($this.PlatformVersion)"
         $buildOutputLocation = New-Item -Path $this.ArtifactLocation -Name "build_output.txt" -ItemType File
 
-        Write-Host "THIS IS GCI OUTPUT:"
-        Get-ChildItem -Path "."
-
         make | Tee-Object -FilePath $buildOutputLocation
         make install
+        
         Write-Debug "Done; Make log location: $buildOutputLocation"
 
         return $buildOutputLocation
