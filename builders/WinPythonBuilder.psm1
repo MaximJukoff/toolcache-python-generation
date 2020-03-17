@@ -40,6 +40,7 @@ class WinPythonBuilder : PythonBuilder {
 
         Write-Host "Sources URI: $sourceUri"
         $sourcesLocation = Download-File -Uri $sourceUri -BinPathFolder $this.ArtifactLocation
+        Write-Debug "Done; Sources location: $sourcesLocation"
 
         return $sourcesLocation
     }
@@ -48,7 +49,8 @@ class WinPythonBuilder : PythonBuilder {
         $sourceUri = $this.GetSourceUri()
         $pythonExecName = $sourceUri.AbsoluteUri.Split("/")[-1]
         $installationTemplateLocation = Join-Path -Path $this.InstallationTemplatesLocation -ChildPath $this.InstallationTemplateName
-        $installationScriptContent = Get-Content -Path $installationTemplateLocation -Raw
+        $installationTemplateContent = Get-Content -Path $installationTemplateLocation -Raw
+        $installationScriptLocation = New-Item -Path $this.ArtifactLocation -Name $this.InstallationScriptName -ItemType File
 
         $variablesToReplace = @{
             "{{__ARCHITECTURE__}}" = $this.Architecture;
@@ -56,9 +58,9 @@ class WinPythonBuilder : PythonBuilder {
             "{{__PYTHON_EXEC_NAME__}}" = $pythonExecName
         }
 
-        $variablesToReplace.keys | foreach { $installationScriptContent = $installationScriptContent.Replace($_, $variablesToReplace[$_]) }
-
-        $installationScriptContent | Out-File -Path "$($this.ArtifactLocation)/$($this.InstallationScriptName)"
+        $variablesToReplace.keys | foreach { $installationTemplateContent = $installationTemplateContent.Replace($_, $variablesToReplace[$_]) }
+        $installationTemplateContent | Out-File -FilePath $installationScriptLocation
+        Write-Debug "Done; Installation script location: $installationScriptLocation)"
     }
 
     [void] Build() {
