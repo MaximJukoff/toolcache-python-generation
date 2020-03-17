@@ -10,6 +10,7 @@ param(
     [string] $Platform
 )
 
+$ErrorActionPreference = 'Continue'
 $DebugPreference = 'Continue'
 $VerbosePreference = 'Continue'
 
