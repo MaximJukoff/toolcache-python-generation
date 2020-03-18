@@ -28,5 +28,4 @@ jobs:
             Update versions-manifest.json for release:
             Release link:
         branch: update-versions-manifest
-        base: master
         reviewers: maxim-lobanov
