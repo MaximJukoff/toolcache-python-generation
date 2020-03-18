@@ -1,9 +1,10 @@
 name: Generate versions manifest
 on:
-  release: ["published"]
+  release: 
+    types: [published, edited, deleted]
 
 jobs:
-  createPullRequestWithManifest:
+  run:
     runs-on: ubuntu-latest
     steps:
     - name: Test
