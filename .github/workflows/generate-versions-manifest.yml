@@ -1,6 +1,6 @@
 name: Generate versions manifest
 on:
-  release:
+  release: ["published"]
 
 jobs:
   createPullRequestWithManifest:
@@ -12,10 +12,11 @@ jobs:
     - uses: actions/checkout@v2
     - name: Run manifest generator
       run: |
-        ./generate-versions-manifest.ps1 \
-                          -GitHubRepository $env:GITHUB_REPOSITORY \
-                          -GitHubAccessToken ${{ secrets.GITHUB_TOKEN }} \
+        ./generate-versions-manifest.ps1 `
+                          -GitHubRepository $env:GITHUB_REPOSITORY `
+                          -GitHubAccessToken ${{ secrets.GITHUB_TOKEN }} `
                           -OutputFile "./versions-manifest.json"
+      shell: pwsh
     - name: Create pull-request
       uses: peter-evans/create-pull-request@v2
       with:
