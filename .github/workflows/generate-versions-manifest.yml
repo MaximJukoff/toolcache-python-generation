@@ -1,0 +1,26 @@
+name: Generate versions manifest
+on:
+  release:
+
+jobs:
+  createPullRequestWithManifest:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Run manifest generator
+      run: |
+        ./generate-versions-manifest.ps1 `
+                          -GitHubRepository $env:GITHUB_REPOSITORY `
+                          -GitHubAccessToken ${{ secrets.GITHUB_TOKEN }} `
+                          -OutputFile "./versions-manifest.json"
+    - name: Create pull-request
+      uses: peter-evans/create-pull-request@v2
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        commit-message: Update versions-manifest based on release '${{ github.event.release.name }}' (${{github.event.release.html_url}})
+        title: [versions-manifest] Update for release '${{ github.event.release.name }}' (Date.now())
+        body: |
+            Update versions-manifest.json for release: ${{ github.event.release.name }}
+            Release link: ${{github.event.release.html_url}}
+        branch: update-versions-manifest
+        reviewers: maxim-lobanov
