@@ -17,7 +17,7 @@ jobs:
         TargetType: inline
         powershell: |
           if ($(Platform) -eq 'windows') { ./setup.ps1 } else { ./setup.sh }
-        workingDirectory: '$(Build.BinariesDirectory)/python-$(VERSION)-$(Architecture)-$(Platform)'
+        workingDirectory: '$(Build.BinariesDirectory)'
 
     - task: UsePythonVersion@0
       displayName: 'Use Python $(VERSION)'
