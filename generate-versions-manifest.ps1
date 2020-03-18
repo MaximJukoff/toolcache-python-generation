@@ -38,6 +38,7 @@ function Build-AssetsList {
 
 function Get-VersionFromRelease {
     param (
+        [AllowEmptyCollection()]
         [Parameter(Mandatory)][object]$Release
     )
     # Release name can contain additional information after ':' so filter it
