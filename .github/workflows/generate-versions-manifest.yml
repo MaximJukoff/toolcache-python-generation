@@ -1,7 +1,6 @@
 name: Generate versions manifest
 on:
   release:
-  push:
 
 jobs:
   createPullRequestWithManifest:
@@ -9,14 +8,13 @@ jobs:
     steps:
     - name: Test
       run: |
-        echo "${{ toJson(github) }}"
         echo "${{ toJson(github.event) }}"
     - uses: actions/checkout@v2
     - name: Run manifest generator
       run: |
-        ./generate-versions-manifest.ps1 `
-                          -GitHubRepository $env:GITHUB_REPOSITORY `
-                          -GitHubAccessToken ${{ secrets.GITHUB_TOKEN }} `
+        ./generate-versions-manifest.ps1 \
+                          -GitHubRepository $env:GITHUB_REPOSITORY \
+                          -GitHubAccessToken ${{ secrets.GITHUB_TOKEN }} \
                           -OutputFile "./versions-manifest.json"
     - name: Create pull-request
       uses: peter-evans/create-pull-request@v2
