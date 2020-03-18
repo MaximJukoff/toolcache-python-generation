@@ -16,6 +16,7 @@ jobs:
       inputs:
         TargetType: inline
         powershell: |
+          gci
           if ($(Platform) -eq 'windows') { ./setup.ps1 } else { ./setup.sh }
         workingDirectory: '$(Build.BinariesDirectory)'
 
