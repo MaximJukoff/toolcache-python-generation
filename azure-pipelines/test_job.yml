@@ -16,7 +16,7 @@ jobs:
       inputs:
         TargetType: inline
         script: |
-          if ($(Platform) -eq 'windows') { ./setup.ps1 } else { ./setup.sh }
+          if ($env:PLATFORM -match 'windows') { ./setup.ps1 } else { ./setup.sh }
         workingDirectory: '$(Build.BinariesDirectory)'
 
     - task: UsePythonVersion@0
