@@ -17,7 +17,7 @@ jobs:
       uses: peter-evans/create-pull-request@v2
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
-        commit-message: Update versions-manifest based on release '${{ github.event.release.name }}' (${{github.event.release.html_url}})
+        commit-message: Update versions-manifest based on release '${{ github.event.release.name }}' (${{ github.event.release.html_url }})
         title: [versions-manifest] Update for release '${{ github.event.release.name }}' (Date.now())
         body: |
             Update versions-manifest.json for release: ${{ github.event.release.name }}
