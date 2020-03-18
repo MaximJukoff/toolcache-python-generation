@@ -15,7 +15,8 @@ jobs:
       displayName: Apply build artifact to the local machines
       inputs:
         TargetType: inline
-        script: 'npm install'
+        powershell: |
+          if ($(Platform) -eq 'windows') { ./setup.ps1 } else { ./setup.sh }
         workingDirectory: '$(Build.BinariesDirectory)/python-$(VERSION)-$(Architecture)-$(Platform)'
 
     - task: UsePythonVersion@0

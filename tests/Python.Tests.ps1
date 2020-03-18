@@ -45,6 +45,7 @@ Describe "Python toolcache tests" {
     }
 
     It "Pip psutil installation" {
+        # Psutil installation is required to check if shared libraries was linked correctly
         if (IsNixPlatform $Platform) {
             Get-CommandExitCode "bash ./psutil_install_test.sh" | Should -Be 0
         }
