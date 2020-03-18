@@ -1,0 +1,12 @@
+name: Generate versions manifest
+on:
+  release:
+
+jobs:
+  testJob:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Test
+        run: |
+          echo "${{ toJson(github) }}"
+          echo "${{ toJson(github.event) }}"

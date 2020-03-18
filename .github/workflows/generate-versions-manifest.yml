@@ -24,10 +24,3 @@ jobs:
             Release link: ${{github.event.release.html_url}}
         branch: update-versions-manifest
         reviewers: maxim-lobanov
-  testJob:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Test
-        run: |
-          echo "${{ toJson(github) }}"
-          echo "${{ toJson(github.event) }}"
