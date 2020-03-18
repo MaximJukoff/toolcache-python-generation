@@ -34,7 +34,7 @@ function Uninstall-Python {
 function Delete-PythonVersion {
     param(
         [Parameter (Mandatory = $true)]
-        [String]$InstalledVersion
+        [System.IO.FileSystemInfo]$InstalledVersion
     )
 
     Write-Host "Delete Python$MajorVersion.$MinorVersion $Architecture"
