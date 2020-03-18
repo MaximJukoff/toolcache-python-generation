@@ -15,8 +15,7 @@ jobs:
       displayName: Apply build artifact to the local machines
       inputs:
         TargetType: inline
-        powershell: |
-          gci
+        script: |
           if ($(Platform) -eq 'windows') { ./setup.ps1 } else { ./setup.sh }
         workingDirectory: '$(Build.BinariesDirectory)'
 
