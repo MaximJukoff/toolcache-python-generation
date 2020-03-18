@@ -18,7 +18,7 @@ class NixPythonBuilder : PythonBuilder {
 
         $this.InstallationTemplateName = "nix_setup_template.sh"
         $this.InstallationScriptName = "setup.sh"
-        $this.PythonConfigScriptLocation = "../tests/sources/python_config.py"
+        $this.PythonConfigScriptLocation = "../tests/python_config.py"
 
         $this.OutputArtifactName = "tool.zip"
     }
