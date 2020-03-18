@@ -28,16 +28,7 @@ function Uninstall-Python {
     $ArchFilter = Get-ArchitectureFilter
     Write-Host "Check for installed Python$MajorVersion.$MinorVersion $ArchFilter WMI..."
     $PythonFilter = Get-PythonFilter -ArchFilter $ArchFilter
-    Get-WmiObject Win32_Product -Filter $PythonFilter | Foreach-Object { 
-        $returnvalue = $_.Uninstall().returnvalue | Out-Null
-        if ($LASTEXITCODE -ne 0) {
-            Write-Host "returnvalue is $returnvalue"
-            Write-Host "LASTEXITCODE is $LASTEXITCODE"
-            Throw "Failed to uninstall $($_.Name)"
-        }
-
-        Write-Host "$($_.Name) successfully uninstalled"
-    }
+    Get-WmiObject Win32_Product -Filter $PythonFilter | Foreach-Object { $_.Uninstall() | Out-Null }
 }
 
 function Delete-PythonVersion {
