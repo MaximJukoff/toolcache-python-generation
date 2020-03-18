@@ -1,6 +1,7 @@
 name: Generate versions manifest
 on:
   release:
+  push:
 
 jobs:
   createPullRequestWithManifest:
