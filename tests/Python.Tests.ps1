@@ -7,7 +7,7 @@ param (
     $ToolsDirectory
 )
 
-Import-Module "../../helpers/common-helpers.psm1"
+Import-Module "../helpers/common-helpers.psm1"
 
 Describe "Python toolcache tests" {
 
