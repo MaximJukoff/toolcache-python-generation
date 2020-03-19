@@ -9,4 +9,5 @@ steps:
     tag: '$(VERSION)-$(Build.BuildNumber)'
     title: '$(VERSION)'
     assets: |
-     $(Pipeline.Workspace)/*
+     $(Build.ArtifactStagingDirectory)/*
+    addChangeLog: false
