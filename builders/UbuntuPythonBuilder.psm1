@@ -16,7 +16,7 @@ class UbuntuPythonBuilder : NixPythonBuilder {
         $this.PrepareEnvironment()
 
         ### To build Python with SO we must pass full path to lib folder to the linker
-        Append-EnvironmentVariable -variableName "LDFLAGS", -value "-Wl,--rpath=$pythonBinariesLocation/lib"
+        $env:LDFLAGS="-Wl,--rpath=$pythonBinariesLocation/lib"
 
         $configureString = "./configure --prefix=$pythonBinariesLocation --enable-shared"
         ### CPython optimizations also not supported in Python versions lower than 3.5.3
