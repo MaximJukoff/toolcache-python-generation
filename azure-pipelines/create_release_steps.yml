@@ -2,7 +2,7 @@ steps:
 - task: GitHubRelease@1
   displayName: 'Create $(VERSION) GitHub release'
   inputs:
-    gitHubConnection: 'GitHub connection'
+    gitHubConnection: 'Publish GitHub releases'
     repositoryName: 'MaksimZhukov/toolcache-python-generation'
     target: da15bbd1de86a4b0503c3fb86ee0b15f9e5dbfc6
     tagSource: userSpecifiedTag
