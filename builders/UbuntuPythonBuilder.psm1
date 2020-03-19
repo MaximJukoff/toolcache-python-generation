@@ -9,7 +9,6 @@ class UbuntuPythonBuilder : NixPythonBuilder {
     }
 
     [void] Configure() {
-        Write-Debug "Configure Python $($this.Version)-$($this.Architecture) Ubuntu-$($this.PlatformVersion)"
         $pythonBinariesLocation = $this.GetFullPythonToolcacheLocation()
         
         ### Prepare Ubuntu system environment by installing required packages
@@ -24,6 +23,8 @@ class UbuntuPythonBuilder : NixPythonBuilder {
         if (($this.Version -lt "3.0.0") -and ($this.Version -gt "3.5.3")) { 
             $configureString = $configureString, "--enable-optimizations" -join " "
         }
+
+        Write-Debug $configureString
         $this.ExecuteCommand($configureString)
     }
 

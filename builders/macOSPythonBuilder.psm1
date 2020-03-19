@@ -9,9 +9,7 @@ class macOSPythonBuilder : NixPythonBuilder {
     }
 
     [void] Configure() {
-        Write-Debug "Configure Python $($this.Version)-$($this.Architecture) macOS-$($this.PlatformVersion)"
         $pythonBinariesLocation = $this.GetFullPythonToolcacheLocation()
-
         $configureString = "./configure --prefix=$pythonBinariesLocation --enable-optimizations --enable-shared"
 
         ### OS X 10.11, Apple no longer provides header files for the deprecated system version of OpenSSL.
@@ -26,6 +24,7 @@ class macOSPythonBuilder : NixPythonBuilder {
             $configureString = $configureString, "--with-openssl=/usr/local/opt/openssl" -join " "
         }
 
+        Write-Debug $configureString
         $this.ExecuteCommand($configureString)
     }
 }
