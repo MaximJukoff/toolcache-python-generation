@@ -1,52 +1,53 @@
 jobs:
-  - job: Test_Python
-    pool: 
-      name: Azure Pipelines
-      vmImage: $(VmImage)
+- job: Test_Python
+  pool: 
+    name: Azure Pipelines
+    vmImage: $(VmImage)
+  
+  steps:
+  - task: DownloadPipelineArtifact@2
+    inputs:
+      source: 'current'
+      artifact: 'python-$(VERSION)-$(Architecture)-$(Platform)'
+      path: $(Build.BinariesDirectory)
 
-    steps:
-    - task: DownloadPipelineArtifact@2
-      inputs:
-        source: 'current'
-        artifact: 'python-$(VERSION)-$(Architecture)-$(Platform)'
-        path: $(Build.BinariesDirectory)
+  - task: PowerShell@2
+    displayName: Apply build artifact to the local machines
+    inputs:
+      TargetType: inline
+      script: |
+        if ($env:PLATFORM -match 'windows') { ./setup.ps1 } else { ./setup.sh }
+      workingDirectory: '$(Build.BinariesDirectory)'
 
-    - task: PowerShell@2
-      displayName: Apply build artifact to the local machines
-      inputs:
-        TargetType: inline
-        script: 'npm install'
-        workingDirectory: '$(Build.BinariesDirectory)/python-$(VERSION)-$(Architecture)-$(Platform)'
+  - task: UsePythonVersion@0
+    displayName: 'Use Python $(VERSION)'
+    inputs:
+      versionSpec: '$(VERSION)'
+      architecture: '$(Architecture)'
 
-    - task: UsePythonVersion@0
-      displayName: 'Use Python $(VERSION)'
-      inputs:
-        versionSpec: '$(VERSION)'
-        architecture: '$(Architecture)'
-
-    - task: PowerShell@2
-      displayName: Run tests
-      inputs:
-        TargetType: inline
-        script: |
-          Install-Module Pester -Force -Scope CurrentUser
-          Import-Module Pester
-          $pesterParams = @{
-            Path="./Python.Tests.ps1";
-            Parameters=@{
-              Version="$(VERSION)";
-              Platform="$(Platform)";
-              ToolsDirectory="$(Agent.ToolsDirectory)";
-            }
+  - task: PowerShell@2
+    displayName: Run tests
+    inputs:
+      TargetType: inline
+      script: |
+        Install-Module Pester -Force -Scope CurrentUser
+        Import-Module Pester
+        $pesterParams = @{
+          Path="./Python.Tests.ps1";
+          Parameters=@{
+            Version="$(VERSION)";
+            Platform="$(Platform)";
+            ToolsDirectory="$(Agent.ToolsDirectory)";
           }
-          Invoke-Pester -Script $pesterParams -OutputFile "test_results.xml" -OutputFormat NUnitXml
-        workingDirectory: '$(Build.SourcesDirectory)/tests/sources'
+        }
+        Invoke-Pester -Script $pesterParams -OutputFile "test_results.xml" -OutputFormat NUnitXml
+      workingDirectory: '$(Build.SourcesDirectory)/tests'
 
-    - task: PublishTestResults@2
-      displayName: Publish test results
-      inputs:
-        testResultsFiles: '*.xml'
-        testResultsFormat: NUnit
-        searchFolder: 'tests/sources'
-        failTaskOnFailedTests: true
-      condition: always()
+  - task: PublishTestResults@2
+    displayName: Publish test results
+    inputs:
+      testResultsFiles: '*.xml'
+      testResultsFormat: NUnit
+      searchFolder: 'tests'
+      failTaskOnFailedTests: true
+    condition: always()
