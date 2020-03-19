@@ -19,35 +19,30 @@ Describe "Python toolcache tests" {
         $pythonLocation.startsWith($expectedPath) | Should -BeTrue
     }
 
-    It "Run sample code" {
-        Get-CommandExitCode -Command "python ./main.py" | Should -Be 0
+    It "Run simple code" {
+        Get-CommandExitCode -Command "python ./simple_test.py" | Should -Be 0
     }
 
-    It "Validate modules"  {
-        if (IsNixPlatform $Platform) {
+    if (IsNixPlatform $Platform) {
+        It "Check if all the python modules are installed"  {
             Get-CommandExitCode -Command "python ./python_modules.py" | Should -Be 0
         }
-    }
 
-    It "Check Tkinter" {
-        if (IsNixPlatform $Platform) {
+        It "Check Tkinter" {
             Get-CommandExitCode -Command "python ./check_tkinter.py" | Should -Be 0
         }
-    }
 
-    It "Validate Pyinstaller" {
-        # Pyinstaller 3.5 does not support Python 3.8.0. Check issue https://github.com/pyinstaller/pyinstaller/issues/4311
-        if ($Version -lt "3.8.0") {
-            Get-CommandExitCode "pip install pyinstaller" | Should -Be 0
-            Get-CommandExitCode -Command "pyinstaller --onefile ./main.py" | Should -Be 0
-            Get-CommandExitCode "./dist/main" | Should -Be 0
+        It "Check if shared libraries was linked correctly" {
+            Get-CommandExitCode "bash ./psutil_install_test.sh" | Should -Be 0
         }
     }
 
-    It "Pip psutil installation" {
-        # Psutil installation is required to check if shared libraries was linked correctly
-        if (IsNixPlatform $Platform) {
-            Get-CommandExitCode "bash ./psutil_install_test.sh" | Should -Be 0
+    # Pyinstaller 3.5 does not support Python 3.8.0. Check issue https://github.com/pyinstaller/pyinstaller/issues/4311
+    if ($Version -lt "3.8.0") {
+        It "Validate Pyinstaller" {
+            Get-CommandExitCode "pip install pyinstaller" | Should -Be 0
+            Get-CommandExitCode -Command "pyinstaller --onefile ./simple_test.py" | Should -Be 0
+            Get-CommandExitCode "./dist/main" | Should -Be 0
         }
     }
 }
