@@ -12,6 +12,15 @@ jobs:
       path: $(Build.BinariesDirectory)
 
   - task: PowerShell@2
+    displayName: Sysconfig dump output
+    inputs:
+      TargetType: inline
+      script: |
+        Get-Content -Path "./sysconfig.txt"
+      workingDirectory: '$(Build.BinariesDirectory)'
+    condition: ne(variables['Platform'], 'windows')
+
+  - task: PowerShell@2
     displayName: Apply build artifact to the local machines
     inputs:
       TargetType: inline

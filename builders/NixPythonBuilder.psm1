@@ -82,9 +82,6 @@ class NixPythonBuilder : PythonBuilder {
         Write-Debug "Invoke $pythonBinaryPath"
         & $pythonBinaryPath $testSourcePath | Out-File -FilePath $sysconfigDump
 
-        # Output to console
-        Write-Host $sysconfigDump
-
         Write-Debug "Done; Sysconfig dump location: $sysconfigDump"
     }
 
