@@ -4,7 +4,7 @@ steps:
   inputs:
     gitHubConnection: 'GitHub connection'
     repositoryName: 'MaksimZhukov/toolcache-python-generation'
-    target: $(Build.SourceVersion)
+    target: da15bbd1de86a4b0503c3fb86ee0b15f9e5dbfc6
     tagSource: userSpecifiedTag
     tag: '$(VERSION)-$(Build.BuildNumber)'
     title: '$(VERSION)'
