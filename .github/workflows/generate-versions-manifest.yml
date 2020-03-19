@@ -1,0 +1,28 @@
+name: Generate versions manifest
+on:
+  release: 
+    types: [published, edited, deleted]
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Run manifest generator
+      run: |
+        ./generate-versions-manifest.ps1 `
+                          -GitHubRepository $env:GITHUB_REPOSITORY `
+                          -GitHubAccessToken ${{ secrets.GITHUB_TOKEN }} `
+                          -OutputFile "./versions-manifest.json"
+      shell: pwsh
+    - name: Create pull-request
+      uses: peter-evans/create-pull-request@v2
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        commit-message: Update versions-manifest based on release
+        title: '[versions-manifest] Update for release'
+        body: |
+            Update versions-manifest.json for release:
+            Release link:
+        branch: update-versions-manifest
+        reviewers: maxim-lobanov
