@@ -1,6 +1,6 @@
-$Architecture = "{{__ARCHITECTURE__}}"
+[String]$Architecture = "{{__ARCHITECTURE__}}"
 [Version]$Version = "{{__VERSION__}}"
-$PythonExecName = "{{__PYTHON_EXEC_NAME__}}"
+[String]$PythonExecName = "{{__PYTHON_EXEC_NAME__}}"
 
 function Get-ArchitectureFilter {
     param(
@@ -9,9 +9,9 @@ function Get-ArchitectureFilter {
     )
 
     if ($Architecture -eq 'x86') {
-      "32-bit"
+        "32-bit"
     } else {
-      "64-bit"
+        "64-bit"
     }
 }
 
@@ -31,9 +31,9 @@ function Get-PythonFilter {
 
     ### Python 2.7 have no architecture postfix
     if ($IsMSI -and $Architecture -eq "x86") {
-      "(Name like '%Python%%$MajorVersion.$MinorVersion%') and (not (Name like '%64-bit%'))"
+        "(Name like '%Python%%$MajorVersion.$MinorVersion%') and (not (Name like '%64-bit%'))"
     } else {
-      "Name like '%Python%%$MajorVersion.$MinorVersion%%$ArchFilter%'"
+        "Name like '%Python%%$MajorVersion.$MinorVersion%%$ArchFilter%'"
     }
 }
 

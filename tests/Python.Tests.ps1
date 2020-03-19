@@ -24,15 +24,15 @@ Describe "Python toolcache tests" {
     }
 
     if (IsNixPlatform $Platform) {
-        It "Check if all the python modules are installed"  {
+        It "Check if all python modules are installed"  {
             Get-CommandExitCode -Command "python ./python_modules.py" | Should -Be 0
         }
 
-        It "Check Tkinter" {
+        It "Check Tkinter module is available" {
             Get-CommandExitCode -Command "python ./check_tkinter.py" | Should -Be 0
         }
 
-        It "Check if shared libraries was linked correctly" {
+        It "Check if shared libraries are linked correctly" {
             Get-CommandExitCode "bash ./psutil_install_test.sh" | Should -Be 0
         }
     }
