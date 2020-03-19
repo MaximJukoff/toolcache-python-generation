@@ -1,4 +1,7 @@
 steps:
+- powershell: |
+    ls $(Pipeline.Workspace)
+
 - task: GitHubRelease@1
   displayName: 'Create $(VERSION) GitHub release'
   inputs:
@@ -9,5 +12,5 @@ steps:
     tag: '$(VERSION)-$(Build.BuildNumber)'
     title: '$(VERSION)'
     assets: |
-     $(Build.ArtifactStagingDirectory)/*
+      $(Pipeline.Workspace)/*/*
     addChangeLog: false
