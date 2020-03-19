@@ -42,7 +42,7 @@ Describe "Python toolcache tests" {
         It "Validate Pyinstaller" {
             Get-CommandExitCode "pip install pyinstaller" | Should -Be 0
             Get-CommandExitCode -Command "pyinstaller --onefile ./simple_test.py" | Should -Be 0
-            Get-CommandExitCode "./dist/main" | Should -Be 0
+            Get-CommandExitCode "./dist/simple_test" | Should -Be 0
         }
     }
 }
