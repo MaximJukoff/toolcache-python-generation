@@ -17,10 +17,10 @@ class UbuntuPythonBuilder : NixPythonBuilder {
 
         ### To build Python with SO we must pass full path to lib folder to the linker
         $env:LDFLAGS="-Wl,--rpath=$pythonBinariesLocation/lib"
-
         $configureString = "./configure --prefix=$pythonBinariesLocation --enable-shared"
+
         ### CPython optimizations also not supported in Python versions lower than 3.5.3
-        if (($this.Version -lt "3.0.0") -and ($this.Version -gt "3.5.3")) { 
+        if (($this.Version -lt "3.0.0") -or ($this.Version -gt "3.5.3")) { 
             $configureString = $configureString, "--enable-optimizations" -join " "
         }
 
