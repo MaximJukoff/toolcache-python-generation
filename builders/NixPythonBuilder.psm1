@@ -106,21 +106,11 @@ class NixPythonBuilder : PythonBuilder {
         make | Tee-Object -FilePath $buildOutputLocation
         Write-Host $buildOutputLocation
 
-        $this.ExecuteCommand("make install")
+        Execute-Command -command "make install"
         
         Write-Debug "Done; Make log location: $buildOutputLocation"
 
         return $buildOutputLocation
-    }
-
-    [void] ExecuteCommand([string] $command) {
-        try {
-            Invoke-Expression $command | ForEach-Object { Write-Host $_ }
-        }
-        catch {
-            Write-Host "Error happened during command execution: $command"
-            Write-Host "##vso[task.logissue type=error;] $_"
-        }
     }
 
     [void] Build() {

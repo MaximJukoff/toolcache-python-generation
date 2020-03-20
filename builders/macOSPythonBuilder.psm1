@@ -24,6 +24,6 @@ class macOSPythonBuilder : NixPythonBuilder {
         }
 
         Write-Debug $configureString
-        $this.ExecuteCommand($configureString)
+        Execute-Command -command $configureString
     }
 }
