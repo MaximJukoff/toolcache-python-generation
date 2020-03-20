@@ -12,7 +12,7 @@ jobs:
         ref: 'master'
     - name: Run manifest generator
       run: |
-        ./generate-versions-manifest.ps1 `
+        ./helpers/generate-versions-manifest.ps1 `
                           -GitHubRepository $env:GITHUB_REPOSITORY `
                           -GitHubAccessToken ${{ secrets.GITHUB_TOKEN }} `
                           -OutputFile "./versions-manifest.json"
