@@ -15,11 +15,12 @@ PYTHON_TOOLCACHE_VERSION_ARCH_PATH=$PYTHON_TOOLCACHE_VERSION_PATH/x64
 
 echo "Check if Python hostedtoolcache folder exist..."
 if [ ! -d $PYTHON_TOOLCACHE_PATH ]; then
+    echo "Creating Python hostedtoolcache folder..."
     mkdir -p $PYTHON_TOOLCACHE_PATH
+elif [ -d $PYTHON_TOOLCACHE_VERSION_PATH ]; then
+    echo "Deleting Python $PYTHON_FULL_VERSION"
+    rm -rf $PYTHON_TOOLCACHE_VERSION_PATH
 fi
-
-echo "Delete Python $PYTHON_FULL_VERSION if installed"
-rm -rf $PYTHON_TOOLCACHE_VERSION_PATH
 
 echo "Create Python $PYTHON_FULL_VERSION folder"
 mkdir $PYTHON_TOOLCACHE_VERSION_PATH
