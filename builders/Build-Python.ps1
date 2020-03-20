@@ -10,7 +10,6 @@ param(
     [string] $Platform
 )
 
-$ErrorActionPreference = 'Continue'
 $DebugPreference = 'Continue'
 
 Import-Module (Join-Path $PSScriptRoot "../helpers" | Join-Path -ChildPath "common-helpers.psm1") -DisableNameChecking
