@@ -31,7 +31,7 @@ jobs:
     inputs:
       TargetType: inline
       script: |
-        if ($env:PLATFORM -match 'windows') { ./setup.ps1 } else { ./setup.sh }
+        if ($env:PLATFORM -match 'windows') { ./setup.ps1 } else { sh ./setup.sh }
       workingDirectory: '$(Build.BinariesDirectory)'
 
   - task: Bash@3
@@ -40,12 +40,6 @@ jobs:
       TargetType: inline
       script: |
         ls $(Build.BinariesDirectory)
-
-  - task: Bash@3
-    displayName: 'Apply build artifact to the local machines'
-    inputs:
-      targetType: filePath
-      filePath: /mnt/a/1/b/setup.sh
 
   - task: Bash@3
     displayName: 'Apply build artifact to the local machines'
