@@ -81,13 +81,13 @@ class NixPythonBuilder : PythonBuilder {
 
         Write-Debug "Invoke $pythonBinaryPath"
         & $pythonBinaryPath $testSourcePath | Out-File -FilePath $sysconfigDump
+
         Write-Debug "Done; Sysconfig dump location: $sysconfigDump"
     }
 
     [void] CreateInstallationScript() {
         $installationScriptPath = Join-Path -Path $this.ArtifactLocation -ChildPath $this.InstallationScriptName
         $templateLocation = Join-Path -Path $this.InstallationTemplatesLocation -ChildPath $this.InstallationTemplateName
-        $fullPythonToolcacheLocation = $this.GetPythonToolcacheLocation()
 
         $majorVersion = $this.Version.Major
         $minorVersion = $this.Version.Minor
@@ -104,11 +104,23 @@ class NixPythonBuilder : PythonBuilder {
         $buildOutputLocation = New-Item -Path $this.ArtifactLocation -Name "build_output.txt" -ItemType File
 
         make | Tee-Object -FilePath $buildOutputLocation
-        make install
+        Write-Host $buildOutputLocation
+
+        $this.ExecuteCommand("make install")
         
         Write-Debug "Done; Make log location: $buildOutputLocation"
 
         return $buildOutputLocation
+    }
+
+    [void] ExecuteCommand([string] $command) {
+        try {
+            Invoke-Expression $command | ForEach-Object { Write-Host $_ }
+        }
+        catch {
+            Write-Host "Error happened during command execution: $command"
+            Write-Host "##vso[task.logissue type=error;] $_"
+        }
     }
 
     [void] Build() {

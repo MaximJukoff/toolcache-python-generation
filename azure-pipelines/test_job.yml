@@ -11,6 +11,21 @@ jobs:
       artifact: 'python-$(VERSION)-$(Architecture)-$(Platform)'
       path: $(Build.BinariesDirectory)
 
+  - task: ExtractFiles@1
+    inputs:
+      archiveFilePatterns: '$(Build.BinariesDirectory)/python-$(VERSION)-$(Architecture)-$(Platform).zip'
+      destinationFolder: $(Build.BinariesDirectory)
+      cleanDestinationFolder: false
+
+  - task: PowerShell@2
+    displayName: Sysconfig dump output
+    inputs:
+      TargetType: inline
+      script: |
+        Get-Content -Path "./sysconfig.txt"
+      workingDirectory: '$(Build.BinariesDirectory)'
+    condition: ne(variables['Platform'], 'windows')
+
   - task: PowerShell@2
     displayName: Apply build artifact to the local machines
     inputs:
