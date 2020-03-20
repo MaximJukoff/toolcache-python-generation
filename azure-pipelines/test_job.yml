@@ -25,13 +25,13 @@ jobs:
         Get-Content -Path "./sysconfig.txt"
       workingDirectory: '$(Build.BinariesDirectory)'
     condition: ne(variables['Platform'], 'windows')
-
+  
   - task: PowerShell@2
     displayName: Apply build artifact to the local machines
     inputs:
       TargetType: inline
       script: |
-        if ($env:PLATFORM -match 'windows') { ./setup.ps1 } else { ./setup.sh }
+        if ($env:PLATFORM -match 'windows') { ./setup.ps1 } else { sh ./setup.sh }
       workingDirectory: '$(Build.BinariesDirectory)'
 
   - task: UsePythonVersion@0
