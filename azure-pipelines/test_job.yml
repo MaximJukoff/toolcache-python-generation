@@ -27,6 +27,15 @@ jobs:
     condition: ne(variables['Platform'], 'windows')
 
   - task: PowerShell@2
+    displayName: Check shared libraries
+    inputs:
+      TargetType: inline
+      script: |
+        if ($env:PLATFORM -match 'macos') { otool -l %PATH%/python } else { ldd %PATH%/python }
+      workingDirectory: '$(Build.BinariesDirectory)'
+    condition: ne(variables['Platform'], 'windows')
+
+  - task: PowerShell@2
     displayName: Apply build artifact to the local machines
     inputs:
       TargetType: inline
