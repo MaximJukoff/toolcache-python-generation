@@ -27,6 +27,16 @@ jobs:
     condition: ne(variables['Platform'], 'windows')
 
   - task: PowerShell@2
+    displayName: Get content
+    inputs:
+      TargetType: inline
+      script: |
+        ls
+        Write-Host "Content of setup.sh"
+        Get-Content -Path "./setup.sh"
+      workingDirectory: '$(Build.BinariesDirectory)'
+  
+      - task: PowerShell@2
     displayName: Apply build artifact to the local machines
     inputs:
       TargetType: inline
