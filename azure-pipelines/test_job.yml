@@ -3,7 +3,13 @@ jobs:
   pool: 
     name: Azure Pipelines
     vmImage: $(VmImage)
-  
+  strategy:
+    matrix:
+      Cleanup-Python-Toolcache-Dir:
+        IsCleanupMode: true
+      Invoke-Pester-Tests:
+        IsCleanupMode: false
+
   steps:
   - task: DownloadPipelineArtifact@2
     inputs:
@@ -36,6 +42,23 @@ jobs:
     condition: ne(variables['Platform'], 'windows')
 
   - task: PowerShell@2
+    displayName: Fully cleanup the toolcache directory
+    inputs:
+      TargetType: inline
+      script: |
+        if ($env:PLATFORM -match 'windows') {
+          $PythonFilter = "Name like '%Python%'"
+          Get-WmiObject Win32_Product -Filter $PythonFilter | Foreach-Object { 
+            Write-Host "Uninstalling $($_.Name) ..."
+            $_.Uninstall() | Out-Null 
+          }
+        }
+        $PythonToolcachePath = Join-Path -Path $env:AGENT_TOOLSDIRECTORY -ChildPath "Python"
+        Remove-Item -Path $PythonToolcachePath -Recurse -Force
+      workingDirectory: '$(Build.BinariesDirectory)'
+    condition: eq(variables['IsCleanupMode'], true)
+
+  - task: PowerShell@2
     displayName: Apply build artifact to the local machines
     inputs:
       TargetType: inline
@@ -66,6 +89,7 @@ jobs:
         }
         Invoke-Pester -Script $pesterParams -OutputFile "test_results.xml" -OutputFormat NUnitXml
       workingDirectory: '$(Build.SourcesDirectory)/tests'
+    condition: ne(variables['IsCleanupMode'], true)
 
   - task: PublishTestResults@2
     displayName: Publish test results
@@ -74,4 +98,4 @@ jobs:
       testResultsFormat: NUnit
       searchFolder: 'tests'
       failTaskOnFailedTests: true
-    condition: always()
+    condition: ne(variables['IsCleanupMode'], true)
