@@ -54,6 +54,7 @@ jobs:
           }
         }
         $PythonToolcachePath = Join-Path -Path $env:AGENT_TOOLSDIRECTORY -ChildPath "Python"
+        Write-Host "Remove Python toolcache folder"
         Remove-Item -Path $PythonToolcachePath -Recurse -Force
       workingDirectory: '$(Build.BinariesDirectory)'
     condition: eq(variables['IsCleanupMode'], true)
