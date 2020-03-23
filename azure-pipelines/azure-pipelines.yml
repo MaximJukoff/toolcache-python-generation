@@ -3,9 +3,6 @@ trigger: none
 pr: none
 
 stages:
-- checkout: self
-  submodules: true
-
 - stage: Build_Python_MacOS
   dependsOn: []
   variables:

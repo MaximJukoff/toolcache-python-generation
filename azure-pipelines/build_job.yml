@@ -5,6 +5,9 @@ jobs:
     name: Azure Pipelines
     vmImage: $(VmImage)
   steps:
+  - checkout: self
+    submodules: true
+    
   - task: PowerShell@2
     displayName: 'Build Python $(VERSION)'
     inputs:

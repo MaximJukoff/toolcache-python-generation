@@ -1,4 +1,7 @@
 steps:
+- checkout: self
+  submodules: true
+
 - task: GitHubRelease@1
   displayName: 'Create $(VERSION) GitHub release'
   inputs:
