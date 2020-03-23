@@ -1,71 +1,34 @@
 jobs:
-- job: Test_Python
+- job:
   pool: 
     name: Azure Pipelines
     vmImage: $(VmImage)
-  
+  strategy:
+    matrix:
+      Validate_Python_Clean_Machine:
+        NeedCleanToolcacheDir: true
+        TestRunTitle: "Python $(VERSION) $(Platform) $(Architecture) (clean-machine)"
+      Validate_Python:
+        NeedCleanToolcacheDir: false
+        TestRunTitle: "Python $(VERSION) $(Platform) $(Architecture)"
+
   steps:
-  - checkout: self
-    submodules: true
-    
-  - task: DownloadPipelineArtifact@2
-    inputs:
-      source: 'current'
-      artifact: 'python-$(VERSION)-$(Architecture)-$(Platform)'
-      path: $(Build.BinariesDirectory)
-
-  - task: ExtractFiles@1
-    inputs:
-      archiveFilePatterns: '$(Build.BinariesDirectory)/python-$(VERSION)-$(Architecture)-$(Platform).zip'
-      destinationFolder: $(Build.BinariesDirectory)
-      cleanDestinationFolder: false
-
   - task: PowerShell@2
-    displayName: Sysconfig dump output
+    displayName: Fully cleanup the toolcache directory
     inputs:
       TargetType: inline
       script: |
-        Get-Content -Path "./sysconfig.txt"
-      workingDirectory: '$(Build.BinariesDirectory)'
-    condition: ne(variables['Platform'], 'windows')
-
-  - task: PowerShell@2
-    displayName: Apply build artifact to the local machines
-    inputs:
-      TargetType: inline
-      script: |
-        if ($env:PLATFORM -match 'windows') { ./setup.ps1 } else { ./setup.sh }
-      workingDirectory: '$(Build.BinariesDirectory)'
-
-  - task: UsePythonVersion@0
-    displayName: 'Use Python $(VERSION)'
-    inputs:
-      versionSpec: '$(VERSION)'
-      architecture: '$(Architecture)'
-
-  - task: PowerShell@2
-    displayName: Run tests
-    inputs:
-      TargetType: inline
-      script: |
-        Install-Module Pester -Force -Scope CurrentUser
-        Import-Module Pester
-        $pesterParams = @{
-          Path="./Python.Tests.ps1";
-          Parameters=@{
-            Version="$(VERSION)";
-            Platform="$(Platform)";
-            ToolsDirectory="$(Agent.ToolsDirectory)";
+        if ($env:PLATFORM -match 'windows') {
+          $PythonFilter = "Name like '%Python%'"
+          Get-WmiObject Win32_Product -Filter $PythonFilter | Foreach-Object { 
+            Write-Host "Uninstalling $($_.Name) ..."
+            $_.Uninstall() | Out-Null 
           }
         }
-        Invoke-Pester -Script $pesterParams -OutputFile "test_results.xml" -OutputFormat NUnitXml
-      workingDirectory: '$(Build.SourcesDirectory)/tests'
+        $PythonToolcachePath = Join-Path -Path $env:AGENT_TOOLSDIRECTORY -ChildPath "Python"
+        Write-Host "Remove Python toolcache folder"
+        Remove-Item -Path $PythonToolcachePath -Recurse -Force
+      workingDirectory: '$(Build.BinariesDirectory)'
+    condition: eq(variables['NeedCleanToolcacheDir'], true)
 
-  - task: PublishTestResults@2
-    displayName: Publish test results
-    inputs:
-      testResultsFiles: '*.xml'
-      testResultsFormat: NUnit
-      searchFolder: 'tests'
-      failTaskOnFailedTests: true
-    condition: always()
+  - template: test-steps.yml

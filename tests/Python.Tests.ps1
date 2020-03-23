@@ -9,7 +9,7 @@ param (
 
 Import-Module "../helpers/common-helpers.psm1"
 
-Describe "Python toolcache tests" {
+Describe "Tests" {
 
     It "Python version" {
         Get-CommandExitCode "python --version" | Should -Be 0

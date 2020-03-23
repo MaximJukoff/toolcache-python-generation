@@ -9,4 +9,4 @@ steps:
     tag: '$(VERSION)-$(Build.BuildNumber)'
     title: '$(VERSION)'
     assets: |
-     $(Pipeline.Workspace)/*/*.Zip
+     $(Pipeline.Workspace)/*/*.zip
