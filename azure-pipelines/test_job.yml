@@ -29,4 +29,4 @@ jobs:
       workingDirectory: '$(Build.BinariesDirectory)'
     condition: eq(variables['NeedCleanToolcacheDir'], true)
 
-  - template: azure-pipelines/test-steps.yml
+  - template: test-steps.yml
