@@ -39,7 +39,8 @@ steps:
   inputs:
     TargetType: inline
     script: |
-      if ($env:PLATFORM -match 'macos') { otool -l $Env:USEPYTHONVERSION_PYTHONLOCATION } else { ldd $Env:USEPYTHONVERSION_PYTHONLOCATION }
+      $pythonLocation = $Env:USEPYTHONVERSION_PYTHONLOCATION/bin/python
+      if ($env:PLATFORM -match 'macos') { otool -l $pythonLocation } else { ldd $pythonLocation }
     workingDirectory: '$(Build.BinariesDirectory)'
   condition: ne(variables['Platform'], 'windows')
 
