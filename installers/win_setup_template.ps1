@@ -123,14 +123,14 @@ Copy-Item -Path ./$PythonExecName -Destination $PythonArchPath | Out-Null
 Write-Host "Install Python $Version in $PythonToolcachePath..."
 $ExecParams = Get-ExecParams -IsMSI $IsMSI -PythonArchPath $PythonArchPath
 
-[System.Environment]::SetEnvironmentVariable("PATH", "$PythonArchPath;" + $env:PATH, "Machine")
+[System.Environment]::SetEnvironmentVariable("POWERSHELL_DISTRIBUTION_CHANNEL", "GitHub-Actions-$env:ImageOS", [System.EnvironmentVariableTarget]::Machine)
 [System.Environment]::SetEnvironmentVariable("PATH", "$PythonArchPath/Scripts;" + $env:PATH, "Machine")
 Write-Host "Content of PATH var: $env:PATH"
 cmd.exe /c "cd $PythonArchPath && call $PythonExecName $ExecParams /quiet"
 if ($LASTEXITCODE -ne 0) {
     Throw "Error happened during Python installation"
 }
-
+Write-Hoste "Hello, I'm here"
 cmd.exe /c "cd $PythonArchPath && python.exe -m ensurepip && python.exe -m pip install --upgrade pip"
 
 Write-Host "Create complete file"
