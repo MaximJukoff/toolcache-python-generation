@@ -88,6 +88,7 @@ function Get-ExecParams {
 $PythonToolcachePath = Join-Path -Path $env:AGENT_TOOLSDIRECTORY -ChildPath "Python"
 $PythonVersionPath = Join-Path -Path $PythonToolcachePath -ChildPath $Version.ToString()
 $PythonArchPath = Join-Path -Path $PythonVersionPath -ChildPath $Architecture
+$PythonPath = Join-Path -Path $PythonArchPath -ChildPath "bin"
 
 $IsMSI = $PythonExecName -match "msi"
 
@@ -128,7 +129,9 @@ if ($LASTEXITCODE -ne 0) {
     Throw "Error happened during Python installation"
 }
 
-cmd.exe /c "cd $PythonArchPath/bin && python.exe -m ensurepip && python.exe -m pip install --upgrade pip"
+Write-Host "Get-ChildItem:"
+Get-ChildItem $PythonArchPath
+cmd.exe /c "cd $PythonPath && python.exe -m ensurepip && python.exe -m pip install --upgrade pip"
 
 Write-Host "Create complete file"
 New-Item -ItemType File -Path $PythonVersionPath -Name "$Architecture.complete" | Out-Null
