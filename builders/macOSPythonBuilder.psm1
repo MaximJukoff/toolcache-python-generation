@@ -23,7 +23,6 @@ class macOSPythonBuilder : NixPythonBuilder {
             $configureString = $configureString, "--with-openssl=/usr/local/opt/openssl" -join " "
         }
 
-        Write-Debug $configureString
         Execute-Command -Command $configureString
     }
 }

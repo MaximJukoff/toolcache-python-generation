@@ -24,7 +24,6 @@ class UbuntuPythonBuilder : NixPythonBuilder {
             $configureString = $configureString, "--enable-optimizations" -join " "
         }
 
-        Write-Debug $configureString
         Execute-Command -Command $configureString
     }
 
