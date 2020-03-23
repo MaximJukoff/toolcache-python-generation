@@ -1,4 +1,4 @@
 [submodule "helpers"]
 	path = helpers
 	url = https://github.com/akv-platform/helpers.git
-	branch = add-execute-command
+	branch = master
