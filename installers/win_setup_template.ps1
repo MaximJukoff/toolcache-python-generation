@@ -130,7 +130,7 @@ cmd.exe /c "cd $PythonArchPath && call $PythonExecName $ExecParams /quiet"
 if ($LASTEXITCODE -ne 0) {
     Throw "Error happened during Python installation"
 }
-Write-Hoste "Hello, I'm here"
+Write-Host "Hello, I'm here"
 cmd.exe /c "cd $PythonArchPath && python.exe -m ensurepip && python.exe -m pip install --upgrade pip"
 
 Write-Host "Create complete file"
