@@ -21,15 +21,6 @@ steps:
   condition: ne(variables['Platform'], 'windows')
 
 - task: PowerShell@2
-  displayName: Check shared libraries
-  inputs:
-    TargetType: inline
-    script: |
-      if ($env:PLATFORM -match 'macos') { otool -l $Env:PATH/python } else { ldd $Env:PATH/python }
-    workingDirectory: '$(Build.BinariesDirectory)'
-  condition: ne(variables['Platform'], 'windows')
-
-- task: PowerShell@2
   displayName: Apply build artifact to the local machines
   inputs:
     TargetType: inline
@@ -42,6 +33,15 @@ steps:
   inputs:
     versionSpec: '$(VERSION)'
     architecture: '$(Architecture)'
+
+- task: PowerShell@2
+  displayName: Check shared libraries
+  inputs:
+    TargetType: inline
+    script: |
+      if ($env:PLATFORM -match 'macos') { otool -l $Env:USEPYTHONVERSION_PYTHONLOCATION } else { ldd $Env:USEPYTHONVERSION_PYTHONLOCATION }
+    workingDirectory: '$(Build.BinariesDirectory)'
+  condition: ne(variables['Platform'], 'windows')
 
 - task: PowerShell@2
   displayName: Run tests
