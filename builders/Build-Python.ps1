@@ -10,7 +10,6 @@ param(
     [string] $Platform
 )
 
-$ErrorActionPreference = 'Continue'
 $DebugPreference = 'Continue'
 $VerbosePreference = 'Continue'
 
@@ -43,6 +42,8 @@ function Get-PythonBuilder {
 
     return $builder
 }
+
+Get-Content -Path $(Join-Path -Path $PSScriptRoot -ChildPath "..")
 
 $Builder = Get-PythonBuilder -Version $Version -Platform $Platform -Architecture $Architecture
 $Builder.Build()
