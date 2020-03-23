@@ -1,4 +1,7 @@
 steps:
+- checkout: self
+  submodules: true
+
 - task: DownloadPipelineArtifact@2
   inputs:
     source: 'current'

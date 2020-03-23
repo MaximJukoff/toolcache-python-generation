@@ -40,7 +40,7 @@ class NixPythonBuilder : PythonBuilder {
         $pythonSourceLocation = Join-Path -Path $this.ArtifactLocation -ChildPath "Python-$($this.Version).tgz"
 
         Write-Host "Sources URI: $sourceUri"
-        Download-Source -Uri $sourceUri -OutFile $pythonSourceLocation -ExpandArchivePath $this.TempFolderLocation
+        Download-Source -Uri $sourceUri -OutFile $pythonSourceLocation
         Unpack-TarArchive -OutFile $pythonSourceLocation -ExpandArchivePath $this.TempFolderLocation
         $expandedSourceLocation = Join-Path -Path $this.TempFolderLocation -ChildPath "Python-$($this.Version)"
         Write-Debug "Done; Sources location: $expandedSourceLocation"
@@ -103,24 +103,12 @@ class NixPythonBuilder : PythonBuilder {
         Write-Debug "make Python $($this.Version)-$($this.Architecture) $($this.Platform)-$($this.PlatformVersion)"
         $buildOutputLocation = New-Item -Path $this.ArtifactLocation -Name "build_output.txt" -ItemType File
 
-        make | Tee-Object -FilePath $buildOutputLocation
-        Write-Host $buildOutputLocation
-
-        $this.ExecuteCommand("make install")
+        Execute-Command -command "make 2>&1 | tee $buildOutputLocation" -ErrorAction Continue
+        Execute-Command -command "make install" -ErrorAction Continue
         
         Write-Debug "Done; Make log location: $buildOutputLocation"
 
         return $buildOutputLocation
-    }
-
-    [void] ExecuteCommand([string] $command) {
-        try {
-            Invoke-Expression $command | ForEach-Object { Write-Host $_ }
-        }
-        catch {
-            Write-Host "Error happened during command execution: $command"
-            Write-Host "##vso[task.logissue type=error;] $_"
-        }
     }
 
     [void] Build() {
