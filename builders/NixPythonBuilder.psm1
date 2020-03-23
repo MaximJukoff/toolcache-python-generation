@@ -40,7 +40,7 @@ class NixPythonBuilder : PythonBuilder {
         $pythonSourceLocation = Join-Path -Path $this.ArtifactLocation -ChildPath "Python-$($this.Version).tgz"
 
         Write-Host "Sources URI: $sourceUri"
-        Download-Source -Uri $sourceUri -OutFile $pythonSourceLocation -ExpandArchivePath $this.TempFolderLocation
+        Download-Source -Uri $sourceUri -OutFile $pythonSourceLocation
         Unpack-TarArchive -OutFile $pythonSourceLocation -ExpandArchivePath $this.TempFolderLocation
         $expandedSourceLocation = Join-Path -Path $this.TempFolderLocation -ChildPath "Python-$($this.Version)"
         Write-Debug "Done; Sources location: $expandedSourceLocation"
@@ -106,7 +106,7 @@ class NixPythonBuilder : PythonBuilder {
         make | Tee-Object -FilePath $buildOutputLocation
         Write-Host $buildOutputLocation
 
-        $this.ExecuteCommand("make install")
+        Execute-Command -command "make install"
         
         Write-Debug "Done; Make log location: $buildOutputLocation"
 

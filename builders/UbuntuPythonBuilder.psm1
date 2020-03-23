@@ -25,16 +25,17 @@ class UbuntuPythonBuilder : NixPythonBuilder {
         }
 
         Write-Debug $configureString
-        $this.ExecuteCommand($configureString)
+        Execute-Command -Command $configureString
     }
 
     [void] PrepareEnvironment() {
         ### Compile with tkinter support
         if ($this.Version -gt "3.0.0") {
-            $this.ExecuteCommand("sudo apt-get install -y --allow-downgrades python3-tk tk-dev")
+            $tkinterInstallString = "sudo apt-get install -y --allow-downgrades python3-tk tk-dev"
         } else {
-            $this.ExecuteCommand("sudo apt install -y python-tk tk-dev")
+            $tkinterInstallString = "sudo apt install -y python-tk tk-dev"
         }
+        Execute-Command -Command $tkinterInstallString
 
         if (($this.Version -gt "3.0.0") -and ($this.Version -lt "3.5.3")) {
             ### Ubuntu older that 16.04 comes with OpenSSL 1.0.2 by default and there is no easy way to downgrade it
@@ -53,7 +54,7 @@ class UbuntuPythonBuilder : NixPythonBuilder {
                     "libssl-dev=1.0.2g-1ubuntu4.15",
                     "zlib1g-dev"
                 ) | ForEach-Object {
-                    $this.ExecuteCommand("sudo apt-get install -y --allow-downgrades $_")
+                    Execute-Command -Command "sudo apt-get install -y --allow-downgrades $_"
                 }
 
             } else {
@@ -72,12 +73,12 @@ class UbuntuPythonBuilder : NixPythonBuilder {
                 "libreadline-dev",
                 "libgdbm-dev"
             ) | ForEach-Object {
-                $this.ExecuteCommand("sudo apt install -y $_")
+                Execute-Command -Command "sudo apt install -y $_"
             }
 
             if ($this.PlatformVersion -ne "1604") {
                 ### On Ubuntu-1804, libgdbm-compat-dev has older modules that are no longer in libgdbm-dev
-                $this.ExecuteCommand("sudo apt install -y libgdbm-compat-dev")
+                Execute-Command -Command "sudo apt install -y libgdbm-compat-dev"
             }
         }
     }
