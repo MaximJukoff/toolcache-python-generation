@@ -7,8 +7,10 @@ jobs:
     matrix:
       Validate_Python_Clean_Machine:
         NeedCleanToolcacheDir: true
+        TestRunTitle: "Python $(VERSION) $(Platform) $(Architecture) (clean-machine)"
       Validate_Python:
         NeedCleanToolcacheDir: false
+        TestRunTitle: "Python $(VERSION) $(Platform) $(Architecture)"
 
   steps:
   - task: PowerShell@2
