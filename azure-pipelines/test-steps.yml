@@ -69,5 +69,5 @@ steps:
     testResultsFormat: NUnit
     searchFolder: 'tests'
     failTaskOnFailedTests: true
-    testRunTitle: variables['TestRunTitle']
+    testRunTitle: "$(TestRunTitle)"
   condition: always()
