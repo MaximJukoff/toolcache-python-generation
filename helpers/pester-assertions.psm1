@@ -1,11 +1,11 @@
 function ShouldReturnZeroExitCode {
     Param(
         [Parameter (Mandatory = $true)] [ValidateNotNullOrEmpty()]
-        [String]$Command,
+        [String]$ActualValue,
         [switch]$Negate
     )
 
-    $actualCommandOutput = Invoke-Expression -Command $Command
+    $actualCommandOutput = Invoke-Expression -Command $ActualValue
     $actualExitCode = $LASTEXITCODE
     Write-Host $actualCommandOutput
 
@@ -14,7 +14,7 @@ function ShouldReturnZeroExitCode {
 
     if (-not $succeeded)
     {
-        $failureMessage = "Command '{$ActualValue}' has finished with exit code ${actualExitCode}"
+        $failureMessage = "Command '${ActualValue}' has finished with exit code ${actualExitCode}"
     }
 
     return New-Object PSObject -Property @{
