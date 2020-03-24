@@ -1,3 +1,21 @@
+Function Execute-Command {
+    [CmdletBinding()]
+    param(
+        [string] $Command
+    )
+
+    Write-Debug "Execute $Command"
+
+    try {
+        Invoke-Expression $Command | ForEach-Object { Write-Host $_ }
+    }
+    catch {
+        Write-Host "Error happened during command execution: $Command"
+        Write-Host "##vso[task.logissue type=error;] $_"
+    }
+}
+
+
 function New-ToolStructureDump {
     param(
         [String]$ToolPath,
@@ -12,16 +30,6 @@ function New-ToolStructureDump {
         $fileSize = $_.Length
         return "${relativePath} : ${fileSize} bytes"
     } | Out-File -FilePath $outputFile
-}
-
-function Get-CommandExitCode {
-    Param (
-      [String] [Parameter (Mandatory = $true)] [ValidateNotNullOrEmpty()]
-      $Command
-    )
-  
-    $null = Invoke-Expression -Command $Command
-    return $LASTEXITCODE
 }
 
 function IsNixPlatform {

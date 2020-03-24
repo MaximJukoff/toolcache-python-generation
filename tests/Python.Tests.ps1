@@ -7,12 +7,12 @@ param (
     $ToolsDirectory
 )
 
-Import-Module "../helpers/common-helpers.psm1"
+Import-Module "../helpers/pester-assertions.psm1"
 
 Describe "Tests" {
 
     It "Python version" {
-        Get-CommandExitCode "python --version" | Should -Be 0
+        "python --version" | Should -ReturnZeroExitCode
         $pythonLocation = (Get-Command "python").Path
         $pythonLocation | Should -Not -BeNullOrEmpty
         $expectedPath = Join-Path -Path $ToolsDirectory -ChildPath "Python"
@@ -20,29 +20,29 @@ Describe "Tests" {
     }
 
     It "Run simple code" {
-        Get-CommandExitCode -Command "python ./simple_test.py" | Should -Be 0
+        "python ./simple_test.py" | Should -ReturnZeroExitCode
     }
 
     if (IsNixPlatform $Platform) {
         It "Check if all python modules are installed"  {
-            Get-CommandExitCode -Command "python ./python_modules.py" | Should -Be 0
+            "python ./python_modules.py" | Should -ReturnZeroExitCode
         }
 
         It "Check Tkinter module is available" {
-            Get-CommandExitCode -Command "python ./check_tkinter.py" | Should -Be 0
+            "python ./check_tkinter.py" | Should -ReturnZeroExitCode
         }
 
         It "Check if shared libraries are linked correctly" {
-            Get-CommandExitCode "bash ./psutil_install_test.sh" | Should -Be 0
+            "bash ./psutil_install_test.sh" | Should -ReturnZeroExitCode
         }
     }
 
     # Pyinstaller 3.5 does not support Python 3.8.0. Check issue https://github.com/pyinstaller/pyinstaller/issues/4311
     if ($Version -lt "3.8.0") {
         It "Validate Pyinstaller" {
-            Get-CommandExitCode "pip install pyinstaller" | Should -Be 0
-            Get-CommandExitCode -Command "pyinstaller --onefile ./simple_test.py" | Should -Be 0
-            Get-CommandExitCode "./dist/simple_test" | Should -Be 0
+            "pip install pyinstaller" | Should -ReturnZeroExitCode
+            "pyinstaller --onefile ./simple_test.py" | Should -ReturnZeroExitCode
+            "./dist/simple_test" | Should -ReturnZeroExitCode
         }
     }
 }

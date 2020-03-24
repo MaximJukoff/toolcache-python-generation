@@ -34,20 +34,3 @@ Function Unpack-TarArchive {
     Write-Debug "Unpack $OutFile to $ExpandArchivePath"
     tar -C $ExpandArchivePath -$TarCommands $OutFile
 }
-
-Function Execute-Command {
-    [CmdletBinding()]
-    param(
-        [string] $Command
-    )
-
-    Write-Debug "Execute $Command"
-
-    try {
-        Invoke-Expression $Command | ForEach-Object { Write-Host $_ }
-    }
-    catch {
-        Write-Host "Error happened during command execution: $Command"
-        Write-Host "##vso[task.logissue type=error;] $_"
-    }
-}
