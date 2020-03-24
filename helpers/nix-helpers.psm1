@@ -43,11 +43,10 @@ Function Download-Source {
 }
 
 Function Unpack-TarArchive {
-    [CmdletBinding()]
     param(
         [String]$OutFile,
         [String]$ExpandArchivePath = $env:BUILD_STAGINGDIRECTORY,
-        [String]$TarCommands = "xvzf"
+        [String]$TarCommands = "xzf"
     )
 
     Write-Debug "Unpack $OutFile to $ExpandArchivePath"
