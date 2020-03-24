@@ -5,14 +5,14 @@ param (
     [Parameter(Mandatory)] [string] $SourceBranch
 )
 
-$encodedToken = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes(":$GitHubAccessToken"))
+$encodedToken = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes("'':$GitHubAccessToken"))
 
 $body = @{
     definition = @{
         id = 6
     }
     sourceBranch = $SourceBranch
-    parameters = '{ "VERSION" : "3.7.6" }'
+    # parameters = '{ "VERSION" : "3.7.6" }'
 } | ConvertTo-Json -Depth 9
 
 $requestParams = @{
