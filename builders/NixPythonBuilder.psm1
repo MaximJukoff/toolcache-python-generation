@@ -41,7 +41,8 @@ class NixPythonBuilder : PythonBuilder {
 
         Write-Host "Sources URI: $sourceUri"
         Download-Source -Uri $sourceUri -OutFile $pythonSourceLocation
-        Unpack-TarArchive -OutFile $pythonSourceLocation -ExpandArchivePath $this.TempFolderLocation
+        tar -C "$($this.TempFolderLocation)" -xvzf "$pythonSourceLocation"
+        #Unpack-TarArchive -OutFile $pythonSourceLocation -ExpandArchivePath $this.TempFolderLocation
         $expandedSourceLocation = Join-Path -Path $this.TempFolderLocation -ChildPath "Python-$($this.Version)"
         Write-Debug "Done; Sources location: $expandedSourceLocation"
 
