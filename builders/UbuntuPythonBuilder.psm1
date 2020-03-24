@@ -21,7 +21,12 @@ class UbuntuPythonBuilder : NixPythonBuilder {
 
         ### CPython optimizations also not supported in Python versions lower than 3.5.3
         if (($this.Version -lt "3.0.0") -or ($this.Version -gt "3.5.3")) { 
-            $configureString = $configureString, "--enable-optimizations" -join " "
+            $configureString += " --enable-optimizations"
+        }
+
+        if ($this.Version -lt "3.0.0") {
+            ### Compile with ucs4 for Python 2.x. On 3.x, ucs4 is enabled by default
+            $configureString += " --enable-unicode=ucs4"
         }
 
         Execute-Command -Command $configureString
@@ -37,10 +42,14 @@ class UbuntuPythonBuilder : NixPythonBuilder {
         Execute-Command -Command $tkinterInstallString
 
         if (($this.Version -gt "3.0.0") -and ($this.Version -lt "3.5.3")) {
-            ### Ubuntu older that 16.04 comes with OpenSSL 1.0.2 by default and there is no easy way to downgrade it
-            ### Python 3.4 has also reached EOL so it is not being supported on Ubuntu older that 16.04
-            if ($this.PlatformVersion -eq "1604") {
-                @(
+            if ($this.PlatformVersion -eq "1804") {
+                ### Ubuntu 18.04 comes with OpenSSL 1.0.2 by default and there is no easy way to downgrade
+                ### Python 3.4 has also reached EOL so it is not being supported on Ubuntu 18.04
+                Write-Host "Python 3.4 is not supported on Ubuntu older that 16.04"
+                exit 1
+            }
+
+            @(
                     "build-essential",
                     "libbz2-dev",
                     "libdb-dev",
@@ -55,13 +64,6 @@ class UbuntuPythonBuilder : NixPythonBuilder {
                 ) | ForEach-Object {
                     Execute-Command -Command "sudo apt-get install -y --allow-downgrades $_"
                 }
-
-            } else {
-                ### Ubuntu 18.04 comes with OpenSSL 1.0.2 by default and there is no easy way to downgrade
-                ### Python 3.4 has also reached EOL so it is not being supported on Ubuntu 18.04
-                Write-Host "Python 3.4 is not supported on Ubuntu older that 16.04"
-                exit 1
-            }
         } else {
             @(
                 "make",

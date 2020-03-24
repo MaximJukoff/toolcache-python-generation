@@ -64,7 +64,7 @@ class WinPythonBuilder : PythonBuilder {
     }
 
     [void] Build() {
-        Write-Host "Download Python $($this.Version)[$($this.Architecture)] executable..."
+        Write-Host "Download Python $($this.Version) [$($this.Architecture)] executable..."
         $this.Download()
 
         Write-Host "Create installation script..."

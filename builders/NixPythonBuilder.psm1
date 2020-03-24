@@ -103,8 +103,8 @@ class NixPythonBuilder : PythonBuilder {
         Write-Debug "make Python $($this.Version)-$($this.Architecture) $($this.Platform)-$($this.PlatformVersion)"
         $buildOutputLocation = New-Item -Path $this.ArtifactLocation -Name "build_output.txt" -ItemType File
 
-        Execute-Command -command "make 2>&1 | tee $buildOutputLocation" -ErrorAction Continue
-        Execute-Command -command "make install" -ErrorAction Continue
+        Execute-Command -Command "make 2>&1 | tee $buildOutputLocation" -ErrorAction Continue
+        Execute-Command -Command "make install" -ErrorAction Continue
         
         Write-Debug "Done; Make log location: $buildOutputLocation"
 
