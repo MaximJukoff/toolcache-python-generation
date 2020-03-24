@@ -13,6 +13,7 @@ stages:
   - template: /azure-pipelines/build_job.yml
 
 - stage: Test_Python_MacOS
+  condition: succeeded()
   dependsOn: Build_Python_MacOS
   variables:
     VmImage: 'macOS-10.14'
@@ -31,6 +32,7 @@ stages:
   - template: /azure-pipelines/build_job.yml
 
 - stage: Test_Python_Ubuntu_1604
+  condition: succeeded()
   dependsOn: Build_Python_Ubuntu_1604
   variables:
     VmImage: 'ubuntu-16.04'
@@ -49,6 +51,7 @@ stages:
   - template: /azure-pipelines/build_job.yml
 
 - stage: Test_Python_Ubuntu_1804
+  condition: succeeded()
   dependsOn: Build_Python_Ubuntu_1804
   variables:
     VmImage: 'ubuntu-18.04'
@@ -67,6 +70,7 @@ stages:
   - template: /azure-pipelines/build_job.yml
 
 - stage: Test_Python_x64_Windows
+  condition: succeeded()
   dependsOn: Build_Python_X64_Windows
   variables:
     VmImage: 'vs2017-win2016'
@@ -85,6 +89,7 @@ stages:
   - template: /azure-pipelines/build_job.yml
 
 - stage: Test_Python_x86_Windows
+  condition: succeeded()
   dependsOn: Build_Python_x86_Windows
   variables:
     VmImage: 'vs2017-win2016'
@@ -94,6 +99,7 @@ stages:
   - template: /azure-pipelines/test_job.yml
 
 - stage: Publish_GitHub_Release
+  condition: succeeded()
   dependsOn:
   - Test_Python_MacOS
   - Test_Python_Ubuntu_1604
