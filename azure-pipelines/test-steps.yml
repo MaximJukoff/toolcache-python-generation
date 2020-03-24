@@ -59,7 +59,6 @@ steps:
         Parameters=@{
           Version="$(VERSION)";
           Platform="$(Platform)";
-          ToolsDirectory="$(Agent.ToolsDirectory)";
         }
       }
       Invoke-Pester -Script $pesterParams -OutputFile "test_results.xml" -OutputFormat NUnitXml

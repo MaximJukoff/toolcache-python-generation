@@ -2,9 +2,7 @@ param (
     [Version] [Parameter (Mandatory = $true)] [ValidateNotNullOrEmpty()]
     $Version,
     [String] [Parameter (Mandatory = $true)] [ValidateNotNullOrEmpty()]
-    $Platform,
-    [String] [Parameter (Mandatory = $true)] [ValidateNotNullOrEmpty()]
-    $ToolsDirectory
+    $Platform
 )
 
 Import-Module (Join-Path $PSScriptRoot "../helpers/pester-assertions.psm1")
@@ -16,7 +14,7 @@ Describe "Tests" {
         "python --version" | Should -ReturnZeroExitCode
         $pythonLocation = (Get-Command "python").Path
         $pythonLocation | Should -Not -BeNullOrEmpty
-        $expectedPath = Join-Path -Path $ToolsDirectory -ChildPath "Python"
+        $expectedPath = Join-Path -Path $env:AGENT_TOOLSDIRECTORY -ChildPath "Python"
         $pythonLocation.startsWith($expectedPath) | Should -BeTrue
     }
 

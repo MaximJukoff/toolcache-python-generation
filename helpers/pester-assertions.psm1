@@ -5,9 +5,8 @@ function ShouldReturnZeroExitCode {
         [switch]$Negate
     )
 
-    $actualCommandOutput = Invoke-Expression -Command $ActualValue
+    Invoke-Expression -Command $ActualValue | ForEach-Object { Write-Host $_ }
     $actualExitCode = $LASTEXITCODE
-    Write-Host $actualCommandOutput
 
     [bool]$succeeded = $actualExitCode -eq 0
     if ($Negate) { $succeeded = -not $succeeded }
