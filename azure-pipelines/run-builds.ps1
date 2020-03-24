@@ -2,17 +2,18 @@ param (
     [Parameter(Mandatory)] [string] $AzDoOrganizationName,
     [Parameter(Mandatory)] [string] $AzDoProjectName,
     [Parameter(Mandatory)] [string] $AzDoAccessToken,
-    [Parameter(Mandatory)] [string] $SourceBranch
+    [Parameter(Mandatory)] [string] $SourceBranch,
+    [Parameter(Mandatory)] [UInt32] $BuildId
 )
 
 $encodedToken = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes("'':$AzDoAccessToken"))
 
 $body = @{
     definition = @{
-        id = 6
+        id = $BuildId
     }
     sourceBranch = $SourceBranch
-    # parameters = '{ "VERSION" : "3.7.6" }'
+    parameters = '{ "VERSION" : "3.7.6" }'
 } | ConvertTo-Json -Depth 9
 
 $requestParams = @{
@@ -26,5 +27,5 @@ $requestParams = @{
 }
 
 $response = Invoke-RestMethod @requestParams
-Write-Host "Response :"
-$response
+Write-Host "Build URI:"
+$response.uri 
