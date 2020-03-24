@@ -5,7 +5,7 @@ param (
     [Parameter(Mandatory)] [string] $SourceBranch
 )
 
-$encodedToken = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes("'':$GitHubAccessToken"))
+$encodedToken = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes("'':$AzDoAccessToken"))
 
 $body = @{
     definition = @{
