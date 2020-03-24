@@ -13,6 +13,9 @@ jobs:
         TestRunTitle: "Python $(VERSION) $(Platform) $(Architecture)"
 
   steps:
+  - checkout: self
+    submodules: true
+
   - task: PowerShell@2
     displayName: Fully cleanup the toolcache directory
     inputs:
