@@ -128,7 +128,8 @@ if ($LASTEXITCODE -ne 0) {
     Throw "Error happened during Python installation"
 }
 
-cmd.exe /c "cd $PythonArchPath && ""./python.exe --version"" && ""./python.exe -m ensurepip"" && ""./python.exe -m pip install --upgrade pip"""
+$PythonExePath = Join-Path -Path $PythonArchPath -ChildPath "python.exe"
+cmd.exe /c "$PythonExePath --version && $PythonExePath -m ensurepip && $PythonExePath -m pip install --upgrade pip"
 
 Write-Host "Create complete file"
 New-Item -ItemType File -Path $PythonVersionPath -Name "$Architecture.complete" | Out-Null
