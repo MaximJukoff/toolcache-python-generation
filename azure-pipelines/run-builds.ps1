@@ -3,29 +3,40 @@ param (
     [Parameter(Mandatory)] [string] $AzDoProjectName,
     [Parameter(Mandatory)] [string] $AzDoAccessToken,
     [Parameter(Mandatory)] [string] $SourceBranch,
+    [Parameter(Mandatory)] [string] $PythonVersions,
     [Parameter(Mandatory)] [UInt32] $BuildId
 )
 
-$encodedToken = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes("'':$AzDoAccessToken"))
+function Get-RequestParams {
+    param (
+        [Parameter(Mandatory)] [string] $PythonVersion
+    )
 
-$body = @{
-    definition = @{
-        id = $BuildId
-    }
-    sourceBranch = $SourceBranch
-    parameters = '{ "VERSION" : "3.7.6" }'
-} | ConvertTo-Json -Depth 9
+    $encodedToken = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes("'':$AzDoAccessToken"))
 
-$requestParams = @{
-    Method = "POST"
-    ContentType = "application/json"
-    Uri = "https://dev.azure.com/$AzDoOrganizationName/$AzDoProjectName/_apis/build/builds?api-version=5.1"
-    Headers = @{
-        Authorization = "Basic $encodedToken"
+    $body = @{
+        definition = @{
+            id = $BuildId
+        }
+        sourceBranch = $SourceBranch
+        parameters = "{ ""VERSION"" : ""$PythonVersion"" }"
+    } | ConvertTo-Json -Depth 3
+
+    return @{
+        Method = "POST"
+        ContentType = "application/json"
+        Uri = "https://dev.azure.com/$AzDoOrganizationName/$AzDoProjectName/_apis/build/builds?api-version=5.1"
+        Headers = @{
+            Authorization = "Basic $encodedToken"
+        }
+        Body = $body
     }
-    Body = $body
 }
 
-$response = Invoke-RestMethod @requestParams
-Write-Host "Build URI:"
-$response.uri 
+$PythonVersions.Split(',') | foreach { 
+    $version = $_.Trim()
+    $requestParams = Get-RequestParams -PythonVersion $version
+    Write-Host "Queue build fro Python $version..."
+    $response = Invoke-RestMethod @requestParams
+    Write-Host "Queued build: $($NewRelease._links.web.href)"
+}
