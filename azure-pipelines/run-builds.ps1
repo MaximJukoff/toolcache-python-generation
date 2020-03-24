@@ -12,8 +12,8 @@ $body = @{
         id = 6
     }
     sourceBranch = $SourceBranch
-    parameters = "{ ""VERSION"":  ""3.7.6"" }"
-} | ConvertTo-Json -Depth 5
+    parameters = '{ "VERSION" : "3.7.6" }'
+} | ConvertTo-Json -Depth 9
 
 $requestParams = @{
     Method = "POST"
@@ -25,4 +25,6 @@ $requestParams = @{
     Body = $body
 }
 
-Invoke-RestMethod @requestParams
+$response = Invoke-RestMethod @requestParams
+Write-Host "Response :"
+$response
