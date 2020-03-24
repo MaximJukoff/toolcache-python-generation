@@ -16,7 +16,7 @@ class UbuntuPythonBuilder : NixPythonBuilder {
         $this.PrepareEnvironment()
 
         ### To build Python with SO we must pass full path to lib folder to the linker
-        $env:LDFLAGS="-Wl,--rpath=$pythonBinariesLocation/lib"
+        $env:LDFLAGS="-Wl,--rpath=${pythonBinariesLocation}/lib"
         $configureString = "./configure --prefix=$pythonBinariesLocation --enable-shared"
 
         ### CPython optimizations also not supported in Python versions lower than 3.5.3
@@ -57,6 +57,8 @@ class UbuntuPythonBuilder : NixPythonBuilder {
                 }
 
             } else {
+                ### Ubuntu 18.04 comes with OpenSSL 1.0.2 by default and there is no easy way to downgrade
+                ### Python 3.4 has also reached EOL so it is not being supported on Ubuntu 18.04
                 Write-Host "Python 3.4 is not supported on Ubuntu older that 16.04"
                 exit 1
             }

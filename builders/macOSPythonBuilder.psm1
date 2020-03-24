@@ -20,7 +20,7 @@ class macOSPythonBuilder : NixPythonBuilder {
             $env:CFLAGS="-I$(brew --prefix openssl)/include"
             $env:LDFLAGS="-L$(brew --prefix openssl)/lib"
         } else {
-            $configureString = $configureString, "--with-openssl=/usr/local/opt/openssl" -join " "
+            $configureString += "--with-openssl=/usr/local/opt/openssl"
         }
 
         Execute-Command -Command $configureString

@@ -41,8 +41,7 @@ class NixPythonBuilder : PythonBuilder {
 
         Write-Host "Sources URI: $sourceUri"
         Download-Source -Uri $sourceUri -OutFile $pythonSourceLocation
-        ### Todo: using ErrorAction Continue to supress unpack error 
-        Unpack-TarArchive -OutFile $pythonSourceLocation -ExpandArchivePath $this.TempFolderLocation -ErrorAction Continue
+        Unpack-TarArchive -OutFile $pythonSourceLocation -ExpandArchivePath $this.TempFolderLocation
         $expandedSourceLocation = Join-Path -Path $this.TempFolderLocation -ChildPath "Python-$($this.Version)"
         Write-Debug "Done; Sources location: $expandedSourceLocation"
 

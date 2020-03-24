@@ -47,7 +47,7 @@ class WinPythonBuilder : PythonBuilder {
 
     [void] CreateInstallationScript() {
         $sourceUri = $this.GetSourceUri()
-        $pythonExecName = $sourceUri.AbsoluteUri.Split("/")[-1]
+        $pythonExecName = [IO.path]::GetFileName($sourceUri.AbsoluteUri)
         $installationTemplateLocation = Join-Path -Path $this.InstallationTemplatesLocation -ChildPath $this.InstallationTemplateName
         $installationTemplateContent = Get-Content -Path $installationTemplateLocation -Raw
         $installationScriptLocation = New-Item -Path $this.ArtifactLocation -Name $this.InstallationScriptName -ItemType File
@@ -58,7 +58,7 @@ class WinPythonBuilder : PythonBuilder {
             "{{__PYTHON_EXEC_NAME__}}" = $pythonExecName
         }
 
-        $variablesToReplace.keys | foreach { $installationTemplateContent = $installationTemplateContent.Replace($_, $variablesToReplace[$_]) }
+        $variablesToReplace.keys | ForEach-Object { $installationTemplateContent = $installationTemplateContent.Replace($_, $variablesToReplace[$_]) }
         $installationTemplateContent | Out-File -FilePath $installationScriptLocation
         Write-Debug "Done; Installation script location: $installationScriptLocation)"
     }
