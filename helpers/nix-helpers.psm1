@@ -1,4 +1,4 @@
-Function Pack-Zip {
+function Pack-Zip {
     param(
         [Parameter(Mandatory=$true)]
         [String]$PathToArchive,
@@ -12,7 +12,7 @@ Function Pack-Zip {
     Pop-Location
 }
 
-Function Unpack-TarArchive {
+function Unpack-TarArchive {
     param(
         [Parameter(Mandatory=$true)]
         [String]$ArchivePath,

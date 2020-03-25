@@ -15,7 +15,7 @@ function Archive-SevenZip {
     }
 }
 
-Function Archive-Wim {
+function Archive-Wim {
     param(
         [String]$PathToArchive,
         [String]$ToolWimFile

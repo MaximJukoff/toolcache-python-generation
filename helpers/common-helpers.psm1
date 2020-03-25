@@ -1,4 +1,4 @@
-Function Execute-Command {
+function Execute-Command {
     [CmdletBinding()]
     param(
         [Parameter(Mandatory=$true)]
@@ -16,7 +16,7 @@ Function Execute-Command {
     }
 }
 
-Function Download-File {
+function Download-File {
     param(
         [Parameter(Mandatory=$true)]
         [Uri]$Uri,
