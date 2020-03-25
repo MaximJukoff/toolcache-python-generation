@@ -4,7 +4,7 @@ param (
     [Parameter(Mandatory)] [string] $AzDoAccessToken,
     [Parameter(Mandatory)] [string] $SourceBranch,
     [Parameter(Mandatory)] [string] $PythonVersions,
-    [Parameter(Mandatory)] [UInt32] $BuildId
+    [Parameter(Mandatory)] [UInt32] $BuildId,
     [Parameter(Mandatory)] [UInt32] $PullRequestId,
     [Parameter(Mandatory)] [UInt32] $PullRequestNumber,
     [Parameter(Mandatory)] [string] $MergedAt,
