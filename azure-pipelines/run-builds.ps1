@@ -25,15 +25,15 @@ function Get-RequestParams {
             id = $BuildId
         }
         sourceBranch = $SourceBranch
-        parameters = "{ ""VERSION"" : ""$PythonVersion""
-                        ""system.pullRequest.pullRequestId"" : ""$PullRequestId""
-                        ""system.pullRequest.pullRequestNumber"" : ""$PullRequestNumber""
-                        ""system.pullRequest.mergedAt"" : ""$MergedAt""
-                        ""system.pullRequest.sourceBranch"" : ""$SourceBranch""
-                        ""system.pullRequest.targetBranch"" : ""$TargetBranch""
-                        ""system.pullRequest.sourceRepositoryUri"" : ""$SourceRepositoryUri""
+        parameters = "{ ""VERSION"" : ""$PythonVersion"",
+                        ""system.pullRequest.pullRequestId"" : ""$PullRequestId"",
+                        ""system.pullRequest.pullRequestNumber"" : ""$PullRequestNumber"",
+                        ""system.pullRequest.mergedAt"" : ""$MergedAt"",
+                        ""system.pullRequest.sourceBranch"" : ""$SourceBranch"",
+                        ""system.pullRequest.targetBranch"" : ""$TargetBranch"",
+                        ""system.pullRequest.sourceRepositoryUri"" : ""$SourceRepositoryUri"",
                         ""system.pullRequest.sourceCommitId"" : ""$SourceCommitId"" }"
-    } | ConvertTo-Json -Depth 3
+    } | ConvertTo-Json -Depth 4
 
     return @{
         Method = "POST"
