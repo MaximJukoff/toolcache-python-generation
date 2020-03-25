@@ -1,36 +1,26 @@
-Function Archive-Zip {
+function Pack-Zip {
     param(
+        [Parameter(Mandatory=$true)]
         [String]$PathToArchive,
+        [Parameter(Mandatory=$true)]
         [String]$ToolZipFile
     )
 
+    Write-Debug "Pack $PathToArchive to $ToolZipFile"
     Push-Location -Path $PathToArchive
     zip -q -r $ToolZipFile * | Out-Null
     Pop-Location
 }
 
-Function Download-Source {
+function Unpack-TarArchive {
     param(
-        [Uri]$Uri,
-        [String]$OutFile
+        [Parameter(Mandatory=$true)]
+        [String]$ArchivePath,
+        [Parameter(Mandatory=$true)]
+        [String]$OutputDirectory
     )
 
-    Write-Debug "Download source from $Uri to $OutFile"
-    try {
-        (New-Object System.Net.WebClient).DownloadFile($Uri, $OutFile)
-    } catch {
-        "$_"
-        break
-    }    
-}
+    Write-Debug "Unpack $ArchivePath to $OutputDirectory"
+    tar -C $OutputDirectory -xzf $ArchivePath
 
-Function Unpack-TarArchive {
-    param(
-        [String]$OutFile,
-        [String]$ExpandArchivePath = $env:BUILD_STAGINGDIRECTORY,
-        [String]$TarCommands = "xzf"
-    )
-
-    Write-Debug "Unpack $OutFile to $ExpandArchivePath"
-    tar -C $ExpandArchivePath -$TarCommands $OutFile
 }

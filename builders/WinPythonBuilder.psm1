@@ -39,7 +39,7 @@ class WinPythonBuilder : PythonBuilder {
         $sourceUri = $this.GetSourceUri()
 
         Write-Host "Sources URI: $sourceUri"
-        $sourcesLocation = Download-File -Uri $sourceUri -BinPathFolder $this.ArtifactLocation
+        $sourcesLocation = Download-File -Uri $sourceUri -OutputFolder $this.ArtifactLocation
         Write-Debug "Done; Sources location: $sourcesLocation"
 
         return $sourcesLocation

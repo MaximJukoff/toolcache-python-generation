@@ -1,30 +1,3 @@
-function Download-File {
-    Param (
-        [String]$Uri,
-        [String]$BinPathFolder
-    )
-
-    $BinPathFile = Join-Path $BinPathFolder $($Uri.Split('/')[-1])
-
-    Invoke-WebRequest -Uri $Uri -OutFile $BinPathFile
-    return $BinPathFile
-}
-
-function Install-App {
-    Param (
-        [String]$BinPathFile,
-        [String]$ArgumentInstall
-    )
-
-    try {
-        Start-Process -FilePath $BinPathFile -ArgumentList $ArgumentInstall -Wait
-    }
-    catch {
-        "$_"
-        break
-    }
-}
-
 function Archive-SevenZip {
     Param (
         [String]$Source,
@@ -42,7 +15,7 @@ function Archive-SevenZip {
     }
 }
 
-Function Archive-Wim {
+function Archive-Wim {
     param(
         [String]$PathToArchive,
         [String]$ToolWimFile
