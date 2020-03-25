@@ -7,7 +7,7 @@ param (
     [Parameter(Mandatory)] [UInt32] $BuildId,
     [Parameter(Mandatory)] [UInt32] $PullRequestId,
     [Parameter(Mandatory)] [UInt32] $PullRequestNumber,
-    [Parameter(Mandatory)] [string] $MergedAt,
+    [string] $MergedAt,
     [Parameter(Mandatory)] [string] $TargetBranch,
     [Parameter(Mandatory)] [string] $SourceRepositoryUri,
     [Parameter(Mandatory)] [string] $SourceCommitId
