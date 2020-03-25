@@ -20,7 +20,8 @@ function Get-RequestParams {
         }
         reason = "pullRequest"
         sourceBranch = $SourceBranch
-        parameters = @{ VERSION = $PythonVersion } | Out-String
+        # The content of parameters field should be a json string
+        parameters = @{ VERSION = $PythonVersion } | ConvertTo-Json -Depth 2
     } | ConvertTo-Json -Depth 3
 
     return @{
