@@ -19,10 +19,10 @@ jobs:
     displayName: 'Run builds'
     inputs:
       targetType: filePath
-      filePath: '/run-builds.ps1'
-      arguments: '-AzDoOrganizationName $(ORGANIZATION_NAME)`
-                   -AzDoProjectName $(PROJECT_NAME)`
-                   -AzDoAccessToken $(ACCESS_TOKEN)`
-                   -SourceBranch $(SOURCE_BRANCH)`
-                   -PythonVersions $(PYTHON_VERSIONS)`
+      filePath: '/run-builds.ps1 '
+      arguments: '-AzDoOrganizationName $(ORGANIZATION_NAME) `
+                   -AzDoProjectName $(PROJECT_NAME) `
+                   -AzDoAccessToken $(ACCESS_TOKEN) `
+                   -SourceBranch $(SOURCE_BRANCH) `
+                   -PythonVersions $(PYTHON_VERSIONS) `
                    -BuildId $(BUILD_ID)'
