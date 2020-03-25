@@ -20,7 +20,7 @@ function Get-RequestParams {
         }
         reason = "pullRequest"
         sourceBranch = $SourceBranch
-        parameters = @{ VERSION = $PythonVersion }
+        parameters = @{ VERSION = $PythonVersion } | Out-String
     } | ConvertTo-Json -Depth 3
 
     return @{
@@ -39,4 +39,5 @@ $PythonVersions.Split(',') | foreach {
     $requestParams = Get-RequestParams -PythonVersion $version
     Write-Host "Queue build for Python $version..."
     $response = Invoke-RestMethod @requestParams
+    Write-Host "Queued build: $($response._links.web.href)"
 }
