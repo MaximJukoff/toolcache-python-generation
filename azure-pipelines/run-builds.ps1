@@ -18,7 +18,6 @@ function Get-RequestParams {
         definition = @{
             id = $BuildId
         }
-        reason = "pullRequest"
         sourceBranch = $SourceBranch
         # The content of parameters field should be a json string
         parameters = @{ VERSION = $PythonVersion } | ConvertTo-Json -Depth 2
