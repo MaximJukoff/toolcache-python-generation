@@ -1,0 +1,28 @@
+trigger: none
+pr:
+  autoCancel: false
+  branches:
+    include:
+    - master
+
+jobs:
+- job: Build_Python
+  pool:
+    name: Azure Pipelines
+    vmImage: 'vs2017-win2016'
+
+  steps:
+  - checkout: self
+    submodules: true
+
+  - task: PowerShell@2
+    displayName: 'Run builds'
+    inputs:
+      targetType: filePath
+      filePath: '/run-builds.ps1'
+      arguments: '-AzDoOrganizationName $(ORGANIZATION_NAME)`
+                   -AzDoProjectName $(PROJECT_NAME)`
+                   -AzDoAccessToken $(ACCESS_TOKEN)`
+                   -SourceBranch $(SOURCE_BRANCH)`
+                   -PythonVersions $(PYTHON_VERSIONS)`
+                   -BuildId $(BUILD_ID)'

@@ -36,7 +36,7 @@ function Get-RequestParams {
 $PythonVersions.Split(',') | foreach { 
     $version = $_.Trim()
     $requestParams = Get-RequestParams -PythonVersion $version
-    Write-Host "Queue build fro Python $version..."
+    Write-Host "Queue build for Python $version..."
     $response = Invoke-RestMethod @requestParams
     Write-Host "Queued build: $($NewRelease._links.web.href)"
 }
