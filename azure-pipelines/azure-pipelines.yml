@@ -10,7 +10,7 @@ stages:
     Platform: macos-1014
     Architecture: x64
   jobs:
-  - template: /azure-pipelines/build_job.yml
+  - template: /azure-pipelines/build-job.yml
 
 - stage: Test_Python_MacOS
   condition: succeeded()
@@ -20,7 +20,7 @@ stages:
     Platform: macos-1014
     Architecture: x64
   jobs:
-  - template: /azure-pipelines/test_job.yml
+  - template: /azure-pipelines/test-job.yml
 
 - stage: Build_Python_Ubuntu_1604
   dependsOn: []
@@ -29,7 +29,7 @@ stages:
     Platform: ubuntu-1604
     Architecture: x64
   jobs:
-  - template: /azure-pipelines/build_job.yml
+  - template: /azure-pipelines/build-job.yml
 
 - stage: Test_Python_Ubuntu_1604
   condition: succeeded()
@@ -39,7 +39,7 @@ stages:
     Platform: ubuntu-1604
     Architecture: x64
   jobs:
-  - template: /azure-pipelines/test_job.yml
+  - template: /azure-pipelines/test-job.yml
 
 - stage: Build_Python_Ubuntu_1804
   dependsOn: []
@@ -48,7 +48,7 @@ stages:
     Platform: ubuntu-1804
     Architecture: x64
   jobs:
-  - template: /azure-pipelines/build_job.yml
+  - template: /azure-pipelines/build-job.yml
 
 - stage: Test_Python_Ubuntu_1804
   condition: succeeded()
@@ -58,7 +58,7 @@ stages:
     Platform: ubuntu-1804
     Architecture: x64
   jobs:
-  - template: /azure-pipelines/test_job.yml
+  - template: /azure-pipelines/test-job.yml
 
 - stage: Build_Python_X64_Windows
   dependsOn: []
@@ -67,7 +67,7 @@ stages:
     Platform: windows
     Architecture: x64
   jobs:
-  - template: /azure-pipelines/build_job.yml
+  - template: /azure-pipelines/build-job.yml
 
 - stage: Test_Python_x64_Windows
   condition: succeeded()
@@ -77,7 +77,7 @@ stages:
     Platform: windows
     Architecture: x64
   jobs:
-  - template: /azure-pipelines/test_job.yml
+  - template: /azure-pipelines/test-job.yml
 
 - stage: Build_Python_x86_Windows
   dependsOn: []
@@ -86,7 +86,7 @@ stages:
     Platform: windows
     Architecture: x86
   jobs:
-  - template: /azure-pipelines/build_job.yml
+  - template: /azure-pipelines/build-job.yml
 
 - stage: Test_Python_x86_Windows
   condition: succeeded()
@@ -96,24 +96,4 @@ stages:
     Platform: windows
     Architecture: x86
   jobs:
-  - template: /azure-pipelines/test_job.yml
-
-- stage: Publish_GitHub_Release
-  condition: succeeded()
-  dependsOn:
-  - Test_Python_MacOS
-  - Test_Python_Ubuntu_1604
-  - Test_Python_Ubuntu_1804
-  - Test_Python_x64_Windows
-  - Test_Python_x86_Windows
-  jobs:
-  - deployment: Create_GitHub_release_and_publish_assets
-    pool:
-      name: Azure Pipelines
-      vmImage: 'vs2017-win2016'
-    environment: Toolcache Tools Generation - Publishing Approval
-    strategy:
-      runOnce:
-        deploy:
-          steps:
-          - template: /azure-pipelines/create_release_steps.yml
+  - template: /azure-pipelines/test-job.yml
