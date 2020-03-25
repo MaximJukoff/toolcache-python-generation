@@ -103,7 +103,7 @@ class NixPythonBuilder : PythonBuilder {
         $buildOutputLocation = New-Item -Path $this.ArtifactLocation -Name "build_output.txt" -ItemType File
         
         Execute-Command -Command "make pybuilddir.txt"
-        Execute-Command -Command "make LINKFORSHARED=' ' 2>&1 | tee $buildOutputLocation"
+        Execute-Command -Command "LINKFORSHARED=`" `" make 2>&1 | tee $buildOutputLocation"
         Execute-Command -Command "make install"
         
         Write-Debug "Done; Make log location: $buildOutputLocation"
