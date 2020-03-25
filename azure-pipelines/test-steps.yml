@@ -58,6 +58,7 @@ steps:
           Platform="$(Platform)";
         }
       }
+      Write-Host "Hello world!"
       Invoke-Pester -Script $pesterParams -OutputFile "test_results.xml" -OutputFormat NUnitXml
     workingDirectory: '$(Build.SourcesDirectory)/tests'
 
