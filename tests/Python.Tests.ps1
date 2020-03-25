@@ -5,11 +5,10 @@ param (
     $Platform
 )
 
-Import-Module (Join-Path $PSScriptRoot "../helpers/pester-assertions.psm1")
+Import-Module (Join-Path $PSScriptRoot "../helpers/pester-extensions.psm1")
 Import-Module (Join-Path $PSScriptRoot "../helpers/common-helpers.psm1")
 
 Describe "Tests" {
-
     It "Python version" {
         "python --version" | Should -ReturnZeroExitCode
         $pythonLocation = (Get-Command "python").Path

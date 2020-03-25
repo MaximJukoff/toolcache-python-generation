@@ -7,5 +7,5 @@ if ($env:PLATFORM -match 'windows') {
 }
 
 $PythonToolcachePath = Join-Path -Path $env:AGENT_TOOLSDIRECTORY -ChildPath "Python"
-Write-Host "Remove Python toolcache folder"
+Write-Host "Removing Python toolcache directory ..."
 Remove-Item -Path $PythonToolcachePath -Recurse -Force

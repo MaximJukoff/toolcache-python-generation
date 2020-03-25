@@ -125,7 +125,7 @@ class NixPythonBuilder : PythonBuilder {
         $buildOutputLocation = $this.Make()
         Pop-Location
 
-        New-ToolStructureDump -ToolPath $this.ArtifactLocation -OutputFolder $this.ArtifactLocation
+        New-ToolStructureDump -ToolPath $this.GetFullPythonToolcacheLocation() -OutputFolder $this.ArtifactLocation
 
         Write-Host "Create sysconfig file..."
         $this.GetSysconfigDump()

@@ -5,6 +5,7 @@ function ShouldReturnZeroExitCode {
         [switch]$Negate
     )
 
+    Write-Host "Run command '${ActualValue}'"
     Invoke-Expression -Command $ActualValue | ForEach-Object { Write-Host $_ }
     $actualExitCode = $LASTEXITCODE
 
