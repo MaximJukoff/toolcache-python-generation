@@ -6,7 +6,7 @@ pr:
     - master
 
 jobs:
-- job: Build_Python
+- job: Run_Builds
   pool:
     name: Azure Pipelines
     vmImage: 'vs2017-win2016'
@@ -26,10 +26,16 @@ jobs:
     displayName: 'Run builds'
     inputs:
       targetType: filePath
-      filePath: '/run-builds.ps1 '
+      filePath: '/azure-pipelines/run-builds.ps1 '
       arguments: '-AzDoOrganizationName $(ORGANIZATION_NAME) `
                    -AzDoProjectName $(PROJECT_NAME) `
                    -AzDoAccessToken $(ACCESS_TOKEN) `
-                   -SourceBranch $(SOURCE_BRANCH) `
+                   -SourceBranch $(SYSTEM_PULLREQUEST_SOURCEBRANCH) `
                    -PythonVersions $(PYTHON_VERSIONS) `
-                   -BuildId $(BUILD_ID)'
+                   -BuildId $(BUILD_ID) `
+                   -PullRequestId $(SYSTEM_PULLREQUEST_PULLREQUESTID) `
+                   -PullRequestNumber $(SYSTEM_PULLREQUEST_PULLREQUESTNUMBER) `
+                   -MergedAt $(SYSTEM_PULLREQUEST_MERGEDAT) `
+                   -TargetBranch $(SYSTEM_PULLREQUEST_TARGETBRANCH) `
+                   -SourceRepositoryUri $(SYSTEM_PULLREQUEST_SOURCEREPOSITORYURI) `
+                   -SourceCommitId $(SYSTEM_PULLREQUEST_SOURCECOMMITID)'
