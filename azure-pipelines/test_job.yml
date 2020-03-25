@@ -13,22 +13,22 @@ jobs:
         TestRunTitle: "Python $(VERSION) $(Platform) $(Architecture)"
 
   steps:
-  - task: PowerShell@2
-    displayName: Fully cleanup the toolcache directory
-    inputs:
-      TargetType: inline
-      script: |
-        if ($env:PLATFORM -match 'windows') {
-          $PythonFilter = "Name like '%Python%'"
-          Get-WmiObject Win32_Product -Filter $PythonFilter | Foreach-Object { 
-            Write-Host "Uninstalling $($_.Name) ..."
-            $_.Uninstall() | Out-Null 
-          }
-        }
-        $PythonToolcachePath = Join-Path -Path $env:AGENT_TOOLSDIRECTORY -ChildPath "Python"
-        Write-Host "Remove Python toolcache folder"
-        Remove-Item -Path $PythonToolcachePath -Recurse -Force
-      workingDirectory: '$(Build.BinariesDirectory)'
-    condition: eq(variables['NeedCleanToolcacheDir'], true)
+  # - task: PowerShell@2
+  #   displayName: Fully cleanup the toolcache directory
+  #   inputs:
+  #     TargetType: inline
+  #     script: |
+  #       if ($env:PLATFORM -match 'windows') {
+  #         $PythonFilter = "Name like '%Python%'"
+  #         Get-WmiObject Win32_Product -Filter $PythonFilter | Foreach-Object { 
+  #           Write-Host "Uninstalling $($_.Name) ..."
+  #           $_.Uninstall() | Out-Null 
+  #         }
+  #       }
+  #       $PythonToolcachePath = Join-Path -Path $env:AGENT_TOOLSDIRECTORY -ChildPath "Python"
+  #       Write-Host "Remove Python toolcache folder"
+  #       Remove-Item -Path $PythonToolcachePath -Recurse -Force
+  #     workingDirectory: '$(Build.BinariesDirectory)'
+  #   condition: eq(variables['NeedCleanToolcacheDir'], true)
 
   - template: test-steps.yml
