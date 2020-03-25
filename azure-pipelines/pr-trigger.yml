@@ -26,7 +26,7 @@ jobs:
     displayName: 'Run builds'
     inputs:
       targetType: filePath
-      filePath: '/azure-pipelines/run-builds.ps1 '
+      filePath: './azure-pipelines/run-builds.ps1 '
       arguments: '-AzDoOrganizationName $(ORGANIZATION_NAME) `
                    -AzDoProjectName $(PROJECT_NAME) `
                    -AzDoAccessToken $(ACCESS_TOKEN) `
