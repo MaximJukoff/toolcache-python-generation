@@ -25,6 +25,7 @@ function Get-RequestParams {
             id = $BuildId
         }
         reason = "pullRequest"
+        sourceBranch = $SourceBranch
         parameters = @{ VERSION = $PythonVersion
                         "system.pullRequest.pullRequestId" = $PullRequestId
                         "system.pullRequest.pullRequestNumber" = $PullRequestNumber
@@ -33,7 +34,7 @@ function Get-RequestParams {
                         "system.pullRequest.targetBranch" = $TargetBranch
                         "system.pullRequest.sourceRepositoryUri" = $SourceRepositoryUri
                         "system.pullRequest.sourceCommitId" = $SourceCommitId 
-        } | ConvertTo-Json -Depth 2
+        }
     } | ConvertTo-Json -Depth 3
 
     return @{
