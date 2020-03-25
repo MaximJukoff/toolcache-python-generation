@@ -24,6 +24,7 @@ function Get-RequestParams {
         definition = @{
             id = $BuildId
         }
+        reason = "pullRequest"
         parameters = @{ VERSION = $PythonVersion
                         "system.pullRequest.pullRequestId" = $PullRequestId
                         "system.pullRequest.pullRequestNumber" = $PullRequestNumber

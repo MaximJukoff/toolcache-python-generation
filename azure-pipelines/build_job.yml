@@ -7,7 +7,14 @@ jobs:
   steps:
   - checkout: self
     submodules: true
-    
+
+  - task: PowerShell@2
+    displayName: Env Variables
+    inputs:
+      TargetType: inline
+      script: |
+        Get-ChildItem Env:
+
   - task: PowerShell@2
     displayName: 'Build Python $(VERSION)'
     inputs:
