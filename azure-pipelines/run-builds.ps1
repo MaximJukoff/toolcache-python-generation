@@ -34,7 +34,7 @@ function Get-RequestParams {
                         "system.pullRequest.targetBranch" = $TargetBranch
                         "system.pullRequest.sourceRepositoryUri" = $SourceRepositoryUri
                         "system.pullRequest.sourceCommitId" = $SourceCommitId 
-        }
+        } | ConvertTo-Json -Depth 2
     } | ConvertTo-Json -Depth 3
 
     return @{
