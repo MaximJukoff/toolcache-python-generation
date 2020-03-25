@@ -30,12 +30,6 @@ jobs:
       arguments: '-AzDoOrganizationName $(ORGANIZATION_NAME) `
                    -AzDoProjectName $(PROJECT_NAME) `
                    -AzDoAccessToken $(ACCESS_TOKEN) `
-                   -SourceBranch $Env:SYSTEM_PULLREQUEST_SOURCEBRANCH `
+                   -SourceBranch $Env:BUILD_SOURCEBRANCH `
                    -PythonVersions $(PYTHON_VERSIONS) `
-                   -BuildId $(BUILD_ID) `
-                   -PullRequestId $Env:SYSTEM_PULLREQUEST_PULLREQUESTID `
-                   -PullRequestNumber $Env:SYSTEM_PULLREQUEST_PULLREQUESTNUMBER `
-                   -MergedAt $Env:SYSTEM_PULLREQUEST_MERGEDAT `
-                   -TargetBranch $Env:SYSTEM_PULLREQUEST_TARGETBRANCH `
-                   -SourceRepositoryUri $Env:SYSTEM_PULLREQUEST_SOURCEREPOSITORYURI `
-                   -SourceCommitId $Env:SYSTEM_PULLREQUEST_SOURCECOMMITID'
+                   -BuildId $(BUILD_ID)'
