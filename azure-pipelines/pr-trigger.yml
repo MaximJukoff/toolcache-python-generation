@@ -16,6 +16,13 @@ jobs:
     submodules: true
 
   - task: PowerShell@2
+    displayName: Env Variables
+    inputs:
+      TargetType: inline
+      script: |
+        Get-ChildItem Env:
+
+  - task: PowerShell@2
     displayName: 'Run builds'
     inputs:
       targetType: filePath
