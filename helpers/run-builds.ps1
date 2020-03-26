@@ -1,5 +1,5 @@
 param (
-    [Parameter(Mandatory)] [string] $AzDoOrganizationName,
+    [Parameter(Mandatory)] [string] $TeamFoundationCollectionUri,
     [Parameter(Mandatory)] [string] $AzDoProjectName,
     [Parameter(Mandatory)] [string] $AzDoAccessToken,
     [Parameter(Mandatory)] [string] $SourceBranch,
@@ -27,7 +27,7 @@ function Get-RequestParams {
     return @{
         Method = "POST"
         ContentType = "application/json"
-        Uri = "https://dev.azure.com/${AzDoOrganizationName}/${AzDoProjectName}/_apis/build/builds?api-version=5.1"
+        Uri = "${TeamFoundationCollectionUri}/${AzDoProjectName}/_apis/build/builds?api-version=5.1"
         Headers = @{
             Authorization = "Bearer $AzDoAccessToken"
         }
