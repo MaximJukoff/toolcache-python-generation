@@ -27,11 +27,11 @@ if sysconfig.get_config_var('Py_ENABLE_SHARED') == 1:
     print("extensions are right")
 
 if system_name == "Linux" and not script_dir_checked == script_dir_linux:
-    print("SCRIPTDIR not equal expected: " + script_dir + " real: " + script_dir_checked)
+    print("SCRIPTDIR not equal expected: " + script_dir_linux + " real: " + script_dir_checked)
     exit(1)
 
-if system_name == "Linux" and not script_dir_checked == script_dir_macos:
-    print("SCRIPTDIR not equal expected: " + script_dir + " real: " + script_dir_checked)
+if system_name == "Darwin" and not script_dir_checked == script_dir_macos:
+    print("SCRIPTDIR not equal expected: " + script_dir_macos + " real: " + script_dir_checked)
     exit(1)
 
 if not (system_name == "Linux" and "'-Wl,--rpath=/opt/hostedtoolcache/Python/{0}/x64/lib'".format(
