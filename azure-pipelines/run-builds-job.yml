@@ -22,7 +22,7 @@ jobs:
       filePath: './helpers/run-builds.ps1 '
       arguments: '-AzDoOrganizationName $Env:ORGANIZATION_NAME `
                    -AzDoProjectName $Env:PROJECT_NAME`
-                   -AzDoAccessToken $Env:SYSTEM_ACCESSTOKEN `
+                   -AzDoAccessToken $(System.AccessToken) `
                    -SourceBranch $Env:BUILD_SOURCEBRANCH `
                    -ToolVersions $Env:PYTHON_VERSIONS `
                    -BuildId $Env:BUILD_ID'
