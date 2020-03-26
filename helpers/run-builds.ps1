@@ -4,7 +4,7 @@ param (
     [Parameter(Mandatory)] [string] $AzDoAccessToken,
     [Parameter(Mandatory)] [string] $SourceBranch,
     [Parameter(Mandatory)] [string] $ToolVersions,
-    [Parameter(Mandatory)] [UInt32] $BuildId
+    [Parameter(Mandatory)] [UInt32] $DefinitionId
 )
 
 function Get-RequestParams {
@@ -12,24 +12,24 @@ function Get-RequestParams {
         [Parameter(Mandatory)] [string] $ToolVersion
     )
 
-    $encodedToken = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes("'':${AzDoAccessToken}"))
     # The content of parameters field should be a json string
-    $buildParameters = @{ VERSION = $ToolVersion } | ConvertTo-Json -Depth 2
+    $buildParameters = @{ VERSION = $ToolVersion } | ConvertTo-Json
 
     $body = @{
         definition = @{
-            id = $BuildId
+            id = $DefinitionId
         }
+        reason = "pullRequest"
         sourceBranch = $SourceBranch
         parameters = $buildParameters
-    } | ConvertTo-Json -Depth 3
+    } | ConvertTo-Json
 
     return @{
         Method = "POST"
         ContentType = "application/json"
         Uri = "https://dev.azure.com/${AzDoOrganizationName}/${AzDoProjectName}/_apis/build/builds?api-version=5.1"
         Headers = @{
-            Authorization = "Basic $encodedToken"
+            Authorization = "Bearer $AzDoAccessToken"
         }
         Body = $body
     }
