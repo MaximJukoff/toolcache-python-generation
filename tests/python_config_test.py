@@ -7,7 +7,8 @@ import os
 # checking variables
 system_name = platform.system()  # Darwin, Linux, Windows
 version = sys.version.split(" ")[0]
-script_dir = "/opt/hostedtoolcache/Python/" + version + "/x64/lib"
+script_dir_linux = "/opt/hostedtoolcache/Python/" + version + "/x64/lib"
+script_dir_macos = "/Users/runner/hostedtoolcache/Python/" + version + "/x64/lib" 
 dest_shared = sysconfig.get_config_var('DESTSHARED')
 configure_ldflags = sysconfig.get_config_var('CONFIGURE_LDFLAGS')
 script_dir_checked = sysconfig.get_config_var('SCRIPTDIR')
@@ -25,7 +26,11 @@ if sysconfig.get_config_var('Py_ENABLE_SHARED') == 1:
         exit(1)
     print("extensions are right")
 
-if not script_dir_checked == script_dir:
+if system_name == "Linux" and not script_dir_checked == script_dir_linux:
+    print("SCRIPTDIR not equal expected: " + script_dir + " real: " + script_dir_checked)
+    exit(1)
+
+if system_name == "Linux" and not script_dir_checked == script_dir_macos:
     print("SCRIPTDIR not equal expected: " + script_dir + " real: " + script_dir_checked)
     exit(1)
 
