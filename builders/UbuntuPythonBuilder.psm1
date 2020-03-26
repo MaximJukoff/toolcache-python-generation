@@ -10,10 +10,6 @@ class UbuntuPythonBuilder : NixPythonBuilder {
 
     [void] Configure() {
         $pythonBinariesLocation = $this.GetFullPythonToolcacheLocation()
-        
-        ### Prepare Ubuntu system environment by installing required packages
-        Write-Host "Prepare environment..."
-        $this.PrepareEnvironment()
 
         ### To build Python with SO we must pass full path to lib folder to the linker
         $env:LDFLAGS="-Wl,--rpath=${pythonBinariesLocation}/lib"
