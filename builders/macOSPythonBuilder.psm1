@@ -31,6 +31,7 @@ class macOSPythonBuilder : NixPythonBuilder {
     }
 
     [void] PrepareEnvironment() {
+        ### reinstall header files to Avoid issue with X11 headers on Mojave
         $pkgName = "/Library/Developer/CommandLineTools/Packages/macOS_SDK_headers_for_macOS_10.14.pkg"
         Execute-Command -Command "sudo installer -pkg $pkgName -target /"
     }
