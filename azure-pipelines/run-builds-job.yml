@@ -23,6 +23,6 @@ jobs:
       arguments: '-TeamFoundationCollectionUri $(System.TeamFoundationCollectionUri) `
                   -AzDoProjectName $(System.TeamProject) `
                   -AzDoAccessToken $(System.AccessToken) `
-                  -SourceBranch $Env:BUILD_SOURCEBRANCH `
-                  -ToolVersions $Env:PYTHON_VERSIONS `
-                  -DefinitionId $Env:DEFINITION_ID'
+                  -SourceBranch $(Build.SourceBranch) `
+                  -ToolVersions $(PYTHON_VERSIONS) `
+                  -DefinitionId $(DEFINITION_ID)'
