@@ -17,7 +17,7 @@ class UbuntuPythonBuilder : NixPythonBuilder {
 
         ### To build Python with SO we must pass full path to lib folder to the linker
         $env:LDFLAGS="-Wl,--rpath=${pythonBinariesLocation}/lib"
-        $env:CFLAGS="-Wno-deprecated-declarations"
+        $env:CFLAGS="-Wno-deprecated-declarations, -Wno-unreachable-code"
         $configureString = "./configure --prefix=$pythonBinariesLocation --enable-shared"
 
         ### CPython optimizations also not supported in Python versions lower than 3.5.3
