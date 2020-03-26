@@ -41,7 +41,7 @@ Describe "Tests" {
         }
 
         It "Check python lib" {
-            Get-CommandExitCode -Command "python ./python_config_test.py" | Should -ReturnZeroExitCode
+            "python ./python_config_test.py" | Should -ReturnZeroExitCode
         }
 
         It "Check Tkinter module is available" {
