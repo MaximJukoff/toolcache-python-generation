@@ -102,7 +102,7 @@ class NixPythonBuilder : PythonBuilder {
         Write-Debug "make Python $($this.Version)-$($this.Architecture) $($this.Platform)-$($this.PlatformVersion)"
         $buildOutputLocation = New-Item -Path $this.ArtifactLocation -Name "build_output.txt" -ItemType File
         
-        $WarningPreference = "SilentlyContinue"
+
         Execute-Command -Command "make pybuilddir.txt"
         Execute-Command -Command "make 2>&1 | tee $buildOutputLocation"
         Execute-Command -Command "make install"
