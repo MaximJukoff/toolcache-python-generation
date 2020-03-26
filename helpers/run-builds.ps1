@@ -3,24 +3,25 @@ param (
     [Parameter(Mandatory)] [string] $AzDoProjectName,
     [Parameter(Mandatory)] [string] $AzDoAccessToken,
     [Parameter(Mandatory)] [string] $SourceBranch,
-    [Parameter(Mandatory)] [string] $PythonVersions,
+    [Parameter(Mandatory)] [string] $ToolVersions,
     [Parameter(Mandatory)] [UInt32] $BuildId
 )
 
 function Get-RequestParams {
     param (
-        [Parameter(Mandatory)] [string] $PythonVersion
+        [Parameter(Mandatory)] [string] $ToolVersion
     )
 
     $encodedToken = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes("'':${AzDoAccessToken}"))
+    # The content of parameters field should be a json string
+    $buildParameters = @{ VERSION = $ToolVersion } | ConvertTo-Json -Depth 2
 
     $body = @{
         definition = @{
             id = $BuildId
         }
         sourceBranch = $SourceBranch
-        # The content of parameters field should be a json string
-        parameters = @{ VERSION = $PythonVersion } | ConvertTo-Json -Depth 2
+        parameters = $buildParameters
     } | ConvertTo-Json -Depth 3
 
     return @{
@@ -34,10 +35,10 @@ function Get-RequestParams {
     }
 }
 
-$PythonVersions.Split(',') | ForEach-Object { 
+$ToolVersions.Split(',') | ForEach-Object { 
     $version = $_.Trim()
-    $requestParams = Get-RequestParams -PythonVersion $version
-    Write-Host "Queue build for Python $version..."
+    $requestParams = Get-RequestParams -ToolVersion $version
+    Write-Host "Queue build for $version..."
     $response = Invoke-RestMethod @requestParams
     Write-Host "Queued build: $($response._links.web.href)"
 }

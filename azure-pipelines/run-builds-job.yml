@@ -1,6 +1,6 @@
 trigger: none
 pr:
-  autoCancel: false
+  autoCancel: true
   branches:
     include:
     - master
@@ -9,7 +9,7 @@ jobs:
 - job: Run_Builds
   pool:
     name: Azure Pipelines
-    vmImage: 'vs2017-win2016'
+    vmImage: 'ubuntu-latest'
 
   steps:
   - checkout: self
@@ -20,9 +20,9 @@ jobs:
     inputs:
       targetType: filePath
       filePath: './helpers/run-builds.ps1 '
-      arguments: '-AzDoOrganizationName $(ORGANIZATION_NAME) `
-                   -AzDoProjectName $(PROJECT_NAME) `
-                   -AzDoAccessToken $(ACCESS_TOKEN) `
-                   -SourceBranch $Env:BUILD_SOURCEBRANCH `
+      arguments: '-AzDoOrganizationName $(Organization.Name) `
+                   -AzDoProjectName $(Project.Name) `
+                   -AzDoAccessToken $(System.AccessToken) `
+                   -SourceBranch $(Build.SourceBranch) `
                    -PythonVersions $(PYTHON_VERSIONS) `
                    -BuildId $(BUILD_ID)'
