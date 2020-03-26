@@ -10,11 +10,11 @@ version = sys.version.split(" ")[0]
 script_dir = "/opt/hostedtoolcache/Python/" + version + "/x64/lib"
 dest_shared = sysconfig.get_config_var('DESTSHARED')
 configure_ldflags = sysconfig.get_config_var('CONFIGURE_LDFLAGS')
-print(configure_ldflags)
 script_dir_checked = sysconfig.get_config_var('SCRIPTDIR')
+have_libreadline = sysconfig.get_config_var("HAVE_LIBREADLINE")
 nix_systems = ["Darwin", "Linux"]
 # check modules
-help("modules")
+
 # if Py_ENABLE_SHARED equals 1, we chekc extensions
 if sysconfig.get_config_var('Py_ENABLE_SHARED') == 1:
     # check extension through SHLIB_SUFFIX
@@ -44,3 +44,6 @@ if system_name in nix_systems and (version < "3.5" or version >= "3.6"):
     if not ("'--enable-optimizations'" in sysconfig.get_config_var('CONFIG_ARGS').split(" ")):
         print("no '--enable-optimizations' for macos")
         exit(1)
+
+if not have_libreadline == 1:
+    exit(1)
