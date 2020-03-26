@@ -18,7 +18,7 @@ help("modules")
 # if Py_ENABLE_SHARED equals 1, we chekc extensions
 if sysconfig.get_config_var('Py_ENABLE_SHARED') == 1:
     # check extension through SHLIB_SUFFIX
-    ld_library = sysconfig.get_config_var('SHLIB_SUFFIX')
+    ld_library = sysconfig.get_config_var('LDLIBRARY')
     print("python Py_ENABLE_SHARED = 1")
     if not (ld_library.find(".dylib") != -1 or ld_library.find(".so") != -1):
         print("not valid extension")

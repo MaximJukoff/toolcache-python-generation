@@ -37,7 +37,7 @@ Describe "Tests" {
     if (IsNixPlatform $Platform) {
         It "Check if all python modules are installed"  {
             $ArtifactLocation = $env:BUILD_BINARIESDIRECTORY
-            $buildOutputLocation = Join-Path $ArtifactLocation "build_output.txt"
+            $buildOutputLocation = Join-Path $ArtifactLocation "missing_modules.txt"
             $buildOutPutContent = Get-Content $buildOutputLocation
             $buildOutPutContent | Should Be $null 
             "python ./python_modules.py" | Should -ReturnZeroExitCode
