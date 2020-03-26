@@ -10,6 +10,16 @@ param (
 Import-Module (Join-Path $PSScriptRoot "../helpers/pester-assertions.psm1")
 Import-Module (Join-Path $PSScriptRoot "../helpers/common-helpers.psm1")
 
+function Get-CommandExitCode {
+    Param (
+      [String] [Parameter (Mandatory = $true)] [ValidateNotNullOrEmpty()]
+      $Command
+    )
+  
+    $null = Invoke-Expression -Command $Command
+    return $LASTEXITCODE
+}
+
 Describe "Tests" {
 
     It "Python version" {
@@ -26,11 +36,19 @@ Describe "Tests" {
 
     if (IsNixPlatform $Platform) {
         It "Check if all python modules are installed"  {
+            $ArtifactLocation = $env:BUILD_BINARIESDIRECTORY
+            $buildOutputLocation = Join-Path $ArtifactLocation "build_output.txt"
+            $buildOutPutContent = Get-Content $buildOutputLocation
+            $buildOutPutContent | Should Be $null 
             "python ./python_modules.py" | Should -ReturnZeroExitCode
         }
 
+        It "Check python lib" {
+            Get-CommandExitCode -Command "python ./python_config_test.py" | Should -ReturnZeroExitCode
+        }
+
         It "Check Tkinter module is available" {
-            "python ./check_tkinter.py" | Should -ReturnZeroExitCode
+            Get-CommandExitCode -Command "python ./check_tkinter.py" | Should -ReturnZeroExitCode
         }
 
         It "Check if shared libraries are linked correctly" {

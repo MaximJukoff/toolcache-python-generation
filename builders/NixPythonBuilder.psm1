@@ -55,8 +55,8 @@ class NixPythonBuilder : PythonBuilder {
     }
 
     [void] GetMissingModules([string] $buildOutputLocation) {
-        $searchStringStart = "The necessary bits to build these optional modules were not found:"
-        $searchStringEnd = "To find the necessary bits, look in setup.py"
+        $searchStringStart = "Failed to build these modules:"
+        $searchStringEnd = "running build_scripts"
         $pattern = "$searchStringStart(.*?)$searchStringEnd"
     
         $buildContent = Get-Content -Path $buildOutputLocation
