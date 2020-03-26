@@ -10,6 +10,10 @@ class macOSPythonBuilder : NixPythonBuilder {
 
     [void] Configure() {
         $pythonBinariesLocation = $this.GetFullPythonToolcacheLocation()
+
+        Write-Host "Prepare environment..."
+        $this.PrepareEnvironment()
+
         $configureString = "./configure --prefix=$pythonBinariesLocation --enable-optimizations --enable-shared"
 
         ### OS X 10.11, Apple no longer provides header files for the deprecated system version of OpenSSL.
@@ -24,5 +28,10 @@ class macOSPythonBuilder : NixPythonBuilder {
         }
 
         Execute-Command -Command $configureString
+    }
+
+    [void] PrepareEnvironment() {
+        $pkgName = "/Library/Developer/CommandLineTools/Packages/macOS_SDK_headers_for_macOS_10.14.pkg"
+        Execute-Command -Command "sudo installer -pkg $pkgName -target /"
     }
 }
