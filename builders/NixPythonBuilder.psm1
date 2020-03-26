@@ -37,11 +37,10 @@ class NixPythonBuilder : PythonBuilder {
 
     [string] Download() {
         $sourceUri = $this.GetSourceUri()
-        $pythonSourceLocation = Join-Path -Path $this.ArtifactLocation -ChildPath "Python-$($this.Version).tgz"
-
         Write-Host "Sources URI: $sourceUri"
-        Download-Source -Uri $sourceUri -OutFile $pythonSourceLocation
-        Unpack-TarArchive -OutFile $pythonSourceLocation -ExpandArchivePath $this.TempFolderLocation
+
+        $archiveFilepath = Download-File -Uri $sourceUri -OutputFolder $this.ArtifactLocation
+        Unpack-TarArchive -ArchivePath $archiveFilepath -OutputDirectory $this.TempFolderLocation
         $expandedSourceLocation = Join-Path -Path $this.TempFolderLocation -ChildPath "Python-$($this.Version)"
         Write-Debug "Done; Sources location: $expandedSourceLocation"
 
@@ -50,7 +49,7 @@ class NixPythonBuilder : PythonBuilder {
 
     [void] ArchiveArtifact([string] $pythonToolLocation) {
         $artifact = Join-Path -Path $this.ArtifactLocation -ChildPath $this.OutputArtifactName
-        Archive-Zip -PathToArchive $pythonToolLocation -ToolZipFile $artifact 
+        Pack-Zip -PathToArchive $pythonToolLocation -ToolZipFile $artifact 
         Write-Debug "Done; Artifact location: $artifact"
     }
 
@@ -115,6 +114,9 @@ class NixPythonBuilder : PythonBuilder {
         Write-Host "Prepare Python Hostedtoolcache location..."
         $this.PreparePythonToolcacheLocation()
 
+        Write-Host "Prepare system environment..."
+        $this.PrepareEnvironment()
+
         Write-Host "Download Python $($this.Version)[$($this.Architecture)] sources..."
         $sourcesLocation = $this.Download()
 
@@ -125,6 +127,8 @@ class NixPythonBuilder : PythonBuilder {
         Write-Host "Make for $($this.Platform)-$($this.PlatformVersion)..."
         $buildOutputLocation = $this.Make()
         Pop-Location
+
+        New-ToolStructureDump -ToolPath $this.GetFullPythonToolcacheLocation() -OutputFolder $this.ArtifactLocation
 
         Write-Host "Create sysconfig file..."
         $this.GetSysconfigDump()
