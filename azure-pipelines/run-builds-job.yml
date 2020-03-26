@@ -20,9 +20,9 @@ jobs:
     inputs:
       targetType: filePath
       filePath: './helpers/run-builds.ps1 '
-      arguments: '-AzDoOrganizationName $(Organization.Name) `
-                   -AzDoProjectName $(Project.Name) `
-                   -AzDoAccessToken $(System.AccessToken) `
-                   -SourceBranch $(Build.SourceBranch) `
-                   -PythonVersions $(PYTHON_VERSIONS) `
-                   -BuildId $(BUILD_ID)'
+      arguments: '-AzDoOrganizationName $Env:ORGANIZATION_NAME `
+                   -AzDoProjectName $Env:PROJECT_NAME`
+                   -AzDoAccessToken $Env:SYSTEM_ENABLEACCESSTOKEN `
+                   -SourceBranch $Env:BUILD_SOURCEBRANCH `
+                   -PythonVersions $Env:PYTHON_VERSIONS `
+                   -BuildId $Env:BUILD_ID'
