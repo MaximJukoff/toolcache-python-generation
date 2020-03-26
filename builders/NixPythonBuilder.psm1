@@ -103,7 +103,7 @@ class NixPythonBuilder : PythonBuilder {
         $buildOutputLocation = New-Item -Path $this.ArtifactLocation -Name "build_output.txt" -ItemType File
         
         New-Item -ItemType Directory -Path ./build
-        # Execute-Command -Command "make pybuilddir.txt"
+        Execute-Command -Command "make pybuilddir.txt"
         Execute-Command -Command "make 2>&1 | tee $buildOutputLocation"
         Execute-Command -Command "make install"
         
