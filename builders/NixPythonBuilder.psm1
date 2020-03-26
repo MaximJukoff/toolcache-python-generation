@@ -114,6 +114,9 @@ class NixPythonBuilder : PythonBuilder {
         Write-Host "Prepare Python Hostedtoolcache location..."
         $this.PreparePythonToolcacheLocation()
 
+        Write-Host "Prepare system environment..."
+        $this.PrepareEnvironment()
+
         Write-Host "Download Python $($this.Version)[$($this.Architecture)] sources..."
         $sourcesLocation = $this.Download()
 
