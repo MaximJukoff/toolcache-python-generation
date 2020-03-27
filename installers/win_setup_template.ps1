@@ -96,6 +96,7 @@ $MinorVersion = $Version.Minor
 
 if (-Not (Test-Path $PythonToolcachePath)) {
     Write-Host "Create Python toolcache folder"
+    Write-Host "Create Python toolcache folder"
     New-Item -ItemType Directory -Path $PythonToolcachePath | Out-Null
 } else {
     Write-Host "Check if current Python version is installed..."
