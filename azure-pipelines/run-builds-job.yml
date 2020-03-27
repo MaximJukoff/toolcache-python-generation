@@ -24,5 +24,6 @@ jobs:
                   -AzDoProjectName $(System.TeamProject) `
                   -AzDoAccessToken $(System.AccessToken) `
                   -SourceBranch $(Build.SourceBranch) `
+                  -SourceVersion $(Build.SourceVersion)
                   -ToolVersions "$(PYTHON_VERSIONS)" `
                   -DefinitionId $(DEFINITION_ID)'

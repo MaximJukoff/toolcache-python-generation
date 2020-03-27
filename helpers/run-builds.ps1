@@ -3,6 +3,7 @@ param (
     [Parameter(Mandatory)] [string] $AzDoProjectName,
     [Parameter(Mandatory)] [string] $AzDoAccessToken,
     [Parameter(Mandatory)] [string] $SourceBranch,
+    [Parameter(Mandatory)] [string] $SourceVersion,
     [Parameter(Mandatory)] [string] $ToolVersions,
     [Parameter(Mandatory)] [UInt32] $DefinitionId
 )
@@ -21,6 +22,7 @@ function Get-RequestParams {
         }
         reason = "pullRequest"
         sourceBranch = $SourceBranch
+        sourceVersion = $SourceVersion
         parameters = $buildParameters
     } | ConvertTo-Json
 
