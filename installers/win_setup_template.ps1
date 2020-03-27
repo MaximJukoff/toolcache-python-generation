@@ -118,7 +118,7 @@ if (-Not (Test-Path $PythonToolcachePath)) {
 Write-Host "Create Python $Version folder in $PythonToolcachePath"
 New-Item -ItemType Directory -Path $PythonArchPath -Force | Out-Null
 
-Write-Host "Copy Python binaries to $PythonArchPath"
+Write-Host "Copy Pythfdason binaries to $PythonArchPath"
 Copy-Item -Path ./$PythonExecName -Destination $PythonArchPath | Out-Null
 
 Write-Host "Install Pasfdython $Version in $PythonToolcachePath..."
