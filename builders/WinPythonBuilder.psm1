@@ -20,7 +20,7 @@ class WinPythonBuilder : PythonBuilder {
     }
 
     [string] GetArchitectureExtension() {
-        $architectureExtension = if ($this.Architecture -eq "x64") { "-amd64" } else { "" }
+        $architectureExtension = if ($this.Architecture -eq "x64") { ".amd64" } else { "" }
 
         return $architectureExtension
     }
