@@ -25,6 +25,7 @@ steps:
   inputs:
     TargetType: inline
     script: |
+      ls
       if ($env:PLATFORM -match 'windows') { ./setup.ps1 } else { sh ./setup.sh }
     workingDirectory: '$(Build.BinariesDirectory)'
 
